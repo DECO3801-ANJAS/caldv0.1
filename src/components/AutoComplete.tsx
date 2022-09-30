@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import { withStyles } from '@material-ui/core/styles';
+import IFreeSolo from '../interfaces/props/freeSoloProps';
 
 const CssTextField = withStyles({
   root: {
@@ -26,8 +27,7 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
-export default function FreeSolo(props) {
-  console.log(props)
+export default function FreeSolo({value, onChange}: IFreeSolo) {
   return (
       <Autocomplete
         fullWidth
@@ -40,12 +40,12 @@ export default function FreeSolo(props) {
             focused
             {...params}
             label="Add Tasks"
-            value={props.value}
+            value={value}
             InputProps={{
               ...params.InputProps,
               type: 'search',
             }}
-            onChange={props.onChange}
+            onChange={() => onChange}
             fullWidth
           />
         )}

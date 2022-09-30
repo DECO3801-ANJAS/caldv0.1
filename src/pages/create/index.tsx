@@ -48,14 +48,18 @@ const CssTextField = withStyles({
 const Create: NextPage = () => {
   const [hashtag, setHashtag] = React.useState("")
   const [arrayOfHashtags, addHashtag] = React.useState([]);
+  const [numberOfHashtags, setNumberOfHashtags] = React.useState(0)
 
   const handleDelete = (h) => () => {
     addHashtag((arrayOfHashtags) =>
       arrayOfHashtags.filter((hashtag) => hashtag !== h)
     )
+    setNumberOfHashtags(numberOfHashtags - 1)
+    console.log(numberOfHashtags)
   }
 
   const newHashtag = () => {
+    setNumberOfHashtags(numberOfHashtags + 1)
     addHashtag((arrayOfHashtags) => arrayOfHashtags.concat(hashtag))
     console.log(arrayOfHashtags)
   } 
@@ -66,6 +70,7 @@ const Create: NextPage = () => {
         size="medium"
         label={h}
         onDelete={handleDelete(h)}
+        key = {numberOfHashtags}
       />
     </Grid>
   ))
