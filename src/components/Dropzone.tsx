@@ -1,10 +1,11 @@
 import React, {useCallback, useMemo} from 'react'
 import {useDropzone} from 'react-dropzone'
+import IFile from '../interfaces/models/file';
 
-const baseStyle = {
+const baseStyle : React.CSSProperties = {
   flex: 1,
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'column', 
   alignItems: 'center',
   padding: '20px',
   borderWidth: 2,
@@ -30,10 +31,11 @@ const rejectStyle = {
 };
 
 export default function MyDropzone() {
-  const onDrop = useCallback(acceptedFiles => {
-    // Do something with the files
+  const onDrop = useCallback(
+    (acceptedFiles : IFile[]) =>  {
     console.log(acceptedFiles)
   }, [])
+
   const {getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject} = useDropzone({onDrop})
 
   const style = useMemo(() => ({

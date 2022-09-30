@@ -47,10 +47,10 @@ const CssTextField = withStyles({
 
 const Create: NextPage = () => {
   const [hashtag, setHashtag] = React.useState("")
-  const [arrayOfHashtags, addHashtag] = React.useState([]);
+  const [arrayOfHashtags, addHashtag] = React.useState([] as string[]);
   const [numberOfHashtags, setNumberOfHashtags] = React.useState(0)
 
-  const handleDelete = (h) => () => {
+  const handleDelete = (h: String ) => {
     addHashtag((arrayOfHashtags) =>
       arrayOfHashtags.filter((hashtag) => hashtag !== h)
     )
@@ -64,12 +64,12 @@ const Create: NextPage = () => {
     console.log(arrayOfHashtags)
   } 
 
-  const Hashtags = arrayOfHashtags.map((h) => (
+  const Hashtags = arrayOfHashtags.map((h : string) => (
     <Grid item xs={4} sm={2} key = {numberOfHashtags}>
       <Chip
         size="medium"
         label={h}
-        onDelete={handleDelete(h)}
+        onDelete={() => handleDelete(h)}
       />
     </Grid>
   ))
@@ -121,7 +121,7 @@ const Create: NextPage = () => {
           </Grid> 
         </Grid>
         <Grid item xs={9}>
-          <FreeSolo value={hashtag} onChange={(e) => {setHashtag(e.target.value)}}/> 
+          <FreeSolo value={hashtag} onChange={(e:React.ChangeEvent<HTMLInputElement>) => {setHashtag(e.target.value)}}/> 
         </Grid>
         <Grid item xs={3} style={{color:"#784CF4"}}>
           <AddCircleOutlineIcon fontSize="large" onClick={newHashtag}/>
