@@ -65,12 +65,11 @@ const Create: NextPage = () => {
   } 
 
   const Hashtags = arrayOfHashtags.map((h) => (
-    <Grid item xs={4} sm={2}>
+    <Grid item xs={4} sm={2} key = {numberOfHashtags}>
       <Chip
         size="medium"
         label={h}
         onDelete={handleDelete(h)}
-        key = {numberOfHashtags}
       />
     </Grid>
   ))
