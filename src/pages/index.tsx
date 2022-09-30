@@ -27,7 +27,7 @@ const Home: NextPage = () => {
           <Grid item>
             <Link href={`\event`}>
               <Button variant="contained" href="#contained-buttons">
-                Create an Event 
+                See Events 
               </Button>
             </Link>
           </Grid>
