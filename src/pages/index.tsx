@@ -7,7 +7,7 @@ import { Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
-import Clock from './clock';
+import Clock from './Clock';
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
