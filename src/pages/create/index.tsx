@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import * as React from 'react'
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import TextField from '@mui/material/TextField';
 import Dropzone from '../../components/Dropzone';
@@ -14,7 +13,10 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Dayjs } from 'dayjs';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import IFile from '../../interfaces/models/file';
+
 
 const theme = createTheme({
   palette: {
@@ -112,8 +114,10 @@ const Create: NextPage = () => {
   };
 
   return (
-    <Container style={{marginTop:"5%", marginBottom:"5%"}}>
-      <Grid container alignItems='center' justifyContent='space-between' style={{marginBottom:"5%"}}>
+    <>
+      <ThemeProvider theme={theme}>
+
+      <Grid container alignItems='center' justifyContent='space-between' style={{padding:"1rem"}}>
         <Grid item>
           <ArrowBackIosNewIcon/>
         </Grid>
@@ -127,37 +131,39 @@ const Create: NextPage = () => {
         </Grid>
       </Grid> 
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} style={{padding:"1rem"}}>
         <Grid item xs={12}>
           <CssTextField label="Title" name="title" onChange={handleChangeEvent} focused fullWidth/>
         </Grid>
         <Grid item xs={12}>
           <CssTextField label="Description" name="description" onChange={handleChangeEvent} focused rows={5} multiline fullWidth/>
         </Grid> 
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <CssTextField label="Location" name="location" onChange={handleChangeEvent} focused fullWidth/>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <BasicDatePicker 
-          setDateFunc={handleChangeDate} 
-          setTimeFunc={handleChangeTime} 
-          time={time} 
-          date={date}
-          />
-        </Grid>
+        
+        <BasicDatePicker 
+        setDateFunc={handleChangeDate} 
+        setTimeFunc={handleChangeTime} 
+        time={time} 
+        date={date}
+        />
+        
         <Grid item xs={12}>
           <Grid container spacing={1}>
             {arrayOfTasks.length > 0 ? Tasks : ""}
           </Grid> 
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={10}>
           <FreeSolo 
             inputValue={taskInputValue}
             setInputValue={setTaskInputValue}
             /> 
         </Grid>
-        <Grid item xs={3} style={{color:"#784CF4"}}>
-          <AddCircleOutlineIcon fontSize="large" onClick={taskInputValue.length !== 0 ? newTask : () => {}}/>
+        <Grid item xs={2}>
+          <IconButton color="primary" component="label">
+            <AddCircleOutlineIcon fontSize="large" onClick={taskInputValue.length !== 0 ? newTask : () => {}}/>
+          </IconButton>
         </Grid>
         <Grid item xs={12}>
           <CssTextField label="Recipe" name="recipe" onChange={handleChangeEvent} focused fullWidth multiline rows={5}/>
@@ -165,13 +171,13 @@ const Create: NextPage = () => {
         <Grid item xs={12}>
           <Dropzone files={files} setFiles={setFiles}/>
         </Grid>
-        <Grid item xs={12}>
-        <ThemeProvider theme={theme}>
+        <Grid item xs={12} textAlign="center">
           <Button variant="contained" color='primary' onClick={handleSubmit}>Submit</Button>
-        </ThemeProvider>
         </Grid>
       </Grid>
-    </Container>
+
+      </ThemeProvider>
+    </>
   )
 }
 

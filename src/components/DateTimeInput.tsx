@@ -35,13 +35,13 @@ export default function BasicDatePicker({setTimeFunc, setDateFunc, date, time} :
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Grid container spacing={1} justifyContent="space-between" alignItems="center">
+        
         <Grid item xs={6}>
             <DatePicker
             label="Date"
             value={date}
             onChange={setDateFunc}
-            renderInput={(params) => <CssTextField name="date" focused {...params} />}
+            renderInput={(params) => <CssTextField fullWidth name="date" focused {...params} />}
             />        
         </Grid>
         <Grid item xs={6}>
@@ -49,9 +49,9 @@ export default function BasicDatePicker({setTimeFunc, setDateFunc, date, time} :
                 label="Time"
                 value={time}
                 onChange={setTimeFunc}
-                renderInput={(params) => <CssTextField focused {...params} />}
+                renderInput={(params) => <CssTextField fullWidth focused {...params} />}
             />
-        </Grid>
+       
         </Grid>
     </LocalizationProvider>
   );
