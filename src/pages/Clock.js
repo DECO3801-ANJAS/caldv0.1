@@ -6,10 +6,13 @@ function Clock() {
      const[clockState, setClockState] = useState();
 
      useEffect(() => {
-          setInterval(() => {
+          const interval = () => setInterval(() => {
                const date = new Date();
                setClockState(date.toLocaleTimeString());
           }, 1000);
+          return () => {
+               clearInterval(interval);
+          }
      }, []);
 
      return (<Typography fontFamily='Open Sans'>{clockState}</Typography>);
