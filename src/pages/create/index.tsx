@@ -9,22 +9,22 @@ import Dropzone from '../../components/Dropzone';
 import BasicDatePicker from '../../components/DateTimeInput';
 import FreeSolo from '../../components/AutoComplete';
 import Chip from '@mui/material/Chip';
-import { withStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Dayjs } from 'dayjs';
+import IFile from '../../interfaces/models/file';
 
 const theme = createTheme({
   palette: {
     primary: {
-      // Purple and green play nicely together.
       main: "#784CF4"
     }
   },
 });
 
-const CssTextField = withStyles({
-  root: {
+const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
       color: "#784CF4",
     },
@@ -42,30 +42,55 @@ const CssTextField = withStyles({
         borderColor: "#784CF4",
       },
     },
-  },
-})(TextField);
+});
 
 const Create: NextPage = () => {
-  const [hashtag, setHashtag] = React.useState("")
-  const [arrayOfHashtags, addHashtag] = React.useState([] as string[]);
-  const [numberOfHashtags, setNumberOfHashtags] = React.useState(0)
 
-  const handleDelete = (h: String ) => {
-    addHashtag((arrayOfHashtags) =>
-      arrayOfHashtags.filter((hashtag) => hashtag !== h)
-    )
-    setNumberOfHashtags(numberOfHashtags - 1)
-    console.log(numberOfHashtags)
+  // Event Details
+  const [eventDetails, setEventDetails] = React.useState({
+    title: "",
+    description: "",
+    location: "",
+    recipe: ""
+  })
+
+  const handleChangeEvent = (e : React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    const name = e.target.name
+    setEventDetails((prev) => ({
+        ...prev,
+        [name]: value,
+    }));
   }
 
-  const newHashtag = () => {
-    setNumberOfHashtags(numberOfHashtags + 1)
-    addHashtag((arrayOfHashtags) => arrayOfHashtags.concat(hashtag))
-    console.log(arrayOfHashtags)
+  // Date and Time
+  const [date, setDate] = React.useState<Dayjs | null>(null);
+  const handleChangeDate = (newValue: Dayjs | null) => {
+    setDate(newValue);
+  };
+
+  const [time, setTime] = React.useState<Dayjs | null>(null);
+  const handleChangeTime = (newValue: Dayjs | null) => {
+    setTime(newValue);
+  };
+
+  // Tasks
+  const [taskInputValue, setTaskInputValue] = React.useState('');
+  const [arrayOfTasks, addTask] = React.useState([] as string[]);
+
+  const handleDelete = (taskTag: String ) => {
+    addTask((arrayOfTasks) =>
+      arrayOfTasks.filter((taskInputValue) => taskInputValue !== taskTag)
+    )
+  }
+
+  const newTask = () => {
+    addTask((arrayOfTasks) => arrayOfTasks.concat(taskInputValue))
+    setTaskInputValue("")
   } 
 
-  const Hashtags = arrayOfHashtags.map((h : string) => (
-    <Grid item xs={4} sm={2} key = {numberOfHashtags}>
+  const Tasks = arrayOfTasks.map((h : string, i:number) => (
+    <Grid item xs={4} sm={2} key={i}>
       <Chip
         size="medium"
         label={h}
@@ -74,13 +99,25 @@ const Create: NextPage = () => {
     </Grid>
   ))
 
+  // Images
+  const [files, setFiles] = React.useState<IFile[]>([]);
+
+  const handleSubmit = () => {
+    // TODO: Implement submission here
+    console.log(arrayOfTasks)
+    console.log(eventDetails)
+    console.log(date)
+    console.log(time)
+    console.log(files)
+  };
+
   return (
     <Container style={{marginTop:"5%", marginBottom:"5%"}}>
       <Grid container alignItems='center' justifyContent='space-between' style={{marginBottom:"5%"}}>
-        <Grid item spacing={2}>
+        <Grid item>
           <ArrowBackIosNewIcon/>
         </Grid>
-        <Grid item spacing={2} direction="column">
+        <Grid item>
           <Grid item>
             <Typography style={{fontSize:16, textAlign:"right", fontWeight:"600"}}>Create a</Typography>
           </Grid>
@@ -92,49 +129,45 @@ const Create: NextPage = () => {
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <CssTextField label="Title" focused fullWidth/>
+          <CssTextField label="Title" name="title" onChange={handleChangeEvent} focused fullWidth/>
         </Grid>
         <Grid item xs={12}>
-          <CssTextField label="Description" focused rows={5} multiline fullWidth/>
+          <CssTextField label="Description" name="description" onChange={handleChangeEvent} focused rows={5} multiline fullWidth/>
         </Grid> 
         <Grid item xs={12} sm={6}>
-          <CssTextField label="Location" focused fullWidth/>
+          <CssTextField label="Location" name="location" onChange={handleChangeEvent} focused fullWidth/>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <BasicDatePicker/>
+          <BasicDatePicker 
+          setDateFunc={handleChangeDate} 
+          setTimeFunc={handleChangeTime} 
+          time={time} 
+          date={date}
+          />
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={1}>
-            {/* <Grid item xs={4} sm={2}>
-              <Chip label="MASAK AIR BIAR MATENG" id="chip1" onDelete={handleDelete} style={{width:"100%"}} /> 
-            </Grid>
-            <Grid item xs={4} sm={2}>
-              <Chip label="ABE GANTENG" onDelete={() => {}} style={{width:"100%"}} /> 
-            </Grid>
-            <Grid item xs={4} sm={2}>
-              <Chip label="SYASYA CAKEP" onDelete={() => {}} style={{width:"100%"}} /> 
-            </Grid>
-            <Grid item xs={4} sm={2}>
-              <Chip label="JO DERAS Spending" onDelete={() => {}} style={{width:"100%"}} /> 
-            </Grid> */}
-          {arrayOfHashtags.length > 0 ? Hashtags : ""}
+            {arrayOfTasks.length > 0 ? Tasks : ""}
           </Grid> 
         </Grid>
         <Grid item xs={9}>
-          <FreeSolo value={hashtag} onChange={(e:React.ChangeEvent<HTMLInputElement>) => {setHashtag(e.target.value)}}/> 
+          <FreeSolo 
+            inputValue={taskInputValue}
+            setInputValue={setTaskInputValue}
+            /> 
         </Grid>
         <Grid item xs={3} style={{color:"#784CF4"}}>
-          <AddCircleOutlineIcon fontSize="large" onClick={newHashtag}/>
+          <AddCircleOutlineIcon fontSize="large" onClick={taskInputValue.length !== 0 ? newTask : () => {}}/>
         </Grid>
         <Grid item xs={12}>
-          <CssTextField label="Recipe" focused fullWidth multiline rows={5}/>
+          <CssTextField label="Recipe" name="recipe" onChange={handleChangeEvent} focused fullWidth multiline rows={5}/>
         </Grid>
         <Grid item xs={12}>
-          <Dropzone/>
+          <Dropzone files={files} setFiles={setFiles}/>
         </Grid>
         <Grid item xs={12}>
         <ThemeProvider theme={theme}>
-          <Button variant="contained" color='primary'>Contained</Button>
+          <Button variant="contained" color='primary' onClick={handleSubmit}>Submit</Button>
         </ThemeProvider>
         </Grid>
       </Grid>

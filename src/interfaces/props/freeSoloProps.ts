@@ -1,8 +1,8 @@
 import React from "react";
 
 interface IFreeSolo {
-  value: String;
-  onChange: (e : React.ChangeEvent<HTMLInputElement>) => void
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default IFreeSolo;
