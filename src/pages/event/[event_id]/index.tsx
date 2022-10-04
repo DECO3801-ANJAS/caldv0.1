@@ -6,7 +6,7 @@ import { ThemeProvider } from '@emotion/react';
 import Button from '@mui/material/Button';
 import { useMediaQuery } from "@mui/material";
 import Image from 'next/image';
-import Clock from '../../Clock';
+import Clock from '../../../components/Clock';
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
