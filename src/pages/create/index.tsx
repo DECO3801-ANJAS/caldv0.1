@@ -122,10 +122,10 @@ const Create: NextPage = () => {
         </Grid>
         <Grid item>
           <Grid item>
-            <Typography style={{fontSize:16, textAlign:"right", fontWeight:"600"}}>Create a</Typography>
+            <Typography fontFamily="Open Sans" style={{fontSize:16, textAlign:"right", fontWeight:"600"}}>Create a</Typography>
           </Grid>
           <Grid item>
-            <Typography style={{fontSize:20, textAlign:"right", fontWeight:"bold"}}>New Event</Typography>
+            <Typography fontFamily="Open Sans" style={{fontSize:20, textAlign:"right", fontWeight:"bold"}}>New Event</Typography>
           </Grid>
         </Grid>
       </Grid> 

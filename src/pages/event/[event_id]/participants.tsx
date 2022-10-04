@@ -7,6 +7,9 @@ import { useMediaQuery } from "@mui/material";
 import { useRouter } from 'next/router';
 import ArrowBack from '../../../components/ArrowBack';
 
+import "@fontsource/open-sans";
+import "@fontsource/mohave";
+import "@fontsource/montserrat";
 
 const theme = createTheme({
   typography: {
@@ -14,6 +17,7 @@ const theme = createTheme({
       'Open Sans',
       'Mohave',
       'sans-serif',
+      'montserrat'
     ].join(',')
   },
   palette: {
