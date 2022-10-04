@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import { useMediaQuery } from "@mui/material";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
-import Clock from '../../Clock';
+import Clock from '../../../components/Clock';
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";

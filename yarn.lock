@@ -237,6 +237,11 @@
   resolved "https://registry.yarnpkg.com/@fontsource/mohave/-/mohave-4.5.10.tgz#7df41cf3c30eae91f4c0b26ac0fb07718a37012e"
   integrity sha512-mwUBfz8Pn2bHZuhEbrKmeCDuiXug6vCWte4NO++5fh3ywQK3ZH2IErx9Mk4u4tzoPssuaXiHiVTq8hw1+nMQXg==
 
+"@fontsource/montserrat@^4.5.13":
+  version "4.5.13"
+  resolved "https://registry.yarnpkg.com/@fontsource/montserrat/-/montserrat-4.5.13.tgz#58f12419c05e131b09ab17e9181aa24fb9c84b3a"
+  integrity sha512-/XlcNsMFjdWX4Away8Ax/4NgND8Ckk9gVDwgz1sfxF6h+gFHChLOV0IvPrUfCQjZ1F35igg+nR9bSxmjsYEskQ==
+
 "@fontsource/open-sans@^4.5.11":
   version "4.5.11"
   resolved "https://registry.yarnpkg.com/@fontsource/open-sans/-/open-sans-4.5.11.tgz#1e9f4346599bdc7752b741d17ee30ef4ebbc15e6"
