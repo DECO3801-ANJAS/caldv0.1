@@ -1,5 +1,3 @@
-import { Url } from "url";
-
 interface IArrowBack {
     href: string
   }
