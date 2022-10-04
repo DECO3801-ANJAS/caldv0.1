@@ -2,8 +2,7 @@ import type { NextPage } from 'next'
 import * as React from 'react'
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { Card, Box, CardMedia, CardContent } from '@mui/material';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Card, Box, CardMedia} from '@mui/material';
 import { createTheme, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import Clock from '../../components/Clock'
@@ -43,10 +42,10 @@ const AllEvents: NextPage = () => {
           </Grid>
           <Grid item>
             <Grid item>
-              <Typography style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>Upcoming</Typography>
+              <Typography fontFamily="Open Sans" style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>Upcoming</Typography>
             </Grid>
             <Grid item>
-              <Typography style={{ fontSize: 20, textAlign: "right", fontWeight: "bold" }}>Events</Typography>
+              <Typography fontFamily="Open Sans" style={{ fontSize: 20, textAlign: "right", fontWeight: "bold" }}>Events</Typography>
             </Grid>
           </Grid>
         </Grid>
@@ -54,7 +53,7 @@ const AllEvents: NextPage = () => {
 
         <Grid container justifyContent={"center"} alignItems={"center"} style={{ backgroundColor: "#784CF4E0", color: "white" }}>
           <Grid item xs={12} style={{ textAlign: "center" }}>
-            <Typography fontFamily='Open Sans'>Brisbane, {date}</Typography>
+            <Typography fontFamily="Open Sans">Brisbane, {date}</Typography>
           </Grid>
           <Grid item xs={12} style={{ textAlign: "center" }}>
             <Clock />
@@ -94,6 +93,7 @@ const AllEvents: NextPage = () => {
                         </Grid>
                         <Grid item>
                           <Typography 
+                            fontFamily="Open Sans"
                             variant="subtitle1" 
                             color="text.secondary" 
                             component="div" 
