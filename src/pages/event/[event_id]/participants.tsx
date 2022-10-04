@@ -1,10 +1,11 @@
 import type { NextPage } from 'next'
 import Grid from '@mui/material/Grid';
-import { Typography, Card, CardContent, Box } from '@mui/material';
+import { Typography, Card, Box } from '@mui/material';
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useMediaQuery } from "@mui/material";
+import { useRouter } from 'next/router';
+import ArrowBack from '../../../components/ArrowBack';
 
 
 const theme = createTheme({
@@ -24,12 +25,15 @@ const theme = createTheme({
 
 const Participants: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:600px)");
+  const router = useRouter()
+  const { event_id } = router.query
+
   return (
     <>
     <ThemeProvider theme={theme}>
       <Grid container alignItems='center' justifyContent='space-between' style={{padding:"1rem"}}>
         <Grid item>
-          <ArrowBackIosNewIcon/>
+        <ArrowBack href={`/event/${event_id}`}/>
         </Grid>
         <Grid item>
           <Grid item>
