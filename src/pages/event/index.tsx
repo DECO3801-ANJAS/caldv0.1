@@ -11,6 +11,7 @@ import Clock from '../../components/Clock'
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
 import "@fontsource/montserrat";
+import ArrowBack from '../../components/ArrowBack';
 
 const current = new Date();
 const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -38,7 +39,7 @@ const AllEvents: NextPage = () => {
       <ThemeProvider theme={theme}>
         <Grid container alignItems='center' justifyContent='space-between' style={{ padding: "1rem" }}>
           <Grid item>
-            <ArrowBackIosNewIcon />
+            <ArrowBack href={"/"}/>
           </Grid>
           <Grid item>
             <Grid item>
