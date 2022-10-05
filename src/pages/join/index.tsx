@@ -179,7 +179,7 @@ const Join: NextPage = () => {
           </ThemeProvider>
         </Grid>
         <Grid item xs={7} style={{marginTop: "2%", marginBottom:"5%"}}>
-          <FormControl fullWidth>
+          <FormControl fullWidth focused>
             <InputLabel id="demo-simple-select-label" shrink={true}>Experience</InputLabel>
             <CssSelect
             notched={true}
