@@ -15,7 +15,6 @@ import "@fontsource/open-sans";
 import "@fontsource/mohave";
 import "@fontsource/montserrat";
 import ArrowBack from '../../../components/ArrowBack';
-import { useRouter } from 'next/router';
 
 const current = new Date();
 const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
