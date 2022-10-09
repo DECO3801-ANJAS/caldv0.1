@@ -6,6 +6,7 @@ import { Card, Box, CardMedia} from '@mui/material';
 import { createTheme, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import Clock from '../../components/Clock'
+import useSWR from "swr";
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
@@ -33,6 +34,9 @@ const theme = createTheme({
 
 const AllEvents: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:600px)");
+  const { data, error } = useSWR('event', fetch,
+    { refreshInterval: 30000 }
+  )
   return (
     <>
       <ThemeProvider theme={theme}>
