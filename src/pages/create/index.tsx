@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import * as React from 'react'
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import TextField from '@mui/material/TextField';
 import Dropzone from '../../components/Dropzone';
 import BasicDatePicker from '../../components/DateTimeInput';
@@ -13,9 +12,9 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Dayjs } from 'dayjs';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import IFile from '../../interfaces/models/file';
+import ArrowBack from '../../components/ArrowBack';
 
 
 const theme = createTheme({
@@ -116,17 +115,17 @@ const Create: NextPage = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-
+      
       <Grid container alignItems='center' justifyContent='space-between' style={{padding:"1rem"}}>
         <Grid item>
-          <ArrowBackIosNewIcon/>
+          <ArrowBack href={"/"}/>
         </Grid>
         <Grid item>
           <Grid item>
-            <Typography style={{fontSize:16, textAlign:"right", fontWeight:"600"}}>Create a</Typography>
+            <Typography fontFamily="Open Sans" style={{fontSize:16, textAlign:"right", fontWeight:"600"}}>Create a</Typography>
           </Grid>
           <Grid item>
-            <Typography style={{fontSize:20, textAlign:"right", fontWeight:"bold"}}>New Event</Typography>
+            <Typography fontFamily="Open Sans" style={{fontSize:20, textAlign:"right", fontWeight:"bold"}}>New Event</Typography>
           </Grid>
         </Grid>
       </Grid> 

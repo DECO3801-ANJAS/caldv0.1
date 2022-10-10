@@ -5,12 +5,13 @@ import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import Button from '@mui/material/Button';
 import { useMediaQuery } from "@mui/material";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Image from 'next/image';
-import Clock from '../../Clock';
+import Clock from '../../../components/Clock';
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
+import "@fontsource/montserrat";
+import ArrowBack from '../../../components/ArrowBack';
 
 const current = new Date();
 const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -21,6 +22,7 @@ const theme = createTheme({
       'Open Sans',
       'Mohave',
       'sans-serif',
+      'montserrat'
     ].join(',')
   },
   palette: {
@@ -38,13 +40,11 @@ const EventDetail: NextPage = () => {
 
       <Grid container justifyContent='space-between' style={{ padding: "1rem" }}>
         <Grid item xs={6}>
-          <ArrowBackIosNewIcon />
+          <ArrowBack href={"/event/"}/>
         </Grid>
         <Grid item xs={6} sx={{ textAlign: "right" }}>
-          <ThemeProvider theme={theme}>
             <Typography fontFamily='Open Sans'>Brisbane, {date}</Typography>
             <Clock />
-          </ThemeProvider>
         </Grid>
       </Grid>
 
@@ -57,6 +57,7 @@ const EventDetail: NextPage = () => {
           <Grid container>
             <Grid item xs={12}>
               <Typography
+                fontFamily="Open Sans"
                 variant="h4"
                 component="h1"
                 gutterBottom
@@ -67,10 +68,10 @@ const EventDetail: NextPage = () => {
             </Grid>
             <Grid item xs={12}>
               <Grid container direction={"column"}>
-                <Typography>Location:</Typography><Typography color={"#784CF4"}> 1st Floor Kitchen</Typography>
-                <Typography>Time: </Typography><Typography color={"#784CF4"}>1st of January, 2021 (6 PM)</Typography>
-                <Typography>Tasks: </Typography><Typography color={"#784CF4"}>Prepping, Frying, Serving</Typography>
-                <Typography>Description:</Typography><Typography color={"#784CF4"}>
+                <Typography fontFamily="Open Sans">Location:</Typography><Typography color={"#784CF4"}> 1st Floor Kitchen</Typography>
+                <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>1st of January, 2021 (6 PM)</Typography>
+                <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>Prepping, Frying, Serving</Typography>
+                <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
                   Let’s learn how to cook this traditional
                   Korean delicacy together! Cook together and eat together with your fellow residents!</Typography>
               </Grid>
@@ -87,8 +88,8 @@ const EventDetail: NextPage = () => {
           />
         </Grid>
         <Grid item xs={12} style={{ padding: "1rem" }}>
-          <Typography component="h1" variant="h5" color={"#784CF4"}>Recipe: </Typography>
-          <Typography>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin aliquet varius imperdiet. Proin quis eros eget dolor vehicula facilisis et vitae est. Nam ac metus ac mauris sagittis pretium. Nam elit nunc, luctus in dui ac, dignissim varius mauris. Sed eu mi efficitur, imperdiet eros ut, dignissim elit. Pellentesque cursus magna a lacus laoreet, nec vehicula urna viverra. Donec pharetra, felis at efficitur fringilla, purus sem placerat arcu, eu sagittis ipsum orci nec turpis. Etiam auctor velit non mauris viverra, a fringilla dui vulputate. Nam ut purus mattis, sodales arcu eget, cursus diam. Ut faucibus purus a mi consequat, a rhoncus metus ultrices.
+          <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Recipe: </Typography>
+          <Typography fontFamily="Open Sans">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin aliquet varius imperdiet. Proin quis eros eget dolor vehicula facilisis et vitae est. Nam ac metus ac mauris sagittis pretium. Nam elit nunc, luctus in dui ac, dignissim varius mauris. Sed eu mi efficitur, imperdiet eros ut, dignissim elit. Pellentesque cursus magna a lacus laoreet, nec vehicula urna viverra. Donec pharetra, felis at efficitur fringilla, purus sem placerat arcu, eu sagittis ipsum orci nec turpis. Etiam auctor velit non mauris viverra, a fringilla dui vulputate. Nam ut purus mattis, sodales arcu eget, cursus diam. Ut faucibus purus a mi consequat, a rhoncus metus ultrices.
 
             Aliquam erat volutpat. Mauris non purus id lectus aliquam blandit sit amet eu turpis. Donec dictum libero sit amet finibus tincidunt. Integer auctor placerat neque sed finibus. Phasellus vitae dignissim enim. Praesent ac justo eget orci accumsan scelerisque. Nunc aliquam, ex at imperdiet commodo, enim leo blandit nunc, id auctor tortor justo in quam. Vestibulum dignissim, diam eu consectetur euismod, lacus enim pellentesque lorem, sed lacinia odio quam eu risus.</Typography>
         </Grid>
@@ -97,7 +98,7 @@ const EventDetail: NextPage = () => {
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding:"0.5rem"}} elevation={3}>
         <Grid container justifyContent={"space-between"} alignItems={"center"}>
           <Grid item xs={12} sm={6} style={{textAlign:"center"}}>
-            <Typography>15 People Joining</Typography>
+            <Typography fontFamily="Open Sans">15 People Joining</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Grid container justifyContent="center">
