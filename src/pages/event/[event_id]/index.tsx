@@ -8,6 +8,8 @@ import { useMediaQuery } from "@mui/material";
 import Image from 'next/image';
 import Clock from '../../../components/Clock';
 import Link from 'next/link'
+import useSWR from "swr";
+import { useRouter } from "next/router";
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
@@ -37,8 +39,11 @@ const theme = createTheme({
 const EventDetail: NextPage = () => {
 
   const isXXS = useMediaQuery("(max-width:600px)");
-  const router = useRouter()
-
+  const router = useRouter();
+  const { event_id } = router.query;
+  const { data,error } = useSWR(router.isReady ? `/event?id=${event_id}` : null,
+    fetch, { refreshInterval: 10000 }
+  )
   return (
     <>
       <ThemeProvider theme={theme}>
