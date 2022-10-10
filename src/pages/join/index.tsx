@@ -119,7 +119,7 @@ const Join: NextPage = () => {
     }));
   }
 
-  const handleExperienceChange = (event: SelectChangeEvent) => {
+  const handleExperienceChange = (event: SelectChangeEvent<unknown>) => {
     setJoinDetails({...joinDetails,
       experience: event.target.value as string});
   };
@@ -197,7 +197,7 @@ const Join: NextPage = () => {
             }}
             value={joinDetails.experience}
             label="Experience"
-            onChange={()=>handleExperienceChange}
+            onChange={handleExperienceChange}
             >
               <MenuItem value={"beginner"}>Beginner</MenuItem>
               <MenuItem value={"intermediate"}>Intermediate</MenuItem>
