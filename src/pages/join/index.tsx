@@ -197,7 +197,7 @@ const Join: NextPage = () => {
             }}
             value={joinDetails.experience}
             label="Experience"
-            onChange={handleExperienceChange}
+            onChange={()=>handleExperienceChange}
             >
               <MenuItem value={"beginner"}>Beginner</MenuItem>
               <MenuItem value={"intermediate"}>Intermediate</MenuItem>
