@@ -32,14 +32,6 @@ const theme = createTheme({
 });
 
 const useStyles = makeStyles(() => ({
-  select: {
-    "&:before": {
-      borderColor: "#784CF4"
-    },
-    "&:after": {
-      borderColor: "#784CF4"
-    }
-  },
   icon: {
     fill: "#784CF4"
   }
@@ -102,13 +94,22 @@ const CssSelect = styled(Select)(() => ({
 const Join: NextPage = () => {
 
   const classes = useStyles();
+  
+  const [taskInputValue, setTaskInputValue] = React.useState('');
 
   const [joinDetails, setJoinDetails] = React.useState({
     name: "",
-    task: "",
+    task: taskInputValue,
     experience: ""
   })
-
+/*
+  React.useEffect(() => {
+    setJoinDetails({
+      ...joinDetails,
+      task: taskInputValue
+    })
+  })
+*/
   const handleChangeEvent = (e : React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     const name = e.target.name
@@ -117,8 +118,6 @@ const Join: NextPage = () => {
         [name]: value,
     }));
   }
-  
-  const [taskInputValue, setTaskInputValue] = React.useState('');
 
   const handleExperienceChange = (event: SelectChangeEvent) => {
     setJoinDetails({...joinDetails,
@@ -127,8 +126,15 @@ const Join: NextPage = () => {
 
   const handleSubmit = () => {
     // TODO: Implement submission here
-    console.log(taskInputValue);
-    console.log(joinDetails);
+    /*setJoinDetails({
+      ...joinDetails,
+      task: taskInputValue
+    })*/
+    //console.log(taskInputValue);
+    console.log({
+      ...joinDetails,
+      task: taskInputValue
+    });
   };
 
   return (
@@ -184,7 +190,6 @@ const Join: NextPage = () => {
             <CssSelect
             notched={true}
             labelId="demo-simple-select-label"
-            className={classes.select}
             inputProps={{
               classes: {
                 icon: classes.icon
