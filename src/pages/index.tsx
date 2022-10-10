@@ -13,7 +13,7 @@ import "@fontsource/open-sans";
 import "@fontsource/mohave";
 
 const current = new Date();
-const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
 const theme = createTheme({
   typography: {
@@ -26,48 +26,53 @@ const theme = createTheme({
       fontWeight: 700,
     },
   },
+  palette: {
+    primary: {
+      main: "#784CF4"
+    }
+  },
 });
 
 const Home: NextPage = () => {
   return (
 
     <Container>
-      <Grid container justifyContent='flex-end'>
-        <Grid item style={{marginTop:"2%"}}>
-          <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <Grid container justifyContent='flex-end'>
+          <Grid item style={{ marginTop: "2%" }}>
             <Typography fontFamily='Open Sans'>Brisbane, {date}</Typography>
             <Clock />
-          </ThemeProvider>
+          </Grid>
         </Grid>
-      </Grid>
 
-        <Grid container direction="column" justifyContent="center" alignItems="center" spacing = {2}>
+        <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
 
-          <Grid item style={{marginTop: "2%", marginBottom:"5%"}}>
+          <Grid item style={{ marginTop: "2%", marginBottom: "5%" }}>
             <Image src="/logo.png" width={"680%"} height={"145%"} />
           </Grid>
-          
+
           <Grid item>
-            <Link href={`\create`}>
+            <Link href={`/create`}>
               <Button variant="contained" href="#contained-buttons" fullWidth={true}>
-                Create an Event 
+                Create an Event
               </Button>
             </Link>
           </Grid>
           <Grid item>
-            <Link href={`\event`}>
+            <Link href={`/event`}>
               <Button variant="contained" href="#contained-buttons">
                 See Events
               </Button>
             </Link>
           </Grid>
 
-          <Grid item style={{marginTop: "2%"}}>
-            <hr style={{color:"#784CF4", backgroundColor:"#784CF4"}}/>
-            <Typography fontFamily={'Mohave'} fontSize={'2.2rem'} style= {{color:"#784CF4", fontWeight:"bold"}}>UPCOMING EVENTS</Typography>
+          <Grid item style={{ marginTop: "2%" }}>
+            <hr style={{ color: "#784CF4", backgroundColor: "#784CF4" }} />
+            <Typography fontFamily={'Mohave'} fontSize={'2.2rem'} style={{ color: "#784CF4", fontWeight: "bold" }}>UPCOMING EVENTS</Typography>
           </Grid>
         </Grid>
-      </Container>
+      </ThemeProvider>
+    </Container>
   )
 }
 

@@ -7,11 +7,13 @@ import Button from '@mui/material/Button';
 import { useMediaQuery } from "@mui/material";
 import Image from 'next/image';
 import Clock from '../../../components/Clock';
+import Link from 'next/link'
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
 import "@fontsource/montserrat";
 import ArrowBack from '../../../components/ArrowBack';
+import { useRouter } from 'next/router';
 
 const current = new Date();
 const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -33,7 +35,10 @@ const theme = createTheme({
 });
 
 const EventDetail: NextPage = () => {
+
   const isXXS = useMediaQuery("(max-width:600px)");
+  const router = useRouter()
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -103,10 +108,14 @@ const EventDetail: NextPage = () => {
           <Grid item xs={12} sm={6}>
             <Grid container justifyContent="center">
               <Grid xs={12} sm={"auto"} item style={isXXS ? {padding:"0.5rem 0.5rem"} : {padding:"0rem 0.5rem"}}>
-              <Button variant="outlined" fullWidth={isXXS} color="primary">View Participants</Button>
+                <Link href={`/event/${router.query.event_id}/participants`}>
+                  <Button variant="outlined" fullWidth={isXXS} color="primary">View Participants</Button>
+                </Link>
               </Grid>
               <Grid xs={12} sm={"auto"} item style={isXXS ? {padding:"0.5rem 0.5rem"} : {padding:"0rem 0.5rem"}}>
-              <Button variant="contained" fullWidth={isXXS} color="primary">Join</Button>
+                <Link href={`/event/${router.query.event_id}/join`}>
+                  <Button variant="contained" fullWidth={isXXS} color="primary">Join</Button>
+                </Link>
               </Grid>
             </Grid>
           </Grid>
