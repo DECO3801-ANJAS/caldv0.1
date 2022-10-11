@@ -7,7 +7,10 @@ import Button from '@mui/material/Button';
 import { useMediaQuery } from "@mui/material";
 import Image from 'next/image';
 import Clock from '../../../components/Clock';
+<<<<<<< HEAD
 import Link from 'next/link'
+=======
+>>>>>>> 6b233674f53b16facd51bd04f8b7b331c17dbe94
 import useSWR from "swr";
 import { useRouter } from "next/router";
 
