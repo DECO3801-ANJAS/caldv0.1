@@ -14,11 +14,12 @@ export default async function handler(
   >
 ) {
   const { method, query, body } = req;
-  const { event_id, queryTask } = query;
+  const { event_id, task } = query;
 
   try {
     const client = await clientPromise;
     const db = client.db(process.env.DB_NAME);
+    const queryTask = task;
 
     switch (method) {
       case "GET":
