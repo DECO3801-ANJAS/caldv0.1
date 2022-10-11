@@ -1,6 +1,6 @@
 interface IRecipe {
-  recipeIngredients: String;
-  recipeSteps: String;
+  recipeIngredients: string;
+  recipeSteps: string;
 }
 
 export default IRecipe;

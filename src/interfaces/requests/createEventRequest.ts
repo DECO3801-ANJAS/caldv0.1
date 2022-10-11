@@ -1,12 +1,12 @@
 import IFile from "../models/file";
 
 interface ICreateEventRequest {
-  title: String;
-  description: String;
-  location: String;
-  recipeIngredients: String;
-  recipeSteps: String;
-  date: String;
+  title: string;
+  description: string;
+  location: string;
+  recipeIngredients: string;
+  recipeSteps: string;
+  date: string;
   images?: IFile[];
 }
 

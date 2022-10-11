@@ -2,7 +2,7 @@ interface IBookCardProps {
   hrefUrl: string;
   imageUrl: string;
   imgAlt: string;
-  eventDate: string;
+  eventDate: number;
   eventTitle: string;
 }
 
