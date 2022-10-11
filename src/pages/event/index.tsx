@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { createTheme, useMediaQuery } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import CircularProgress from '@mui/material/CircularProgress';
 import Clock from "../../components/Clock";
 import useSWR from "swr";
 
@@ -132,7 +133,9 @@ const AllEvents: NextPage = () => {
           bigCards()
           ) : (
             <Grid item xs={12}>
-              <Typography textAlign={"center"}>NO DATA FOUND</Typography>
+              <Grid container justifyContent={"center"}>
+                <CircularProgress/>
+              </Grid>
             </Grid>
           )}
         </Grid>
