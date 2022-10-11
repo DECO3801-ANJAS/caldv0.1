@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 interface ICreateParticipantRequest {
   name: string;
   task: string;
