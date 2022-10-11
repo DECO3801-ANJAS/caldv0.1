@@ -9,6 +9,7 @@ interface IEvent {
   location: string;
   recipe: IRecipe;
   date: Date;
+  tasks: string[];
   images?: IFile[];
 }
 
