@@ -7,6 +7,7 @@ import { createTheme, useMediaQuery } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Clock from "../../components/Clock";
+import Dates from "../../components/Date";
 import useSWR from "swr";
 
 import "@fontsource/open-sans";
@@ -16,11 +17,6 @@ import ArrowBack from "../../components/ArrowBack";
 import IEvent from "../../interfaces/models/event";
 import IEventData from "../../interfaces/data/eventData";
 import BigCard from "../../components/BigCard";
-
-const current = new Date();
-const date = `${current.getDate()}/${
-  current.getMonth() + 1
-}/${current.getFullYear()}`;
 
 const theme = createTheme({
   typography: {
@@ -115,7 +111,7 @@ const AllEvents: NextPage = () => {
           style={{ backgroundColor: "#784CF4E0", color: "white" }}
         >
           <Grid item xs={12} style={{ textAlign: "center" }}>
-            <Typography fontFamily="Open Sans">Brisbane, {date}</Typography>
+            <Dates />
           </Grid>
           <Grid item xs={12} style={{ textAlign: "center" }}>
             <Clock />
