@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Grid from '@mui/material/Grid';
-import { Paper, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import Button from '@mui/material/Button';
@@ -55,8 +55,19 @@ const EventDetail: NextPage = () => {
 
       <Grid container style={isXXS ? {marginBottom:"9rem"} : {marginBottom: "3rem"}}>
         <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
-          <Image src="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp" layout='responsive'
-            width={16} height={16} quality={65} sizes={"20(max-width: 768px) 100vw,(max-width: 1200px) 50vw, 33vw"} alt='' />
+          <Grid container>
+            <Grid item xs={12}>
+              <Image src="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp" layout='responsive'
+                width={16} height={16} quality={65} sizes={"20(max-width: 768px) 100vw,(max-width: 1200px) 50vw, 33vw"} alt='' />
+            </Grid>
+            <Grid item xs={12} sx={{padding:"0.5rem"}}>
+              <Grid container justifyContent={"center"}>
+                <Link href={`/event/${router.query.event_id}/recipe`}>
+                  <Button variant='contained'>View Recipe</Button>
+                </Link>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
           <Grid container>
@@ -78,29 +89,15 @@ const EventDetail: NextPage = () => {
                 <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>Prepping, Frying, Serving</Typography>
                 <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
                   Let’s learn how to cook this traditional
-                  Korean delicacy together! Cook together and eat together with your fellow residents!</Typography>
+                  Korean delicacy together! Cook together and eat together with your fellow residents!
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <hr
-            style={{
-              background: '#784CF4',
-              borderColor: '#784CF4',
-              height: '1px',
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} style={{ padding: "1rem" }}>
-          <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Recipe: </Typography>
-          <Typography fontFamily="Open Sans">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin aliquet varius imperdiet. Proin quis eros eget dolor vehicula facilisis et vitae est. Nam ac metus ac mauris sagittis pretium. Nam elit nunc, luctus in dui ac, dignissim varius mauris. Sed eu mi efficitur, imperdiet eros ut, dignissim elit. Pellentesque cursus magna a lacus laoreet, nec vehicula urna viverra. Donec pharetra, felis at efficitur fringilla, purus sem placerat arcu, eu sagittis ipsum orci nec turpis. Etiam auctor velit non mauris viverra, a fringilla dui vulputate. Nam ut purus mattis, sodales arcu eget, cursus diam. Ut faucibus purus a mi consequat, a rhoncus metus ultrices.
-
-            Aliquam erat volutpat. Mauris non purus id lectus aliquam blandit sit amet eu turpis. Donec dictum libero sit amet finibus tincidunt. Integer auctor placerat neque sed finibus. Phasellus vitae dignissim enim. Praesent ac justo eget orci accumsan scelerisque. Nunc aliquam, ex at imperdiet commodo, enim leo blandit nunc, id auctor tortor justo in quam. Vestibulum dignissim, diam eu consectetur euismod, lacus enim pellentesque lorem, sed lacinia odio quam eu risus.</Typography>
-        </Grid>
       </Grid>
 
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, padding:"0.5rem"}} elevation={3}>
+      <Box sx={{ backgroundColor:"white", position: 'fixed', bottom: 0, left: 0, right: 0, padding:"0.5rem", borderTop:"solid 1px #784CF4"}}>
         <Grid container justifyContent={"space-between"} alignItems={"center"}>
           <Grid item xs={12} sm={6} style={{textAlign:"center"}}>
             <Typography fontFamily="Open Sans">15 People Joining</Typography>
@@ -120,7 +117,7 @@ const EventDetail: NextPage = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Paper>
+      </Box>
 
       </ThemeProvider>
     </>
