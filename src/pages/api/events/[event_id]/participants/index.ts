@@ -23,10 +23,18 @@ export default async function handler(
 
     switch (method) {
       case "GET":
-        const getParticipants = await db
-          .collection<IParticipant>("participants")
-          .find({ eventId: new ObjectId(event_id as string), task: queryTask })
-          .toArray();
+        const getParticipants = queryTask
+          ? await db
+              .collection<IParticipant>("participants")
+              .find({
+                eventId: new ObjectId(event_id as string),
+                task: queryTask,
+              })
+              .toArray()
+          : await db
+              .collection<IParticipant>("participants")
+              .find({ eventId: new ObjectId(event_id as string) })
+              .toArray();
         res.status(200).json({ participants: getParticipants });
         break;
 
