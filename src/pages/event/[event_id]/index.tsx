@@ -95,7 +95,7 @@ const EventDetail: NextPage = () => {
             <Grid container direction={"column"}>
               <Typography fontFamily="Open Sans">Location:</Typography><Typography color={"#784CF4"}> {data.event.location}</Typography>
               <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>{new Date(data.event.date).toLocaleString()}</Typography>
-              <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>Prepping, Frying, Serving</Typography>
+              <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>{data.event.tasks.join(', ')}</Typography>
               <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
                 {data.event.description}
               </Typography>
