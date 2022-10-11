@@ -7,6 +7,7 @@ interface ICreateEventRequest {
   recipeIngredients: string;
   recipeSteps: string;
   date: string;
+  tasks: string[];
   images?: IFile[];
 }
 

@@ -23,7 +23,7 @@ export default async function handler(
         const getEvents = await db
           .collection<IEvent>("events")
           .find({})
-          .limit(10)
+          .sort({ date: 1 })
           .toArray();
         res.status(200).json({ events: getEvents });
         break;
@@ -39,6 +39,7 @@ export default async function handler(
           recipeIngredients,
           recipeSteps,
           date,
+          tasks,
         }: ICreateEventRequest = body;
         const recipeData: IRecipe = { recipeIngredients, recipeSteps };
         const eventData = {
@@ -46,7 +47,8 @@ export default async function handler(
           title,
           description,
           location,
-          date: new Date(date as string),
+          date: new Date(date),
+          tasks,
           recipe: recipeData,
         };
         const postEvent = await db
