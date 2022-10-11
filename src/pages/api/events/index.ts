@@ -25,7 +25,9 @@ export default async function handler(
           .find({})
           .sort({ date: 1 })
           .toArray();
-        res.status(200).json({ events: getEvents });
+        res.status(200).json({
+          events: getEvents.sort((a, b) => a.date.getTime() - b.date.getTime()),
+        });
         break;
 
       case "POST":
