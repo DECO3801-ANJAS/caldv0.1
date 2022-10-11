@@ -1,9 +1,9 @@
 interface IBookCardProps {
   hrefUrl: string;
   imageUrl: string;
-  imgAlt: String;
+  imgAlt: string;
   eventDate: number;
-  eventTitle: String;
+  eventTitle: string;
 }
 
 export default IBookCardProps;

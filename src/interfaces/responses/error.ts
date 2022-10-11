@@ -1,5 +1,5 @@
 interface IErrorResponse {
-  error: String;
+  error: string;
 }
 
 export default IErrorResponse;
