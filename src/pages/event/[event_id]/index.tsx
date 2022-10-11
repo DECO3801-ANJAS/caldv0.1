@@ -15,6 +15,7 @@ import "@fontsource/open-sans";
 import "@fontsource/mohave";
 import "@fontsource/montserrat";
 import ArrowBack from '../../../components/ArrowBack';
+import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 
 const current = new Date();
 const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -42,7 +43,7 @@ const EventDetail: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:600px)");
   const router = useRouter();
   const { event_id } = router.query;
-  const { data,error } = useSWR(router.isReady ? `/event?id=${event_id}` : null,
+  const { data,error } = useSWR(router.isReady ? `/api/events/${event_id}` : null,
     fetcher, { refreshInterval: 10000 }
   )
   return (
@@ -60,47 +61,56 @@ const EventDetail: NextPage = () => {
       </Grid>
 
       <Grid container style={isXXS ? {marginBottom:"9rem"} : {marginBottom: "3rem"}}>
+      {!!data ? (
+        <>
         <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Image src="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp" layout='responsive'
-                width={16} height={16} quality={65} sizes={"20(max-width: 768px) 100vw,(max-width: 1200px) 50vw, 33vw"} alt='' />
-            </Grid>
-            <Grid item xs={12} sx={{padding:"0.5rem"}}>
-              <Grid container justifyContent={"center"}>
-                <Link href={`/event/${router.query.event_id}/recipe`}>
-                  <Button variant='contained'>View Recipe</Button>
-                </Link>
-              </Grid>
+        <Grid container>
+          <Grid item xs={12}>
+            <Image src="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp" layout='responsive'
+              width={16} height={16} quality={65} sizes={"20(max-width: 768px) 100vw,(max-width: 1200px) 50vw, 33vw"} alt='' />
+          </Grid>
+          <Grid item xs={12} sx={{padding:"0.5rem"}}>
+            <Grid container justifyContent={"center"}>
+              <Link href={`/event/${router.query.event_id}/recipe`}>
+                <Button variant='contained'>View Recipe</Button>
+              </Link>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography
-                fontFamily="Open Sans"
-                variant="h4"
-                component="h1"
-                gutterBottom
-                sx={{ textTransform: "capitalize", fontWeight: "600", overflowY: 'hidden' }}
-              >
-                Bibimbap Tutorial
+      </Grid>
+      <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography
+              fontFamily="Open Sans"
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{ textTransform: "capitalize", fontWeight: "600", overflowY: 'hidden' }}
+            >
+              {data.event.title}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container direction={"column"}>
+              <Typography fontFamily="Open Sans">Location:</Typography><Typography color={"#784CF4"}> {data.event.location}</Typography>
+              <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>{new Date(data.event.date).toLocaleString()}</Typography>
+              <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>Prepping, Frying, Serving</Typography>
+              <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
+                {data.event.description}
               </Typography>
             </Grid>
-            <Grid item xs={12}>
-              <Grid container direction={"column"}>
-                <Typography fontFamily="Open Sans">Location:</Typography><Typography color={"#784CF4"}> 1st Floor Kitchen</Typography>
-                <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>1st of January, 2021 (6 PM)</Typography>
-                <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>Prepping, Frying, Serving</Typography>
-                <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
-                  Let’s learn how to cook this traditional
-                  Korean delicacy together! Cook together and eat together with your fellow residents!
-                </Typography>
-              </Grid>
-            </Grid>
           </Grid>
         </Grid>
+      </Grid>
+      </>
+        ) : (
+          <Grid item xs={12}>
+              <Grid container justifyContent={"center"}>
+                <CircularProgress/>
+              </Grid>
+            </Grid>
+        )}
       </Grid>
 
       <Box sx={{ backgroundColor:"white", position: 'fixed', bottom: 0, left: 0, right: 0, padding:"0.5rem", borderTop:"solid 1px #784CF4"}}>
