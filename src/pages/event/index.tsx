@@ -7,6 +7,7 @@ import { createTheme, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import Clock from '../../components/Clock'
 import Link from 'next/link'
+import useSWR from "swr";
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
@@ -32,10 +33,14 @@ const theme = createTheme({
   },
 });
 
+const fetcher = (url : string) => fetch(url).then((res) => res.json());
+
 const AllEvents: NextPage = () => {
 
   const isXXS = useMediaQuery("(max-width:600px)");
-
+  const { data, error } = useSWR('event', fetcher,
+    { refreshInterval: 30000 }
+  )
   return (
     <>
       <ThemeProvider theme={theme}>
