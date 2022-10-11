@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import IFile from '../../interfaces/models/file';
 import ArrowBack from '../../components/ArrowBack';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import axios from 'axios'
 
 const theme = createTheme({
   palette: {
@@ -64,7 +65,7 @@ const Create: NextPage = () => {
     title: "",
     description: "",
     location: "",
-    recipeIngridients: "",
+    recipeIngredients: "",
     recipeSteps: ""
   })
 
@@ -120,7 +121,7 @@ const Create: NextPage = () => {
 
     const dateTime = new Date(dateString.concat("T").concat(timeString));
 
-    const eventJson = { ...eventDetails, dateTime: dateTime, tasks: [...arrayOfTasks] }
+    const eventJson = { ...eventDetails, date: dateTime, tasks: [...arrayOfTasks] }
 
     const data = new FormData();
     const eventBlob = new Blob([JSON.stringify(eventJson)], {
@@ -131,12 +132,19 @@ const Create: NextPage = () => {
     files.forEach((value, i) => {
       data.append(`image${i}`, value);
     });
-    return data;
+    return eventJson;
   };
 
   const handleSubmit = () => {
     // TODO: Implement submission here
     const eventData = buildFormData();
+    const axiosFormData = axios.create({
+      headers: {
+          'Accept': "application/json, text/plain, */*",
+          'Content-Type': "application/json"
+      }
+  })
+    axiosFormData.post("/api/events", eventData).then((res)=>console.log(res))
   };
 
   return (
@@ -239,12 +247,12 @@ const Create: NextPage = () => {
           <Grid item xs={3} style={isXXS ? { marginTop: "2%", marginBottom: "5%", display: "none" } : { marginTop: "2%", marginBottom: "5%" }}>
           <ThemeProvider theme={theme}>
             <Typography fontFamily='sans-serif'>
-              RECIPE INGRIDIENTS
+              RECIPE INGREDIENTS
             </Typography>
           </ThemeProvider>
           </Grid>
           <Grid item xs={12} md={7}>
-            <CssTextField label="Recipe Ingridients" name="recipeIngridients" onChange={handleChangeEvent} focused fullWidth multiline rows={5} />
+            <CssTextField label="Recipe Ingredients" name="recipeIngredients" onChange={handleChangeEvent} focused fullWidth multiline rows={5} />
           </Grid>
           <Grid item xs={3} style={isXXS ? { marginTop: "2%", marginBottom: "5%", display: "none" } : { marginTop: "2%", marginBottom: "5%" }}>
           <ThemeProvider theme={theme}>
