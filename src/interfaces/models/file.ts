@@ -1,6 +1,5 @@
-import { Binary } from "mongodb";
 
-interface IFile extends File, Binary {
+interface IFile extends File{
   preview?: string;
 }
 

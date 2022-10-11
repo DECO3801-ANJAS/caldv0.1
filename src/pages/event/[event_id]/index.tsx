@@ -8,12 +8,13 @@ import { useMediaQuery } from "@mui/material";
 import Image from 'next/image';
 import Clock from '../../../components/Clock';
 import Link from 'next/link'
+import useSWR from "swr";
+import { useRouter } from "next/router";
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
 import "@fontsource/montserrat";
 import ArrowBack from '../../../components/ArrowBack';
-import { useRouter } from 'next/router';
 
 const current = new Date();
 const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -34,11 +35,16 @@ const theme = createTheme({
   },
 });
 
+const fetcher = (url : string) => fetch(url).then((res) => res.json());
+
 const EventDetail: NextPage = () => {
 
   const isXXS = useMediaQuery("(max-width:600px)");
-  const router = useRouter()
-
+  const router = useRouter();
+  const { event_id } = router.query;
+  const { data,error } = useSWR(router.isReady ? `/event?id=${event_id}` : null,
+    fetcher, { refreshInterval: 10000 }
+  )
   return (
     <>
       <ThemeProvider theme={theme}>

@@ -120,8 +120,6 @@ const Create: NextPage = () => {
 
     const dateTime = new Date(dateString.concat("T").concat(timeString));
 
-    const dateTime = new Date(dateString.concat("T").concat(timeString))
-
     const eventJson = { ...eventDetails, dateTime: dateTime, tasks: [...arrayOfTasks] }
 
     const data = new FormData();
