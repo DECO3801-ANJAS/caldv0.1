@@ -1,5 +1,6 @@
-interface IFile extends File {
-    preview?: string 
+
+interface IFile extends File{
+  preview?: string;
 }
 
 export default IFile;

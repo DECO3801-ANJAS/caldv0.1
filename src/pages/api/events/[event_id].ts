@@ -16,7 +16,7 @@ export default async function handler(
     const client = await clientPromise;
     const db = client.db(process.env.DB_NAME);
 
-    const event = (await db.collection("events").findOne({ _id })) as IEvent;
+    const event = await db.collection<IEvent>("events").findOne({ _id });
 
     if (!event) {
       res.status(404).json({ error: "not found" });

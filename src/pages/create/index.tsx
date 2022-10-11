@@ -17,12 +17,11 @@ import IFile from '../../interfaces/models/file';
 import ArrowBack from '../../components/ArrowBack';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#784CF4"
-    }
+      main: "#784CF4",
+    },
   },
   typography: {
     fontFamily: [
@@ -58,7 +57,6 @@ const CssTextField = styled(TextField)({
 });
 
 const Create: NextPage = () => {
-
   const isXXS = useMediaQuery("(max-width:900px)")
 
   // Event Details
@@ -77,7 +75,7 @@ const Create: NextPage = () => {
       ...prev,
       [name]: value,
     }));
-  }
+  };
 
   // Date and Time
   const [date, setDate] = React.useState<Dayjs | null>(null);
@@ -91,14 +89,14 @@ const Create: NextPage = () => {
   };
 
   // Tasks
-  const [taskInputValue, setTaskInputValue] = React.useState('');
+  const [taskInputValue, setTaskInputValue] = React.useState("");
   const [arrayOfTasks, addTask] = React.useState([] as string[]);
 
   const handleDelete = (taskTag: String) => {
     addTask((arrayOfTasks) =>
       arrayOfTasks.filter((taskInputValue) => taskInputValue !== taskTag)
-    )
-  }
+    );
+  };
 
   const newTask = () => {
     addTask((arrayOfTasks) => arrayOfTasks.concat(taskInputValue))
@@ -107,25 +105,20 @@ const Create: NextPage = () => {
 
   const Tasks = arrayOfTasks.map((h: string, i: number) => (
     <Grid item xs={4} sm={2} key={i}>
-      <Chip
-        size="medium"
-        label={h}
-        onDelete={() => handleDelete(h)}
-      />
+      <Chip size="medium" label={h} onDelete={() => handleDelete(h)} />
     </Grid>
-  ))
+  ));
 
   // Images
   const [files, setFiles] = React.useState<IFile[]>([]);
 
   // Build form data
   const buildFormData = () => {
+    const dateString = date!.format().split("T")[0];
 
-    const dateString = date!.format().split("T")[0]
+    const timeString = time!.format().split("T")[1];
 
-    const timeString = time!.format().split("T")[1]
-
-    const dateTime = new Date(dateString.concat("T").concat(timeString))
+    const dateTime = new Date(dateString.concat("T").concat(timeString));
 
     const eventJson = { ...eventDetails, dateTime: dateTime, tasks: [...arrayOfTasks] }
 
@@ -136,15 +129,14 @@ const Create: NextPage = () => {
 
     data.append("event", eventBlob);
     files.forEach((value, i) => {
-      data.append(`image${i}`, value)
-    })
+      data.append(`image${i}`, value);
+    });
     return data;
-  }
+  };
 
   const handleSubmit = () => {
     // TODO: Implement submission here
-    const eventData = buildFormData()
-
+    const eventData = buildFormData();
   };
 
   return (
@@ -281,7 +273,7 @@ const Create: NextPage = () => {
           </Grid>
         </Grid>
     </>
-  )
-}
+  );
+};
 
-export default Create
+export default Create;
