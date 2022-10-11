@@ -14,6 +14,8 @@ import "@fontsource/mohave";
 import "@fontsource/montserrat";
 import ArrowBack from '../../../components/ArrowBack';
 import { useRouter } from 'next/router';
+import useSWR from 'swr';
+import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 
 const current = new Date();
 const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -34,10 +36,16 @@ const theme = createTheme({
     },
 });
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 const EventDetailRecipe: NextPage = () => {
 
     const isXXS = useMediaQuery("(max-width:600px)");
-    const router = useRouter()
+    const router = useRouter();
+    const { event_id } = router.query;
+    const { data, error } = useSWR(router.isReady ? `/api/events/${event_id}` : null,
+        fetcher, { refreshInterval: 10000 }
+    )
 
     return (
         <>
@@ -54,18 +62,28 @@ const EventDetailRecipe: NextPage = () => {
                 </Grid>
 
                 <Grid container style={isXXS ? { marginBottom: "9rem" } : { marginBottom: "3rem" }}>
-                    <Grid item xs={12} style={{ padding: "1rem" }}>
-                        <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Ingridients: </Typography>
-                        <Typography fontFamily="Open Sans">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin aliquet varius imperdiet. Proin quis eros eget dolor vehicula facilisis et vitae est. Nam ac metus ac mauris sagittis pretium. Nam elit nunc, luctus in dui ac, dignissim varius mauris. Sed eu mi efficitur, imperdiet eros ut, dignissim elit. Pellentesque cursus magna a lacus laoreet, nec vehicula urna viverra. Donec pharetra, felis at efficitur fringilla, purus sem placerat arcu, eu sagittis ipsum orci nec turpis. Etiam auctor velit non mauris viverra, a fringilla dui vulputate. Nam ut purus mattis, sodales arcu eget, cursus diam. Ut faucibus purus a mi consequat, a rhoncus metus ultrices.
-
-                            Aliquam erat volutpat. Mauris non purus id lectus aliquam blandit sit amet eu turpis. Donec dictum libero sit amet finibus tincidunt. Integer auctor placerat neque sed finibus. Phasellus vitae dignissim enim. Praesent ac justo eget orci accumsan scelerisque. Nunc aliquam, ex at imperdiet commodo, enim leo blandit nunc, id auctor tortor justo in quam. Vestibulum dignissim, diam eu consectetur euismod, lacus enim pellentesque lorem, sed lacinia odio quam eu risus.</Typography>
-                    </Grid>
-                    <Grid item xs={12} style={{ padding: "1rem" }}>
-                        <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Recipe: </Typography>
-                        <Typography fontFamily="Open Sans">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin aliquet varius imperdiet. Proin quis eros eget dolor vehicula facilisis et vitae est. Nam ac metus ac mauris sagittis pretium. Nam elit nunc, luctus in dui ac, dignissim varius mauris. Sed eu mi efficitur, imperdiet eros ut, dignissim elit. Pellentesque cursus magna a lacus laoreet, nec vehicula urna viverra. Donec pharetra, felis at efficitur fringilla, purus sem placerat arcu, eu sagittis ipsum orci nec turpis. Etiam auctor velit non mauris viverra, a fringilla dui vulputate. Nam ut purus mattis, sodales arcu eget, cursus diam. Ut faucibus purus a mi consequat, a rhoncus metus ultrices.
-
-                            Aliquam erat volutpat. Mauris non purus id lectus aliquam blandit sit amet eu turpis. Donec dictum libero sit amet finibus tincidunt. Integer auctor placerat neque sed finibus. Phasellus vitae dignissim enim. Praesent ac justo eget orci accumsan scelerisque. Nunc aliquam, ex at imperdiet commodo, enim leo blandit nunc, id auctor tortor justo in quam. Vestibulum dignissim, diam eu consectetur euismod, lacus enim pellentesque lorem, sed lacinia odio quam eu risus.</Typography>
-                    </Grid>
+                    {!!data ? (
+                        <>
+                            <Grid item xs={12} style={{ padding: "1rem" }}>
+                                <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Ingridients: </Typography>
+                                <Typography fontFamily="Open Sans">
+                                    {data.event.recipe.recipeIngredients}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12} style={{ padding: "1rem" }}>
+                                <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Recipe: </Typography>
+                                <Typography fontFamily="Open Sans">
+                                    {data.event.recipe.recipeSteps}
+                                </Typography>
+                            </Grid>
+                        </>
+                    ) : (
+                        <Grid item xs={12}>
+                            <Grid container justifyContent={"center"}>
+                                <CircularProgress />
+                            </Grid>
+                        </Grid>
+                    )}
                 </Grid>
 
             </ThemeProvider>
