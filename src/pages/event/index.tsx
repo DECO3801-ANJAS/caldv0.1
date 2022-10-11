@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { createTheme, useMediaQuery } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import Clock from "../../components/Clock";
 import useSWR from "swr";
 
@@ -33,48 +33,48 @@ const theme = createTheme({
   },
 });
 
-const fetcher = (url : string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const AllEvents: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:600px)");
-  const { data, error } = useSWR('api/events', fetcher,
-    { refreshInterval: 30000 }
-  )
+  const { data, error } = useSWR("api/events", fetcher, {
+    refreshInterval: 30000,
+  });
   const [eventData, setEventData] = React.useState<IEventData>();
 
   useEffect(() => {
-    
-    let currentData = {...eventData};
-    if (!!data && data.events.length !== 0 ) {
-      data.events.forEach((event : IEvent, i : number) => {
+    let currentData = { ...eventData };
+    if (!!data && data.events.length !== 0) {
+      data.events.forEach((event: IEvent, i: number) => {
         const date = new Date(event.date);
-        const month = date.toLocaleString('default', { month: 'short' })
-        if(month in currentData) {
-          const test = Object.keys(currentData).filter((index) => index === month)[0]
-          currentData = {...currentData, [month]: [...currentData[test], event]}
-        }else{
-          currentData = {...currentData, [month]: [event]}
+        const month = date.toLocaleString("default", { month: "short" });
+        if (month in currentData) {
+          const test = Object.keys(currentData).filter(
+            (index) => index === month
+          )[0];
+          currentData = {
+            ...currentData,
+            [month]: [...currentData[test], event],
+          };
+        } else {
+          currentData = { ...currentData, [month]: [event] };
         }
-      })
-      
-      setEventData({...currentData})
-    }
-  }, [data])
+      });
 
+      setEventData({ ...currentData });
+    }
+  }, [data]);
 
   const bigCards = () => {
-      
-      return eventData && (
-        Object.keys(eventData).map((month:string) => (
-         <Grid item xs={12} md={6} key={month}>
-           <BigCard title={month} elements={eventData[month]}/>
-         </Grid>
-       ))
-   )
-   
-  } 
-   
- 
+    return (
+      eventData &&
+      Object.keys(eventData).map((month: string) => (
+        <Grid item xs={12} md={6} key={month}>
+          <BigCard title={month} elements={eventData[month]} />
+        </Grid>
+      ))
+    );
+  };
 
   return (
     <>
@@ -128,13 +128,12 @@ const AllEvents: NextPage = () => {
           justifyContent="center"
           sx={{ padding: "1rem" }}
         >
-
           {!!data && data.events.length !== 0 ? (
-          bigCards()
+            bigCards()
           ) : (
             <Grid item xs={12}>
               <Grid container justifyContent={"center"}>
-                <CircularProgress/>
+                <CircularProgress />
               </Grid>
             </Grid>
           )}
