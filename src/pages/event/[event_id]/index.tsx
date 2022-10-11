@@ -35,13 +35,15 @@ const theme = createTheme({
   },
 });
 
+const fetcher = (url : string) => fetch(url).then((res) => res.json());
+
 const EventDetail: NextPage = () => {
 
   const isXXS = useMediaQuery("(max-width:600px)");
   const router = useRouter();
   const { event_id } = router.query;
   const { data,error } = useSWR(router.isReady ? `/event?id=${event_id}` : null,
-    fetch, { refreshInterval: 10000 }
+    fetcher, { refreshInterval: 10000 }
   )
   return (
     <>
