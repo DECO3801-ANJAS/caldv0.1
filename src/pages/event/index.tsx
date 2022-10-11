@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
-import * as React from "react";
+import React, { useEffect} from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Card, Box } from "@mui/material";
+import { Button } from "@mui/material";
 import { createTheme, useMediaQuery } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import Clock from "../../components/Clock";
@@ -12,7 +12,9 @@ import "@fontsource/open-sans";
 import "@fontsource/mohave";
 import "@fontsource/montserrat";
 import ArrowBack from "../../components/ArrowBack";
-import BookCard from "../../components/BookCard";
+import IEvent from "../../interfaces/models/event";
+import IEventData from "../../interfaces/data/eventData";
+import BigCard from "../../components/BigCard";
 
 const current = new Date();
 const date = `${current.getDate()}/${
@@ -34,9 +36,45 @@ const fetcher = (url : string) => fetch(url).then((res) => res.json());
 
 const AllEvents: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:600px)");
-  const { data, error } = useSWR('event', fetcher,
+  const { data, error } = useSWR('api/events', fetcher,
     { refreshInterval: 30000 }
   )
+  const [eventData, setEventData] = React.useState<IEventData>();
+
+  useEffect(() => {
+    
+    let currentData = {...eventData};
+    if (!!data && data.events.length !== 0 ) {
+      data.events.forEach((event : IEvent, i : number) => {
+        const date = new Date(event.date);
+        const month = date.toLocaleString('default', { month: 'short' })
+        if(month in currentData) {
+          const test = Object.keys(currentData).filter((index) => index === month)[0]
+          currentData = {...currentData, [month]: [...currentData[test], event]}
+        }else{
+          currentData = {...currentData, [month]: [event]}
+        }
+      })
+      
+      setEventData({...currentData})
+    }
+  }, [data])
+
+
+  const bigCards = () => {
+      
+      return eventData && (
+        Object.keys(eventData).map((month:string) => (
+         <Grid item xs={12} md={6} key={month}>
+           <BigCard title={month} elements={eventData[month]}/>
+         </Grid>
+       ))
+   )
+   
+  } 
+   
+ 
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -89,64 +127,14 @@ const AllEvents: NextPage = () => {
           justifyContent="center"
           sx={{ padding: "1rem" }}
         >
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={
-                isXXS
-                  ? { display: "flex", flexDirection: "column" }
-                  : { display: "flex" }
-              }
-            >
-              <Box
-                justifyContent="center"
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  backgroundColor: "#784CF4",
-                  padding: "1rem",
-                }}
-              >
-                <Typography
-                  variant="h4"
-                  fontFamily="Mohave"
-                  sx={{
-                    textTransform: "uppercase",
-                    color: "white",
-                    fontWeight: 700,
-                  }}
-                >
-                  {"january".slice(0, 3)}
-                </Typography>
-              </Box>
-              <Box sx={{ padding: "0.5rem" }}>
-                <Grid
-                  container
-                  spacing={1}
-                  justifyContent="space-around"
-                  direction={{ xs: "column", sm: "row" }}
-                >
-                  <Grid item>
-                    <BookCard
-                      eventDate="01"
-                      eventTitle="Bibimbap Tutorial"
-                      hrefUrl="/event/1"
-                      imageUrl="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp"
-                      imgAlt="pohon"
-                    />
-                  </Grid>
-                  <Grid item>
-                    <BookCard
-                      eventDate="24"
-                      eventTitle="Smirnoff enak"
-                      hrefUrl="/event/1"
-                      imageUrl="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
-                      imgAlt="pohon"
-                    />
-                  </Grid>
-                </Grid>
-              </Box>
-            </Card>
-          </Grid>
+
+          {!!data && data.events.length !== 0 ? (
+          bigCards()
+          ) : (
+            <Grid item xs={12}>
+              <Typography textAlign={"center"}>NO DATA FOUND</Typography>
+            </Grid>
+          )}
         </Grid>
       </ThemeProvider>
     </>
