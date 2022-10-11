@@ -225,7 +225,9 @@ const Create: NextPage = () => {
           <Grid item xs={12} md={7}>
             <Grid container spacing={1}>
               <Grid item xs={12}>
-                {arrayOfTasks.length > 0 ? Tasks : ""}
+                <Grid container spacing={1}>
+                  {arrayOfTasks.length > 0 ? Tasks : ""}
+                </Grid>
               </Grid>
               <Grid item xs={10}>
                 <FreeSolo
