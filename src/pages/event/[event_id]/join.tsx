@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useMediaQuery } from "@mui/material";
+import { useRouter } from 'next/router';
 
 const theme = createTheme({
   palette: {
@@ -87,6 +88,8 @@ const Join: NextPage = () => {
 
   const isXXS = useMediaQuery("(max-width:600px)");
 
+  const router = useRouter();
+
   const classes = useStyles();
   
   const [taskInputValue, setTaskInputValue] = React.useState('');
@@ -123,7 +126,7 @@ const Join: NextPage = () => {
     <ThemeProvider theme={theme}>
       <Grid container alignItems='center' justifyContent='space-between' style={{padding:"1rem"}}>
         <Grid item>
-          <ArrowBack href={"/"}/>
+          <ArrowBack href={`/event/${router.query.event_id}`}/>
         </Grid>
         <Grid item>
           <Grid item>

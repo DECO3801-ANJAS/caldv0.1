@@ -30,14 +30,13 @@ const theme = createTheme({
 const Participants: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:600px)");
   const router = useRouter()
-  const { event_id } = router.query
 
   return (
     <>
     <ThemeProvider theme={theme}>
       <Grid container alignItems='center' justifyContent='space-between' style={{padding:"1rem"}}>
         <Grid item>
-        <ArrowBack href={`/event/${event_id}`}/>
+        <ArrowBack href={`/event/${router.query.event_id}`}/>
         </Grid>
         <Grid item>
           <Grid item>
