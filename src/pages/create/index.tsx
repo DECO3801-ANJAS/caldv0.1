@@ -13,7 +13,6 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Dayjs } from 'dayjs';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import IFile from '../../interfaces/models/file';
 
@@ -53,7 +52,8 @@ const Create: NextPage = () => {
     title: "",
     description: "",
     location: "",
-    recipe: ""
+    recipeIngridients: "",
+    recipeSteps:""
   })
 
   const handleChangeEvent = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -104,13 +104,33 @@ const Create: NextPage = () => {
   // Images
   const [files, setFiles] = React.useState<IFile[]>([]);
 
+  // Build form data
+  const buildFormData = () => {
+
+    const dateString = date!.format().split("T")[0]
+
+    const timeString = time!.format().split("T")[1]
+
+    const dateTime =  new Date(dateString.concat("T").concat(timeString))
+
+    const eventJson = {...eventDetails, dateTime:dateTime, tasks: [...arrayOfTasks]}
+
+    const data = new FormData();
+    const eventBlob = new Blob([JSON.stringify(eventJson)], {
+        type: "application/json",
+    });
+
+    data.append("event", eventBlob);
+    files.forEach((value, i) => {
+      data.append(`image${i}`, value)
+    })
+    return data;
+  }
+
   const handleSubmit = () => {
     // TODO: Implement submission here
-    console.log(arrayOfTasks)
-    console.log(eventDetails)
-    console.log(date)
-    console.log(time)
-    console.log(files)
+    const eventData = buildFormData()
+
   };
 
   return (
@@ -154,19 +174,22 @@ const Create: NextPage = () => {
             {arrayOfTasks.length > 0 ? Tasks : ""}
           </Grid> 
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={10} sm={11}>
           <FreeSolo 
             inputValue={taskInputValue}
             setInputValue={setTaskInputValue}
             /> 
         </Grid>
-        <Grid item xs={2}>
-          <IconButton color="primary" component="label">
-            <AddCircleOutlineIcon fontSize="large" onClick={taskInputValue.length !== 0 ? newTask : () => {}}/>
+        <Grid item xs={2} sm={1}>
+          <IconButton color="primary" component="label" onClick={taskInputValue.length !== 0 ? newTask : () => {}}>
+            <AddCircleOutlineIcon fontSize="large"/>
           </IconButton>
         </Grid>
         <Grid item xs={12}>
-          <CssTextField label="Recipe" name="recipe" onChange={handleChangeEvent} focused fullWidth multiline rows={5}/>
+          <CssTextField label="Recipe Ingridients" name="recipeIngridients" onChange={handleChangeEvent} focused fullWidth multiline rows={5}/>
+        </Grid>
+        <Grid item xs={12}>
+          <CssTextField label="Recipe Steps" name="recipeSteps" onChange={handleChangeEvent} focused fullWidth multiline rows={5}/>
         </Grid>
         <Grid item xs={12}>
           <Dropzone files={files} setFiles={setFiles}/>
