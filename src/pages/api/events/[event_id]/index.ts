@@ -1,10 +1,9 @@
 import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import IEvent from "../../../interfaces/models/event";
-import IErrorResponse from "../../../interfaces/responses/error";
-import IEventResponse from "../../../interfaces/responses/eventResponse";
-import clientPromise from "../../../lib/mongodb";
-
+import IEvent from "../../../../interfaces/models/event";
+import IErrorResponse from "../../../../interfaces/responses/error";
+import IEventResponse from "../../../../interfaces/responses/eventResponse";
+import clientPromise from "../../../../lib/mongodb";
 
 export default async function handler(
   req: NextApiRequest,
