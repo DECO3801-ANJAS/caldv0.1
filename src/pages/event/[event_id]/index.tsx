@@ -43,7 +43,7 @@ const EventDetail: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:600px)");
   const router = useRouter();
   const { event_id } = router.query;
-  const { data,error } = useSWR(router.isReady ? `/api/events/${event_id}` : null,
+  const { data, error } = useSWR(router.isReady ? `/api/events/${event_id}` : null,
     fetcher, { refreshInterval: 10000 }
   )
   return (

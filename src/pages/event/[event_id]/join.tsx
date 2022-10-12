@@ -167,9 +167,10 @@ const Join: NextPage = () => {
       }))
     } else {
       const data = {
-
+        ...joinDetails,
+        task: taskInputValue
       }
-        axiosFormData.post(`/api/events/${router.query.event_id}/participants`, joinDetails).then((res) => {
+        axiosFormData.post(`/api/events/${router.query.event_id}/participants`, data).then((res) => {
         console.log(res)
         setOpen(true)
         setError(false)

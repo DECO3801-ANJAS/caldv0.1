@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Grid from '@mui/material/Grid';
-import { Typography, Card, Box } from '@mui/material';
+import { Typography, Button, CircularProgress } from '@mui/material';
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import { useMediaQuery } from "@mui/material";
@@ -10,6 +10,11 @@ import ArrowBack from '../../../components/ArrowBack';
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
 import "@fontsource/montserrat";
+import useSWR from 'swr';
+import { useEffect, useState } from 'react';
+import IParticipant from '../../../interfaces/models/participant';
+import IParticipantData from '../../../interfaces/data/participantData';
+import TaskCard from '../../../components/TaskCard';
 
 const theme = createTheme({
   typography: {
@@ -27,284 +32,96 @@ const theme = createTheme({
   },
 });
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 const Participants: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:600px)");
   const router = useRouter()
+  const { event_id } = router.query;
+  const { data, error } = useSWR(router.isReady ? `/api/events/${event_id}/participants` : null,
+    fetcher, { refreshInterval: 10000 }
+  )
+
+  const [participantData, setParticipantData] = useState<IParticipantData>();
+
+  const taskCards = () => {
+    return participantData && (
+      Object.keys(participantData).map((task: string) => (
+        <Grid item xs={12} md={6} key={task}>
+          <TaskCard title={task} elements={participantData[task]} />
+        </Grid>
+      ))
+    )
+  }
+
+  useEffect(() => {
+    let currentData = { ...participantData };
+    if (!!data && data.participants.length !== 0) {
+      data.participants.forEach((participant: IParticipant, i: number) => {
+        const task = participant.task
+        if (task in currentData) {
+          const test = Object.keys(currentData).filter((index) => index === task)[0]
+          currentData = { ...currentData, [task]: [...currentData[test], participant] }
+        } else {
+          currentData = { ...currentData, [task]: [participant] }
+        }
+      })
+    }
+    setParticipantData(currentData)
+  }, [data])
 
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <Grid container alignItems='center' justifyContent='space-between' style={{padding:"1rem"}}>
-        <Grid item>
-        <ArrowBack href={`/event/${router.query.event_id}`}/>
-        </Grid>
-        <Grid item>
+      <ThemeProvider theme={theme}>
+        <Grid container alignItems='center' justifyContent='space-between' style={{ padding: "1rem" }}>
           <Grid item>
-            <Typography style={{fontSize:16, textAlign:"right", fontWeight:"600"}}>Participants</Typography>
+            <ArrowBack href={`/event/${router.query.event_id}`} />
           </Grid>
           <Grid item>
-            <Typography textTransform="capitalize" style={{fontSize:20, textAlign:"right", fontWeight:"bold"}}>Bibimbap Tutorial</Typography>
+            <Grid item>
+              <Typography style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}>Participants</Typography>
+            </Grid>
+            <Grid item>
+              <Typography textTransform="capitalize" style={{ fontSize: 20, textAlign: "right", fontWeight: "bold" }}>Bibimbap Tutorial</Typography>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      
-      <hr
-        style={{
-          background: '#784CF4',
-          borderColor: '#784CF4',
-          height: '1px',
-        }}
-      />
 
-      <Grid container alignItems="center" justifyContent={{xs:"center", sm:"flex-start"}} sx={{padding:"1rem"}}>
-        <Grid item>
-          <Typography variant='h2' fontWeight={800} color="#784CF4">15</Typography>
-        </Grid>
-        <Grid item>
-          <Grid container direction={"column"} sx={{padding:"1rem"}}>
+        <hr
+          style={{
+            background: '#784CF4',
+            borderColor: '#784CF4',
+            height: '1px',
+          }}
+        />
+
+        <Grid container alignItems="center" justifyContent={{ xs: "center", sm: "flex-start" }} sx={{ padding: "1rem" }}>
           <Grid item>
-            <Typography variant='h4' fontWeight={800} color="#784CF4">People</Typography>
+            <Typography variant='h2' fontWeight={800} color="#784CF4">15</Typography>
           </Grid>
           <Grid item>
-            <Typography variant='h4' fontWeight={800} color="#784CF4">Joining</Typography>
-          </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={3} justifyContent="center" sx={{ padding: "1rem" }}>
-        <Grid item xs={12} md={6}>
-          <Card sx={isXXS ? { display: "flex", flexDirection:"column" } : { display: "flex" }}>
-            <Box sx={{ display: "flex", alignItems: "center", backgroundColor: "#784CF4", padding:"1rem" }}>
-              <Typography sx={{ textTransform: "uppercase", color: "white" }}>prepping</Typography>
-            </Box>
-            <Box sx={{ padding: "0.5rem" }}>
-              <Grid container spacing={1} justifyContent="space-around" direction={{xs:"column", sm:"row"}}>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>johanes</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#4145A7", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#4145A7", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>intermediate</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>johanes</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#4145A7", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#4145A7", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>intermediate</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>johanes</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#4145A7", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#4145A7", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>intermediate</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>abe</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#3E8733", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#3E8733", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>expert</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>syasya</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#BE2B83", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#BE2B83", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>beginner</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
+            <Grid container direction={"column"} sx={{ padding: "1rem" }}>
+              <Grid item>
+                <Typography variant='h4' fontWeight={800} color="#784CF4">People</Typography>
               </Grid>
-            </Box>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Card sx={isXXS ? { display: "flex", flexDirection:"column" } : { display: "flex" }}>
-            <Box sx={{ display: "flex", alignItems: "center", backgroundColor: "#784CF4", padding:"1rem" }}>
-              <Typography sx={{ textTransform: "uppercase", color: "white" }}>prepping</Typography>
-            </Box>
-            <Box sx={{ padding: "0.5rem" }}>
-              <Grid container spacing={1} justifyContent="space-around" direction={{xs:"column", sm:"row"}}>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>johanes</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#4145A7", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#4145A7", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>intermediate</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>johanes</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#4145A7", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#4145A7", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>intermediate</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>johanes</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#4145A7", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#4145A7", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>intermediate</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>abe</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#3E8733", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#3E8733", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>expert</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>syasya</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#BE2B83", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#BE2B83", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>beginner</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
+              <Grid item>
+                <Typography variant='h4' fontWeight={800} color="#784CF4">Joining</Typography>
               </Grid>
-            </Box>
-          </Card>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Card sx={isXXS ? { display: "flex", flexDirection:"column" } : { display: "flex" }}>
-            <Box sx={{ display: "flex", alignItems: "center", backgroundColor: "#784CF4", padding:"1rem" }}>
-              <Typography sx={{ textTransform: "uppercase", color: "white" }}>prepping</Typography>
-            </Box>
-            <Box sx={{ padding: "0.5rem" }}>
-              <Grid container spacing={1} justifyContent="space-around" direction={{xs:"column", sm:"row"}}>
 
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>johanes</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#4145A7", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#4145A7", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>intermediate</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>johanes</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#4145A7", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#4145A7", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>intermediate</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>johanes</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#4145A7", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#4145A7", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>intermediate</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>abe</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#3E8733", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#3E8733", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>expert</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
-                <Grid item>
-                  <Card sx={{ display: "flex", alignItems: "center"}}>
-                    <Box sx={isXXS ? {backgroundColor: "#E8E7EC", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#E8E7EC", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "#784CF4"}}>syasya</Typography>
-                    </Box>
-                    <Box sx={isXXS ? {backgroundColor: "#BE2B83", padding: "0.5rem", width:"100%"} 
-                    : {backgroundColor: "#BE2B83", padding: "0.5rem"}}>
-                        <Typography sx={{ textTransform: "uppercase", color: "white" }}>beginner</Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-
+        <Grid container spacing={3} justifyContent="center" sx={{ padding: "1rem" }}>
+          {!!data && data.participants.length !== 0 ? (
+            taskCards()
+          ) : (
+            <Grid item xs={12}>
+              <Grid container justifyContent={"center"}>
+                <CircularProgress />
               </Grid>
-            </Box>
-          </Card>
+            </Grid>
+          )}
         </Grid>
-      </Grid>
       </ThemeProvider>
     </>
   )
