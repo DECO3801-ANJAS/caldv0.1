@@ -350,6 +350,7 @@ const Create: NextPage = () => {
                   inputValue={taskInputValue}
                   handleChangeTask={handleChangeTask}
                   errorMessage={errorMessage.tasks}
+                  options={[]}
                 />
               </Grid>
               <Grid item xs={2}>

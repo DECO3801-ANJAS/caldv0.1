@@ -24,14 +24,14 @@ const CssTextField = styled(TextField)({
   },
 });
 
-export default function FreeSolo({inputValue, errorMessage, handleChangeTask}: IFreeSolo) {
+export default function FreeSolo({inputValue, errorMessage, handleChangeTask, options}: IFreeSolo) {
   return (
       <Autocomplete
       inputValue={inputValue}
         onInputChange={handleChangeTask}
         id="tasks"
         freeSolo
-        options={tasks.map((option) => option.title)}
+        options={options.map((option) => option)}
         renderInput={(params) => <CssTextField 
           {...params}
           focused 
@@ -43,10 +43,3 @@ export default function FreeSolo({inputValue, errorMessage, handleChangeTask}: I
   );
 }
 
-// TODO: Get some pre-defined tasks here
-const tasks = [
-  {title: 'Frying'},
-  {title: 'Grilling'},
-  {title: 'Prepping'},
-  {title: 'Cooking'}
-];

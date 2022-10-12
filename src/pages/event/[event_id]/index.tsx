@@ -43,13 +43,17 @@ const EventDetail: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:600px)");
   const router = useRouter();
   const { event_id } = router.query;
-  const { data, error } = useSWR(router.isReady ? `/api/events/${event_id}` : null,
+  const eventData = useSWR(router.isReady ? `/api/events/${event_id}` : null,
     fetcher, { refreshInterval: 10000 }
   )
+
+  const participantData = useSWR(router.isReady ? `/api/events/${event_id}/participants` : null,
+    fetcher, { refreshInterval: 10000 }
+  )
+
   return (
     <>
       <ThemeProvider theme={theme}>
-
       <Grid container justifyContent='space-between' style={{ padding: "1rem" }}>
         <Grid item xs={6}>
           <ArrowBack href={"/event/"}/>
@@ -61,7 +65,7 @@ const EventDetail: NextPage = () => {
       </Grid>
 
       <Grid container style={isXXS ? {marginBottom:"9rem"} : {marginBottom: "3rem"}}>
-      {!!data ? (
+      {!!eventData.data ? (
         <>
         <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
         <Grid container>
@@ -88,16 +92,16 @@ const EventDetail: NextPage = () => {
               gutterBottom
               sx={{ textTransform: "capitalize", fontWeight: "600", overflowY: 'hidden' }}
             >
-              {data.event.title}
+              {eventData.data.event.title}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Grid container direction={"column"}>
-              <Typography fontFamily="Open Sans">Location:</Typography><Typography color={"#784CF4"}> {data.event.location}</Typography>
-              <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>{new Date(data.event.date).toLocaleString()}</Typography>
-              <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>{data.event.tasks.join(', ')}</Typography>
+              <Typography fontFamily="Open Sans">Location:</Typography><Typography color={"#784CF4"}> {eventData.data.event.location}</Typography>
+              <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>{new Date(eventData.data.event.date).toLocaleString()}</Typography>
+              <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>{eventData.data.event.tasks.join(', ')}</Typography>
               <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
-                {data.event.description}
+                {eventData.data.event.description}
               </Typography>
             </Grid>
           </Grid>
@@ -116,7 +120,7 @@ const EventDetail: NextPage = () => {
       <Box sx={{ backgroundColor:"white", position: 'fixed', bottom: 0, left: 0, right: 0, padding:"0.5rem", borderTop:"solid 1px #784CF4"}}>
         <Grid container justifyContent={"space-between"} alignItems={"center"}>
           <Grid item xs={12} sm={6} style={{textAlign:"center"}}>
-            <Typography fontFamily="Open Sans">15 People Joining</Typography>
+            <Typography fontFamily="Open Sans">{!!participantData.data? participantData.data.participants.length : "0"} People Joining</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Grid container justifyContent="center">
