@@ -2,7 +2,7 @@ import React from "react";
 
 interface IFreeSolo {
   inputValue: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>
+  handleChangeTask: (event: React.SyntheticEvent<Element, Event>, newInputValue: string) => void
   errorMessage: boolean
 }
 

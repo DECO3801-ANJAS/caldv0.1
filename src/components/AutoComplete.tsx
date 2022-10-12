@@ -24,13 +24,11 @@ const CssTextField = styled(TextField)({
   },
 });
 
-export default function FreeSolo({inputValue, setInputValue, errorMessage}: IFreeSolo) {
+export default function FreeSolo({inputValue, errorMessage, handleChangeTask}: IFreeSolo) {
   return (
       <Autocomplete
       inputValue={inputValue}
-        onInputChange={(event, newInputValue) => {
-          setInputValue(newInputValue);
-        }}
+        onInputChange={handleChangeTask}
         id="tasks"
         freeSolo
         options={tasks.map((option) => option.title)}

@@ -137,6 +137,10 @@ const Create: NextPage = () => {
     })));
   }
 
+  const handleChangeTask = (event:React.SyntheticEvent<Element, Event>, newInputValue:string) => {
+    setTaskInputValue(newInputValue);
+  }
+
   const Tasks = arrayOfTasks.map((h: string, i: number) => (
     <Grid item xs={4} sm={2} key={i}>
       <Chip size="medium" label={h} onDelete={() => handleDelete(h)} />
@@ -344,7 +348,7 @@ const Create: NextPage = () => {
               <Grid item xs={10}>
                 <FreeSolo
                   inputValue={taskInputValue}
-                  setInputValue={setTaskInputValue}
+                  handleChangeTask={handleChangeTask}
                   errorMessage={errorMessage.tasks}
                 />
               </Grid>
