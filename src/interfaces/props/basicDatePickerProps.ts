@@ -6,6 +6,8 @@ interface IBasicDatePicker {
   setTimeFunc: (newValue: Dayjs | null) => void
   date : Dayjs | null;
   time: Dayjs | null;
+  errorMessageDate : boolean;
+  errorMessageTime : boolean;
 }
 
 export default IBasicDatePicker;

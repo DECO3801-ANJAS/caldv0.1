@@ -16,7 +16,9 @@ import IconButton from '@mui/material/IconButton';
 import IFile from '../../interfaces/models/file';
 import ArrowBack from '../../components/ArrowBack';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import axios from 'axios'
+import { axiosFormData } from '../../components/axiosInstance';
+import { useRouter } from 'next/router';
+import FormSnackbar from '../../components/FormSnackbar';
 
 const theme = createTheme({
   palette: {
@@ -59,6 +61,21 @@ const CssTextField = styled(TextField)({
 
 const Create: NextPage = () => {
   const isXXS = useMediaQuery("(max-width:900px)")
+  const router = useRouter()
+
+  //Message
+  const [open, setOpen] = React.useState(false)
+  const [error, setError] = React.useState(false)
+  const [errorMessage, setErrorMessage] = React.useState({
+    title: false,
+    description: false,
+    location: false,
+    recipeIngredients: false,
+    recipeSteps: false,
+    tasks : false,
+    date : false,
+    time : false
+  })
 
   // Event Details
   const [eventDetails, setEventDetails] = React.useState({
@@ -76,17 +93,29 @@ const Create: NextPage = () => {
       ...prev,
       [name]: value,
     }));
+    setErrorMessage((prev => ({
+      ...prev,
+      [name]: ""
+    })));
   };
 
   // Date and Time
   const [date, setDate] = React.useState<Dayjs | null>(null);
   const handleChangeDate = (newValue: Dayjs | null) => {
     setDate(newValue);
+    setErrorMessage((prev => ({
+      ...prev,
+      date: false
+    })));
   };
 
   const [time, setTime] = React.useState<Dayjs | null>(null);
   const handleChangeTime = (newValue: Dayjs | null) => {
     setTime(newValue);
+    setErrorMessage((prev => ({
+      ...prev,
+      time: false
+    })));
   };
 
   // Tasks
@@ -102,6 +131,10 @@ const Create: NextPage = () => {
   const newTask = () => {
     addTask((arrayOfTasks) => arrayOfTasks.concat(taskInputValue))
     setTaskInputValue("")
+    setErrorMessage((prev => ({
+      ...prev,
+      tasks: false
+    })));
   }
 
   const Tasks = arrayOfTasks.map((h: string, i: number) => (
@@ -116,35 +149,86 @@ const Create: NextPage = () => {
   // Build form data
   const buildFormData = () => {
     const dateString = date!.format().split("T")[0];
-
     const timeString = time!.format().split("T")[1];
-
     const dateTime = new Date(dateString.concat("T").concat(timeString));
+    const eventJson = { 
+      ...eventDetails, 
+      date: dateTime, 
+      tasks: [...arrayOfTasks],
+      images: files 
+    }
 
-    const eventJson = { ...eventDetails, date: dateTime, tasks: [...arrayOfTasks] }
-
-    const data = new FormData();
-    const eventBlob = new Blob([JSON.stringify(eventJson)], {
-      type: "application/json",
-    });
-
-    data.append("event", eventBlob);
-    files.forEach((value, i) => {
-      data.append(`image${i}`, value);
-    });
     return eventJson;
   };
 
   const handleSubmit = () => {
-    // TODO: Implement submission here
-    const eventData = buildFormData();
-    const axiosFormData = axios.create({
-      headers: {
-          'Accept': "application/json, text/plain, */*",
-          'Content-Type': "application/json"
-      }
-  })
-    axiosFormData.post("/api/events", eventData).then((res)=>console.log(res))
+
+    // Check for empty fields(except for image field)
+    if(eventDetails.title == "") {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        title: true
+      }))
+    } else if (eventDetails.description == "") {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        description: true
+      }))
+    } else if (eventDetails.location == "") {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        location: true
+      }))
+    } else if (!date) {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        date: true
+      }))
+    } else if (!time) {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        time: true
+      }))
+    } else if (arrayOfTasks.length == 0) {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        tasks: true
+      }))
+    }else if (eventDetails.recipeIngredients == "") {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        recipeIngredients: true
+      }))
+    } else if (eventDetails.recipeSteps == "") {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        recipeSteps: true
+      }))
+    } else {
+        const eventData = buildFormData();
+        axiosFormData.post("/api/events", eventData).then((res) => {
+        console.log(res)
+        setOpen(true)
+        setError(false)
+        router.push(`event/`)
+      })
+    }
   };
 
   return (
@@ -174,7 +258,15 @@ const Create: NextPage = () => {
           </ThemeProvider>
           </Grid>
           <Grid item xs={12} md={7}>
-            <CssTextField label="Title" name="title" onChange={handleChangeEvent} focused fullWidth />
+            <CssTextField 
+              label="Title" 
+              name="title" 
+              onChange={handleChangeEvent} 
+              focused 
+              fullWidth
+              error={!!errorMessage.title} 
+              helperText={!!errorMessage.title && "Title is required"}
+            />
           </Grid>
           <Grid item xs={3} style={isXXS ? { marginTop: "2%", marginBottom: "5%", display: "none" } : { marginTop: "2%", marginBottom: "5%" }}>
           <ThemeProvider theme={theme}>
@@ -184,7 +276,17 @@ const Create: NextPage = () => {
           </ThemeProvider>
           </Grid>
           <Grid item xs={12} md={7}>
-            <CssTextField label="Description" name="description" onChange={handleChangeEvent} focused rows={5} multiline fullWidth />
+            <CssTextField 
+              label="Description" 
+              name="description" 
+              onChange={handleChangeEvent} 
+              focused 
+              rows={5} 
+              multiline 
+              fullWidth 
+              error={!!errorMessage.description} 
+              helperText={!!errorMessage.description && "Description is required"}
+            />
           </Grid>
           <Grid item xs={3} style={isXXS ? { marginTop: "2%", marginBottom: "5%", display: "none" } : { marginTop: "2%", marginBottom: "5%" }}>
           <ThemeProvider theme={theme}>
@@ -194,7 +296,15 @@ const Create: NextPage = () => {
           </ThemeProvider>
           </Grid>
           <Grid item xs={12} md={7}>
-            <CssTextField label="Location" name="location" onChange={handleChangeEvent} focused fullWidth />
+            <CssTextField 
+              label="Location" 
+              name="location" 
+              onChange={handleChangeEvent} 
+              focused 
+              fullWidth 
+              error={!!errorMessage.location} 
+              helperText={!!errorMessage.location && "Location is required"}
+            />
           </Grid>
 
           <Grid item xs={3} style={isXXS ? { marginTop: "2%", marginBottom: "5%", display: "none" } : { marginTop: "2%", marginBottom: "5%" }}>
@@ -211,6 +321,8 @@ const Create: NextPage = () => {
                 setTimeFunc={handleChangeTime}
                 time={time}
                 date={date}
+                errorMessageDate={errorMessage.date}
+                errorMessageTime={errorMessage.time}
               />
             </Grid>
           </Grid>
@@ -233,6 +345,7 @@ const Create: NextPage = () => {
                 <FreeSolo
                   inputValue={taskInputValue}
                   setInputValue={setTaskInputValue}
+                  errorMessage={errorMessage.tasks}
                 />
               </Grid>
               <Grid item xs={2}>
@@ -252,7 +365,17 @@ const Create: NextPage = () => {
           </ThemeProvider>
           </Grid>
           <Grid item xs={12} md={7}>
-            <CssTextField label="Recipe Ingredients" name="recipeIngredients" onChange={handleChangeEvent} focused fullWidth multiline rows={5} />
+            <CssTextField 
+              label="Recipe Ingredients" 
+              name="recipeIngredients" 
+              onChange={handleChangeEvent} 
+              focused 
+              fullWidth 
+              multiline 
+              rows={5} 
+              error={!!errorMessage.recipeIngredients} 
+              helperText={!!errorMessage.recipeIngredients && "Recipe Ingredients is required"}
+            />
           </Grid>
           <Grid item xs={3} style={isXXS ? { marginTop: "2%", marginBottom: "5%", display: "none" } : { marginTop: "2%", marginBottom: "5%" }}>
           <ThemeProvider theme={theme}>
@@ -262,7 +385,17 @@ const Create: NextPage = () => {
           </ThemeProvider>
           </Grid>
           <Grid item xs={12} md={7}>
-            <CssTextField label="Recipe Steps" name="recipeSteps" onChange={handleChangeEvent} focused fullWidth multiline rows={5} />
+            <CssTextField 
+              label="Recipe Steps" 
+              name="recipeSteps" 
+              onChange={handleChangeEvent} 
+              focused 
+              fullWidth 
+              multiline 
+              rows={5} 
+              error={!!errorMessage.recipeSteps} 
+              helperText={!!errorMessage.recipeSteps && "Recipe Steps is required"}
+            />
           </Grid>
           <Grid item xs={3} style={isXXS ? { marginTop: "2%", marginBottom: "5%", display: "none" } : { marginTop: "2%", marginBottom: "5%" }}>
           <ThemeProvider theme={theme}>
@@ -280,6 +413,12 @@ const Create: NextPage = () => {
           </ThemeProvider>
           </Grid>
         </Grid>
+
+        {!!error ? (
+          <FormSnackbar error={error} state={open} message={"Failed to Submit"} setOpen={setOpen}/>
+        ) : (
+          <FormSnackbar error={error} state={open} message={"Event Added"} setOpen={setOpen}/>
+        )}
     </>
   );
 };

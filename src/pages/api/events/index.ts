@@ -40,6 +40,7 @@ export default async function handler(
           recipeSteps,
           date,
           tasks,
+          images
         }: ICreateEventRequest = body;
         const recipeData: IRecipe = { recipeIngredients, recipeSteps };
         const eventData = {
@@ -50,6 +51,7 @@ export default async function handler(
           date: new Date(date),
           tasks,
           recipe: recipeData,
+          images,
         };
         const postEvent = await db
           .collection<IEvent>("events")

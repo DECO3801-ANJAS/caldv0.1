@@ -7,7 +7,6 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { Grid } from '@mui/material';
 import { withStyles } from '@material-ui/core/styles';
 import IBasicDatePicker from '../interfaces/props/basicDatePickerProps';
-import dayjs, { Dayjs } from 'dayjs';
 
 const CssTextField = withStyles({
     root: {
@@ -31,7 +30,14 @@ const CssTextField = withStyles({
     },
   })(TextField);
 
-export default function BasicDatePicker({setTimeFunc, setDateFunc, date, time} : IBasicDatePicker) {
+export default function BasicDatePicker({
+  setTimeFunc, 
+  setDateFunc, 
+  date, 
+  time,
+  errorMessageDate,
+  errorMessageTime
+} : IBasicDatePicker) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -41,7 +47,14 @@ export default function BasicDatePicker({setTimeFunc, setDateFunc, date, time} :
             label="Date"
             value={date}
             onChange={setDateFunc}
-            renderInput={(params) => <CssTextField fullWidth name="date" focused {...params} />}
+            renderInput={(params) => <CssTextField 
+              {...params} 
+              fullWidth 
+              name="date" 
+              focused 
+              error={!!errorMessageDate}
+              helperText={!!errorMessageDate && "Date is required"}
+              />}
             />        
         </Grid>
         <Grid item xs={6}>
@@ -49,7 +62,13 @@ export default function BasicDatePicker({setTimeFunc, setDateFunc, date, time} :
                 label="Time"
                 value={time}
                 onChange={setTimeFunc}
-                renderInput={(params) => <CssTextField fullWidth focused {...params} />}
+                renderInput={(params) => <CssTextField 
+                  {...params}
+                  fullWidth 
+                  focused 
+                  error={Boolean("jenky")}
+                  helperText={!!errorMessageTime && "Time is required"}
+                />}
             />
        
         </Grid>
