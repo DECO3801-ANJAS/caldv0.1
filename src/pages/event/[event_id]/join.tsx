@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import FormSnackbar from '../../../components/FormSnackbar';
 import { axiosFormData } from '../../../components/axiosInstance';
 import Link from 'next/link';
+import useSWR from 'swr';
 
 const theme = createTheme({
   palette: {
@@ -87,6 +88,8 @@ const CssSelect = styled(Select)(() => ({
   }
 }));
 
+const fetcher = (url : string) => fetch(url).then((res) => res.json());
+
 const Join: NextPage = () => {
 
   const isXXS = useMediaQuery("(max-width:600px)");
@@ -94,6 +97,10 @@ const Join: NextPage = () => {
   const router = useRouter();
 
   const classes = useStyles();
+
+  const eventData = useSWR(router.isReady ? `/api/events/${router.query.event_id}` : null,
+    fetcher, { refreshInterval: 10000 }
+  )
   
   const [taskInputValue, setTaskInputValue] = React.useState('');
 
@@ -167,9 +174,10 @@ const Join: NextPage = () => {
       }))
     } else {
       const data = {
-
+        ...joinDetails,
+        task: taskInputValue
       }
-        axiosFormData.post(`/api/events/${router.query.event_id}/participants`, joinDetails).then((res) => {
+        axiosFormData.post(`/api/events/${router.query.event_id}/participants`, data).then((res) => {
         console.log(res)
         setOpen(true)
         setError(false)
@@ -225,6 +233,7 @@ const Join: NextPage = () => {
             inputValue={taskInputValue}
             errorMessage={errorMessage.task}
             handleChangeTask={handleChangeTask}
+            options={eventData.data? eventData.data.event.tasks : []}
             /> 
         </Grid>
         <Grid item xs={3} style = {isXXS ? {marginTop: "2%", marginBottom:"5%", display:"none"} : {marginTop: "2%", marginBottom:"5%"}}>
