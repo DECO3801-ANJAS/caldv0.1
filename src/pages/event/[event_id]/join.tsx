@@ -160,6 +160,7 @@ const Join: NextPage = () => {
         <FreeSolo 
             inputValue={taskInputValue}
             setInputValue={setTaskInputValue}
+            errorMessage={false}
             /> 
         </Grid>
         <Grid item xs={3} style = {isXXS ? {marginTop: "2%", marginBottom:"5%", display:"none"} : {marginTop: "2%", marginBottom:"5%"}}>
