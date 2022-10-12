@@ -24,7 +24,7 @@ const CssTextField = styled(TextField)({
   },
 });
 
-export default function FreeSolo({inputValue, setInputValue}: IFreeSolo) {
+export default function FreeSolo({inputValue, setInputValue, errorMessage}: IFreeSolo) {
   return (
       <Autocomplete
       inputValue={inputValue}
@@ -34,14 +34,20 @@ export default function FreeSolo({inputValue, setInputValue}: IFreeSolo) {
         id="tasks"
         freeSolo
         options={tasks.map((option) => option.title)}
-        renderInput={(params) => <CssTextField focused {...params} label="Tasks" />}
+        renderInput={(params) => <CssTextField 
+          {...params}
+          focused 
+          label="Tasks"
+          error={!!errorMessage}
+          helperText={!!errorMessage && "Tasks is required"}
+          />}
       />
   );
 }
 
 // TODO: Get some pre-defined tasks here
 const tasks = [
-  { title: 'Frying'},
+  {title: 'Frying'},
   {title: 'Grilling'},
   {title: 'Prepping'},
   {title: 'Cooking'}
