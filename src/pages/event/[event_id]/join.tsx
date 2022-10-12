@@ -13,8 +13,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useMediaQuery } from "@mui/material";
+import { FormHelperText, useMediaQuery } from "@mui/material";
 import { useRouter } from 'next/router';
+import FormSnackbar from '../../../components/FormSnackbar';
+import { axiosFormData } from '../../../components/axiosInstance';
+import Link from 'next/link';
 
 const theme = createTheme({
   palette: {
@@ -96,9 +99,17 @@ const Join: NextPage = () => {
 
   const [joinDetails, setJoinDetails] = React.useState({
     name: "",
-    task: taskInputValue,
     experience: ""
   })
+
+
+  const handleChangeTask = (event:React.SyntheticEvent<Element, Event>, newInputValue:string) => {
+    setTaskInputValue(newInputValue);
+    setErrorMessage((prev => ({
+      ...prev,
+      task: false
+    })));
+  }
 
   const handleChangeEvent = (e : React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -107,19 +118,64 @@ const Join: NextPage = () => {
         ...prev,
         [name]: value,
     }));
+    setErrorMessage((prev => ({
+      ...prev,
+      [name]: ""
+    })));
   }
 
   const handleExperienceChange = (event: SelectChangeEvent<unknown>) => {
-    setJoinDetails({...joinDetails,
-      experience: event.target.value as string});
+    setJoinDetails({...joinDetails, experience: event.target.value as string}); 
+    setErrorMessage((prev => ({
+      ...prev,
+      experience: false
+    })));
   };
 
+   //Message
+   const [open, setOpen] = React.useState(false)
+   const [error, setError] = React.useState(false)
+   const [errorMessage, setErrorMessage] = React.useState({
+     name: false,
+     task: false,
+     experience: false
+   })
+ 
   const handleSubmit = () => {
-    // TODO: Implement submission here
-    console.log({
-      ...joinDetails,
-      task: taskInputValue
-    });
+
+    // Check for empty fields(except for image field)
+    if(joinDetails.name == "") {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        name: true
+      }))
+    } else if (taskInputValue == "") {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        task: true
+      }))
+    } else if (joinDetails.experience == "") {
+      setOpen(true)
+      setError(true)
+      setErrorMessage((prev) => ({
+        ...prev,
+        experience: true
+      }))
+    } else {
+      const data = {
+
+      }
+        axiosFormData.post(`/api/events/${router.query.event_id}/participants`, joinDetails).then((res) => {
+        console.log(res)
+        setOpen(true)
+        setError(false)
+        router.push(`/event/${router.query.event_id}`)
+        })
+    }
   };
 
   return (
@@ -147,7 +203,15 @@ const Join: NextPage = () => {
           </ThemeProvider>
         </Grid>
         <Grid item sm={7} xs={12} style={{marginTop: "2%", marginBottom:"5%"}}>
-          <CssTextField name="name" label="Name" onChange={handleChangeEvent} focused fullWidth/>
+          <CssTextField 
+            name="name"
+            label="Name" 
+            onChange={handleChangeEvent} 
+            focused 
+            fullWidth
+            error={!!errorMessage.name}
+            helperText={!!errorMessage.name && "Name is required"}
+          />
         </Grid>
         <Grid item xs={3}  style = {isXXS ? {marginTop: "2%", marginBottom:"5%", display:"none"} : {marginTop: "2%", marginBottom:"5%"}}>
           <ThemeProvider theme={textTheme}>
@@ -159,8 +223,8 @@ const Join: NextPage = () => {
         <Grid item sm={7} xs={12} style={{marginTop: "2%", marginBottom:"5%"}}>
         <FreeSolo 
             inputValue={taskInputValue}
-            setInputValue={setTaskInputValue}
-            errorMessage={false}
+            errorMessage={errorMessage.task}
+            handleChangeTask={handleChangeTask}
             /> 
         </Grid>
         <Grid item xs={3} style = {isXXS ? {marginTop: "2%", marginBottom:"5%", display:"none"} : {marginTop: "2%", marginBottom:"5%"}}>
@@ -171,7 +235,7 @@ const Join: NextPage = () => {
           </ThemeProvider>
         </Grid>
         <Grid item sm={7} xs={12} style={{marginTop: "2%", marginBottom:"5%"}}>
-          <FormControl fullWidth focused>
+          <FormControl fullWidth focused error={!!errorMessage.experience}>
             <InputLabel id="demo-simple-select-label" shrink={true}>Choose your experience level</InputLabel>
             <CssSelect
             notched={true}
@@ -189,13 +253,27 @@ const Join: NextPage = () => {
               <MenuItem value={"intermediate"}>Intermediate</MenuItem>
               <MenuItem value={"expert"}>Expert</MenuItem>
             </CssSelect>
+            {!!errorMessage.experience ? (
+            <FormHelperText>Experience is required</FormHelperText>
+            ) : (
+              <></>
+            )}
           </FormControl>
         </Grid>
         <Grid item sm={7} xs={10} textAlign={isXXS ? "center" : "right"}>
-          <Button variant="outlined" sx={{ borderColor: "red" }} style={{color:"#FF0000", backgroundColor:"#FFFFFF", marginRight:"3%"}} onClick={handleSubmit}><b>Cancel</b></Button>
+          <Link href={`/event/${router.query.event_id}`}>
+          <Button variant="outlined" sx={{ borderColor: "red" }} style={{color:"#FF0000", backgroundColor:"#FFFFFF", marginRight:"3%"}}><b>Cancel</b></Button>
+          </Link>
           <Button variant="contained" color='success' onClick={handleSubmit}>Submit</Button>
         </Grid>
       </Grid>
+
+      {!!error ? (
+          <FormSnackbar error={error} state={open} message={"Failed to Submit"} setOpen={setOpen}/>
+        ) : (
+          <FormSnackbar error={error} state={open} message={"Event Added"} setOpen={setOpen}/>
+      )}
+
     </ThemeProvider>
   )
 }
