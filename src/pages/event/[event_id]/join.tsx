@@ -271,9 +271,9 @@ const Join: NextPage = () => {
         </Grid>
         <Grid item sm={7} xs={10} textAlign={isXXS ? "center" : "right"}>
           <Link href={`/event/${router.query.event_id}`}>
-          <Button variant="outlined" sx={{ borderColor: "red" }} style={{color:"#FF0000", backgroundColor:"#FFFFFF", marginRight:"3%"}}><b>Cancel</b></Button>
+          <Button variant="outlined" color="primary" style={{marginRight:"3%"}}><b>Cancel</b></Button>
           </Link>
-          <Button variant="contained" color='success' onClick={handleSubmit}>Submit</Button>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>Submit</Button>
         </Grid>
       </Grid>
 
