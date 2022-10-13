@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import IParticipant from "../../../interfaces/models/participant";
 import IParticipantData from "../../../interfaces/data/participantData";
 import TaskCard from "../../../components/TaskCard";
-import Link from "next/link";
 
 const theme = createTheme({
   typography: {
@@ -53,39 +52,6 @@ const Participants: NextPage = () => {
     );
   };
 
-  const showCards = () => {
-    if (!!data && data.participants.length !== 0) {
-      return taskCards();
-    } else if (data.participants.length == 0) {
-      return (
-        <Grid item xs={12}>
-          <Grid container justifyContent={"center"}>
-            <Grid item xs={12}>
-              <Grid container justifyContent={"center"}>
-                <Typography>No One Joined Yet</Typography>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container justifyContent={"center"}>
-                <Link href={`/event/${router.query.event_id}/join`}>
-                  <Button variant="contained" fullWidth={isXXS} color="primary">
-                    Join
-                  </Button>
-                </Link>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      );
-    } else {
-      <Grid item xs={12}>
-        <Grid container justifyContent={"center"}>
-          <CircularProgress />
-        </Grid>
-      </Grid>;
-    }
-  };
-
   useEffect(() => {
     let currentData = { ...participantData };
     if (!!data && data.participants.length !== 0) {
@@ -105,7 +71,7 @@ const Participants: NextPage = () => {
       });
     }
     setParticipantData(currentData);
-  }, [data, participantData]);
+  }, [data]);
 
   return (
     <>
@@ -152,25 +118,31 @@ const Participants: NextPage = () => {
           justifyContent={{ xs: "center", sm: "flex-start" }}
           sx={{ padding: "1rem" }}
         >
-          <Grid item>
-            <Typography variant="h2" fontWeight={800} color="#784CF4">
-              {data.participants.length}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Grid container direction={"column"} sx={{ padding: "1rem" }}>
+          {!!data ? (
+            <>
               <Grid item>
-                <Typography variant="h4" fontWeight={800} color="#784CF4">
-                  People
+                <Typography variant="h2" fontWeight={800} color="#784CF4">
+                  {data.participants.length}
                 </Typography>
               </Grid>
               <Grid item>
-                <Typography variant="h4" fontWeight={800} color="#784CF4">
-                  Joining
-                </Typography>
+                <Grid container direction={"column"} sx={{ padding: "1rem" }}>
+                  <Grid item>
+                    <Typography variant="h4" fontWeight={800} color="#784CF4">
+                      People
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h4" fontWeight={800} color="#784CF4">
+                      Joining
+                    </Typography>
+                  </Grid>
+                </Grid>
               </Grid>
-            </Grid>
-          </Grid>
+            </>
+          ) : (
+            <></>
+          )}
         </Grid>
 
         <Grid
@@ -179,7 +151,15 @@ const Participants: NextPage = () => {
           justifyContent="center"
           sx={{ padding: "1rem" }}
         >
-          {showCards()}
+          {!!data && data.participants.length !== 0 ? (
+            taskCards()
+          ) : (
+            <Grid item xs={12}>
+              <Grid container justifyContent={"center"}>
+                <CircularProgress />
+              </Grid>
+            </Grid>
+          )}
         </Grid>
       </ThemeProvider>
     </>
