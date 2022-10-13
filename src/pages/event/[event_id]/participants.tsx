@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import IParticipant from "../../../interfaces/models/participant";
 import IParticipantData from "../../../interfaces/data/participantData";
 import TaskCard from "../../../components/TaskCard";
+import Link from "next/link";
 
 const theme = createTheme({
   typography: {
@@ -39,6 +40,12 @@ const Participants: NextPage = () => {
     { refreshInterval: 10000 }
   );
 
+  const eventData = useSWR(
+    router.isReady ? `/api/events/${event_id}` : null,
+    fetcher,
+    { refreshInterval: 10000 }
+  );
+
   const [participantData, setParticipantData] = useState<IParticipantData>();
 
   const taskCards = () => {
@@ -51,6 +58,39 @@ const Participants: NextPage = () => {
       ))
     );
   };
+
+  const showCards = () => {
+    if (!!data && data.participants.length !== 0) {
+      return taskCards()
+    } else if (!!data && data.participants.length == 0) {
+      return (
+        <Grid item xs={12}>
+          <Grid container justifyContent={"center"}>
+            <Grid item xs={12}>
+              <Grid container justifyContent={"center"}>
+                <Typography>No One Joined Yet</Typography>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container justifyContent={"center"}>
+                <Link href={`/event/${router.query.event_id}/join`}>
+                  <Button variant="contained" fullWidth={isXXS} color="primary">Join</Button>
+                </Link>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      )
+    } else {
+      return (
+        <Grid item xs={12}>
+          <Grid container justifyContent={"center"}>
+            <CircularProgress />
+          </Grid>
+        </Grid>
+      )
+    }
+  }
 
   useEffect(() => {
     let currentData = { ...participantData };
@@ -98,7 +138,7 @@ const Participants: NextPage = () => {
                 textTransform="capitalize"
                 style={{ fontSize: 20, textAlign: "right", fontWeight: "bold" }}
               >
-                Bibimbap Tutorial
+                {!!eventData.data ? eventData.data.event.title : ""}
               </Typography>
             </Grid>
           </Grid>
@@ -151,15 +191,7 @@ const Participants: NextPage = () => {
           justifyContent="center"
           sx={{ padding: "1rem" }}
         >
-          {!!data && data.participants.length !== 0 ? (
-            taskCards()
-          ) : (
-            <Grid item xs={12}>
-              <Grid container justifyContent={"center"}>
-                <CircularProgress />
-              </Grid>
-            </Grid>
-          )}
+          {showCards()}
         </Grid>
       </ThemeProvider>
     </>
