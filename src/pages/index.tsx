@@ -8,6 +8,7 @@ import { Container } from "@mui/system";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import Clock from "../components/Clock";
+import Dates from "../components/Date"
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
@@ -51,7 +52,7 @@ const Home: NextPage = () => {
       <ThemeProvider theme={theme}>
         <Grid container justifyContent="flex-end">
           <Grid item style={{ marginTop: "2%" }}>
-            <Typography fontFamily="Open Sans">Brisbane, {date}</Typography>
+            <Dates />
             <Clock />
           </Grid>
         </Grid>
@@ -91,23 +92,29 @@ const Home: NextPage = () => {
             <Typography
               fontFamily={"Mohave"}
               fontSize={"2.2rem"}
-              style={{ color: "#784CF4", fontWeight: "bold" }}
+              style={{
+                color: "#784CF4",
+                fontWeight: "bold",
+                justifyContent: "center",
+              }}
             >
               UPCOMING EVENTS
             </Typography>
-          </Grid>
-          <Grid item style={{ marginTop: "5%" }}>
-            {!!upcomingEvent ? (
-              <BookCard
-                eventDate={new Date(upcomingEvent.date).getDate()}
-                eventTitle={upcomingEvent.title}
-                hrefUrl={`event/${upcomingEvent._id}`}
-                imageUrl="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
-                imgAlt={upcomingEvent.title}
-              />
-            ) : (
-              <Typography fontFamily="Open Sans">NO UPCOMING EVENTS</Typography>
-            )}
+            <Grid item style={{ marginTop: "5%" }}>
+              {!!upcomingEvent ? (
+                <BookCard
+                  eventDate={new Date(upcomingEvent.date).getDate()}
+                  eventTitle={upcomingEvent.title}
+                  hrefUrl={`event/${upcomingEvent._id}`}
+                  imageUrl="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+                  imgAlt={upcomingEvent.title}
+                />
+              ) : (
+                <Typography fontFamily="Open Sans">
+                  NO UPCOMING EVENTS
+                </Typography>
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </ThemeProvider>

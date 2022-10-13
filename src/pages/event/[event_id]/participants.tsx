@@ -105,7 +105,7 @@ const Participants: NextPage = () => {
       });
     }
     setParticipantData(currentData);
-  }, [data]);
+  }, [data, participantData]);
 
   return (
     <>
