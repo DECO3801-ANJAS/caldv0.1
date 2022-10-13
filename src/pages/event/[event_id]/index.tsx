@@ -1,45 +1,38 @@
-import type { NextPage } from 'next'
-import Grid from '@mui/material/Grid';
-import { Box, Typography } from '@mui/material';
-import { createTheme } from '@mui/material';
-import { ThemeProvider } from '@emotion/react';
-import Button from '@mui/material/Button';
+import type { NextPage } from "next";
+import Grid from "@mui/material/Grid";
+import { Box, Typography } from "@mui/material";
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "@emotion/react";
+import Button from "@mui/material/Button";
 import { useMediaQuery } from "@mui/material";
-import Image from 'next/image';
-import Clock from '../../../components/Clock';
-import Link from 'next/link'
+import Image from "next/image";
+import Clock from "../../../components/Clock";
+import Dates from "../../../components/Date";
+
+import Link from "next/link";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
 import "@fontsource/montserrat";
-import ArrowBack from '../../../components/ArrowBack';
-import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
-
-const current = new Date();
-const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+import ArrowBack from "../../../components/ArrowBack";
+import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 
 const theme = createTheme({
   typography: {
-    fontFamily: [
-      'Open Sans',
-      'Mohave',
-      'sans-serif',
-      'montserrat'
-    ].join(',')
+    fontFamily: ["Open Sans", "Mohave", "sans-serif", "montserrat"].join(","),
   },
   palette: {
     primary: {
-      main: "#784CF4"
-    }
+      main: "#784CF4",
+    },
   },
 });
 
-const fetcher = (url : string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const EventDetail: NextPage = () => {
-
   const isXXS = useMediaQuery("(max-width:600px)");
   const router = useRouter();
   const { event_id } = router.query;
@@ -59,10 +52,10 @@ const EventDetail: NextPage = () => {
           <ArrowBack href={"/event/"}/>
         </Grid>
         <Grid item xs={6} sx={{ textAlign: "right" }}>
-            <Typography fontFamily='Open Sans'>Brisbane, {date}</Typography>
+            <Dates />
             <Clock />
+          </Grid>
         </Grid>
-      </Grid>
 
       <Grid container style={isXXS ? {marginBottom:"9rem"} : {marginBottom: "3rem"}}>
       {!!eventData.data ? (
@@ -111,7 +104,7 @@ const EventDetail: NextPage = () => {
         ) : (
           <Grid item xs={12}>
               <Grid container justifyContent={"center"}>
-                <CircularProgress/>
+                <CircularProgress />
               </Grid>
             </Grid>
         )}
@@ -138,10 +131,9 @@ const EventDetail: NextPage = () => {
           </Grid>
         </Grid>
       </Box>
-
       </ThemeProvider>
     </>
-  )
-}
+  );
+};
 
-export default EventDetail
+export default EventDetail;
