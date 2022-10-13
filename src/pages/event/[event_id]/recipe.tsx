@@ -50,7 +50,7 @@ const EventDetailRecipe: NextPage = () => {
     return (
         <>
             <ThemeProvider theme={theme}>
-
+                <Button onClick={() => console.log(data)}>TEST</Button>
                 <Grid container justifyContent='space-between' style={{ padding: "1rem" }}>
                     <Grid item xs={6}>
                         <ArrowBack href={`/event/${router.query.event_id}`} />
@@ -67,13 +67,13 @@ const EventDetailRecipe: NextPage = () => {
                             <Grid item xs={12} style={{ padding: "1rem" }}>
                                 <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Ingridients: </Typography>
                                 <Typography fontFamily="Open Sans">
-                                    {data.event.recipe.recipeIngredients}
+                                    {data.event.recipe.recipeIngredients.split('\n').map((str:string) => <p>{str}</p>)}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} style={{ padding: "1rem" }}>
                                 <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Recipe: </Typography>
                                 <Typography fontFamily="Open Sans">
-                                    {data.event.recipe.recipeSteps}
+                                    {data.event.recipe.recipeSteps.split('\n').map((str:string) => <p>{str}</p>)}
                                 </Typography>
                             </Grid>
                         </>

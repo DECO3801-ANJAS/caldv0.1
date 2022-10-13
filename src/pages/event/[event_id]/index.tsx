@@ -120,7 +120,7 @@ const EventDetail: NextPage = () => {
       <Box sx={{ backgroundColor:"white", position: 'fixed', bottom: 0, left: 0, right: 0, padding:"0.5rem", borderTop:"solid 1px #784CF4"}}>
         <Grid container justifyContent={"space-between"} alignItems={"center"}>
           <Grid item xs={12} sm={6} style={{textAlign:"center"}}>
-            <Typography fontFamily="Open Sans">{!!participantData.data? participantData.data.participants.length : "0"} Joining</Typography>
+            <Typography fontFamily="Open Sans">{!!participantData.data? participantData.data.participants.length : "0"} JOINING</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Grid container justifyContent="center">
