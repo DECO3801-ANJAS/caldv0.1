@@ -101,7 +101,7 @@ const EventDetail: NextPage = () => {
               <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>{new Date(eventData.data.event.date).toLocaleString()}</Typography>
               <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>{eventData.data.event.tasks.join(', ')}</Typography>
               <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
-                {eventData.data.event.description}
+                {eventData.data.event.description.split('\n').map((str:string) => <p>{str}</p>)}
               </Typography>
             </Grid>
           </Grid>
