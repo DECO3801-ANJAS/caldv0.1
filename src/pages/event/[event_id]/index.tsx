@@ -94,7 +94,7 @@ const EventDetail: NextPage = () => {
               <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>{new Date(eventData.data.event.date).toLocaleString()}</Typography>
               <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>{eventData.data.event.tasks.join(', ')}</Typography>
               <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
-                {eventData.data.event.description}
+                {eventData.data.event.description.split('\n').map((str:string, i:number) => <p key={i}>{str}</p>)}
               </Typography>
             </Grid>
           </Grid>
@@ -113,7 +113,7 @@ const EventDetail: NextPage = () => {
       <Box sx={{ backgroundColor:"white", position: 'fixed', bottom: 0, left: 0, right: 0, padding:"0.5rem", borderTop:"solid 1px #784CF4"}}>
         <Grid container justifyContent={"space-between"} alignItems={"center"}>
           <Grid item xs={12} sm={6} style={{textAlign:"center"}}>
-            <Typography fontFamily="Open Sans">{!!participantData.data? participantData.data.participants.length : "0"} People Joining</Typography>
+            <Typography fontFamily="Open Sans">{!!participantData.data? participantData.data.participants.length : "0"} JOINING</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Grid container justifyContent="center">
