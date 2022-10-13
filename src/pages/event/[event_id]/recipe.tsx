@@ -50,7 +50,6 @@ const EventDetailRecipe: NextPage = () => {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <Button onClick={() => console.log(data)}>TEST</Button>
                 <Grid container justifyContent='space-between' style={{ padding: "1rem" }}>
                     <Grid item xs={6}>
                         <ArrowBack href={`/event/${router.query.event_id}`} />

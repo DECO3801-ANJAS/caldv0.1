@@ -226,13 +226,12 @@ const Create: NextPage = () => {
       }))
     } else {
         const eventData = buildFormData();
-        // axiosFormData.post("/api/events", eventData).then((res) => {
-        // console.log(res)
-        // setOpen(true)
-        // setError(false)
-        // router.push(`event/`)
-        console.log(eventData)
-      // })
+        axiosFormData.post("/api/events", eventData).then((res) => {
+        console.log(res)
+        setOpen(true)
+        setError(false)
+        router.push(`event/`)
+      })
     }
   };
 
