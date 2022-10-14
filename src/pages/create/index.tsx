@@ -11,7 +11,7 @@ import { styled } from "@mui/material/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import IconButton from "@mui/material/IconButton";
 import IFile from "../../interfaces/models/file";
 import ArrowBack from "../../components/ArrowBack";
@@ -165,6 +165,7 @@ const Create: NextPage = () => {
   };
 
   const handleSubmit = () => {
+
     // Check for empty fields(except for image field)
     if (eventDetails.title == "") {
       setOpen(true);
@@ -221,6 +222,14 @@ const Create: NextPage = () => {
       setErrorMessage((prev) => ({
         ...prev,
         recipeSteps: true,
+      }));
+      // check if date is valid
+    } else if (!date?.isValid() || date.isBefore(dayjs())) {
+      setOpen(true);
+      setError(true);
+      setErrorMessage((prev) => ({
+        ...prev,
+        date: true,
       }));
     } else {
       const eventData = buildFormData();
@@ -408,7 +417,7 @@ const Create: NextPage = () => {
                 <IconButton
                   color="primary"
                   component="label"
-                  onClick={taskInputValue.length !== 0 ? newTask : () => {}}
+                  onClick={taskInputValue.length !== 0 ? newTask : () => { }}
                 >
                   <AddCircleOutlineIcon fontSize="large" />
                 </IconButton>
