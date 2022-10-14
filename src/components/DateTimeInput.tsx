@@ -53,7 +53,7 @@ export default function BasicDatePicker({
               name="date"
               focused
               error={!!errorMessageDate}
-              helperText={!!errorMessageDate && "Date is required"}
+              helperText={!!errorMessageDate && "Date is required, in DD/MM/YYYY and must be after today"}
             />
           )}
         />
