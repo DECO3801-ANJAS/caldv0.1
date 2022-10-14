@@ -17,9 +17,8 @@ import IEvent from "../interfaces/models/event";
 import useSWR from "swr";
 
 const current = new Date();
-const date = `${current.getDate()}/${
-  current.getMonth() + 1
-}/${current.getFullYear()}`;
+const date = `${current.getDate()}/${current.getMonth() + 1
+  }/${current.getFullYear()}`;
 
 const theme = createTheme({
   typography: {
@@ -110,7 +109,7 @@ const Home: NextPage = () => {
                   imgAlt={upcomingEvent.title}
                 />
               ) : (
-                <Typography fontFamily="Open Sans">
+                <Typography fontFamily="Mohave">
                   NO UPCOMING EVENTS
                 </Typography>
               )}
