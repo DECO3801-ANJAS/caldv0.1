@@ -93,18 +93,20 @@ const EventDetail: NextPage = () => {
                         <Typography fontFamily="Open Sans">{!!participantData.data ? participantData.data.participants.length : "0"} JOINING</Typography>
                       </Grid>
                       <Grid item xs={12}>
-                        <Grid container>
-                          <Grid xs={12} sm={3} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0.5rem 0rem" }}>
-                            <Link href={`/event/${router.query.event_id}/participants`}>
-                              <Button variant="outlined" fullWidth={isXXS} color="primary">View Participants</Button>
-                            </Link>
+                        <Box sx={{ width: 350 }}>
+                          <Grid container>
+                            <Grid xs={12} sm={6} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0.5rem 0rem" }}>
+                              <Link href={`/event/${router.query.event_id}/participants`}>
+                                <Button variant="outlined" fullWidth={isXXS} color="primary">View Participants</Button>
+                              </Link>
+                            </Grid>
+                            <Grid xs={12} sm={6} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0.5rem 0rem" }}>
+                              <Link href={`/event/${router.query.event_id}/join`}>
+                                <Button variant="contained" fullWidth={isXXS} color="primary">Join</Button>
+                              </Link>
+                            </Grid>
                           </Grid>
-                          <Grid xs={12} sm={3} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0.5rem 0rem" }}>
-                            <Link href={`/event/${router.query.event_id}/join`}>
-                              <Button variant="contained" fullWidth={isXXS} color="primary">Join</Button>
-                            </Link>
-                          </Grid>
-                        </Grid>
+                        </Box>
                       </Grid>
                     </Grid>
                   </Grid>
