@@ -24,6 +24,16 @@ const CssTextField = styled(TextField)({
   },
 });
 
+// Function to return the auto complete input field
+// Input : 
+//        inputValue, React.useState("")
+//        errorMessage, React.useState(0)
+//        handleChangeTask, change event function
+//        options, list of strings
+//        addNewTask, function
+//        forJoin, boolean
+// return JSX element
+
 export default function FreeSolo({
   inputValue,
   errorMessage,
@@ -40,12 +50,12 @@ export default function FreeSolo({
       freeSolo
       onKeyUp={
         forJoin
-          ? () => {}
+          ? () => { }
           : (event) => {
-              if (event.key == "Enter" && inputValue.length !== 0) {
-                addNewTask();
-              }
+            if (event.key == "Enter" && inputValue.length !== 0) {
+              addNewTask();
             }
+          }
       }
       options={options.map((option) => option)}
       renderInput={(params) => (

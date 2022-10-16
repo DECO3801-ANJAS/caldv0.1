@@ -4,11 +4,16 @@ import ITaskCardProps from '../interfaces/props/taskCardProps';
 import IParticipant from '../interfaces/models/participant';
 import ParticipantCard from './ParticipantCard';
 
-export default function TaskCard({title, elements} : ITaskCardProps) {
+// Function to return card to show participants in participants page
+// Input : 
+//        title, string
+//        elements, list of objects
+// return JSX element
+export default function TaskCard({ title, elements }: ITaskCardProps) {
 
     const isXXS = useMediaQuery("(max-width:600px)");
 
-    const elementCards = elements.map((participant:IParticipant, i:number) => (
+    const elementCards = elements.map((participant: IParticipant, i: number) => (
         <Grid item key={i}>
             <ParticipantCard
                 name={participant.name}

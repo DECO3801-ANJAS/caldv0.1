@@ -56,10 +56,12 @@ const CssTextField = styled(TextField)({
 });
 
 const Create: NextPage = () => {
+
+  // Constrain to check if the screen is small
   const isXXS = useMediaQuery("(max-width:900px)");
   const router = useRouter();
 
-  //Message
+  //Error Message
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState({

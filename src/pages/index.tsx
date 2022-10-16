@@ -34,13 +34,17 @@ const theme = createTheme({
   },
 });
 
+// Fetcher function for useSWR
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Home: NextPage = () => {
+
+  // Get events data from api/events route
   const { data, error } = useSWR("api/events", fetcher, {
     refreshInterval: 30000,
   });
 
+  // Sort events based on date and get the first one
   const upcomingEvent =
     !!data && data.events.length !== 0
       ? data.events.reduce((a: IEvent, b: IEvent) => (a.date < b.date ? a : b))
@@ -63,10 +67,12 @@ const Home: NextPage = () => {
           alignItems="center"
           spacing={2}
         >
+          {/* LOGO */}
           <Grid item style={{ marginTop: "2%", marginBottom: "5%" }}>
             <Image src="/logo.png" width={"680%"} height={"145%"} />
           </Grid>
 
+          {/* Buttons */}
           <Grid item>
             <Link href={`/create`}>
               <Button
@@ -86,6 +92,7 @@ const Home: NextPage = () => {
             </Link>
           </Grid>
 
+          {/* Upcoming Event Card */}
           <Grid item style={{ marginTop: "2%" }}>
             <hr style={{ color: "#784CF4", backgroundColor: "#784CF4" }} />
             <Typography

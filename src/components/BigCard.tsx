@@ -3,6 +3,12 @@ import IEvent from "../interfaces/models/event";
 import IBigCardProps from "../interfaces/props/bigCardProps";
 import BookCard from "./BookCard";
 
+
+// Function to return the auto complete input field
+// Input : 
+//        title, string
+//        elements, list of objects
+// return JSX element
 function BigCard({ title, elements }: IBigCardProps) {
   const isXXS = useMediaQuery("(max-width:600px)");
 

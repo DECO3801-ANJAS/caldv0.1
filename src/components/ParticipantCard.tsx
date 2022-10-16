@@ -1,11 +1,17 @@
-import { Typography, Card, Box, useMediaQuery} from '@mui/material';
+import { Typography, Card, Box, useMediaQuery } from '@mui/material';
 import IParticipantCardProps from '../interfaces/props/participantCardProps';
 
-export default function ParticipantCard({name, experience} : IParticipantCardProps) {
+
+// Function to return card for participants used in TaskCard
+// Input : 
+//        name, string
+//        experience, string
+// return JSX element
+export default function ParticipantCard({ name, experience }: IParticipantCardProps) {
     const isXXS = useMediaQuery("(max-width:600px)");
 
-    const expColor = (experience:string) => {
-        if(experience == 'beginner') {
+    const expColor = (experience: string) => {
+        if (experience == 'beginner') {
             return "#BE2B83"
         } else if (experience == 'intermediate') {
             return "#4145A7"

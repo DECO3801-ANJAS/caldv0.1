@@ -23,6 +23,15 @@ const theme = createTheme({
   },
 });
 
+
+// Function to return the card used inside BigCard
+// Input : 
+//        hrefUrl, string
+//        imageUrl, string
+//        imageAlt, string
+//        eventData, number
+//        eventTitle, string
+// return JSX element
 function BookCard(props: IBookCardProps) {
   const { hrefUrl, imageUrl, imgAlt, eventDate, eventTitle } = props;
   const isXXS = useMediaQuery("(max-width:600px)");

@@ -84,9 +84,12 @@ const CssSelect = styled(Select)(() => ({
   },
 }));
 
+// Function to fetch data for useSWR
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Join: NextPage = () => {
+
+  // Constraint to check if the screen is small
   const isXXS = useMediaQuery("(max-width:600px)");
 
   const router = useRouter();
@@ -106,6 +109,8 @@ const Join: NextPage = () => {
     experience: "",
   });
 
+  // Function to handle input from user
+  // On event change, update the state
   const handleChangeTask = (
     event: React.SyntheticEvent<Element, Event>,
     newInputValue: string
@@ -141,7 +146,7 @@ const Join: NextPage = () => {
     }));
   };
 
-  //Message
+  //Error Message
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState({
@@ -277,7 +282,7 @@ const Join: NextPage = () => {
             errorMessage={errorMessage.task}
             handleChangeTask={handleChangeTask}
             options={eventData.data ? eventData.data.event.tasks : []}
-            addNewTask={() => {}}
+            addNewTask={() => { }}
             forJoin={true}
           />
         </Grid>
