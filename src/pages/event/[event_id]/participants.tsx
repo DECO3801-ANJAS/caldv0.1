@@ -52,7 +52,7 @@ const Participants: NextPage = () => {
     return (
       participantData &&
       Object.keys(participantData).map((task: string) => (
-        <Grid item xs={12} md={6} key={task}>
+        <Grid item xs={12} key={task} sx={{ padding: "1rem" }}>
           <TaskCard title={task} elements={participantData[task]} />
         </Grid>
       ))
@@ -187,7 +187,6 @@ const Participants: NextPage = () => {
 
         <Grid
           container
-          spacing={3}
           justifyContent="center"
           sx={{ padding: "1rem" }}
         >

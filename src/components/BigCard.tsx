@@ -5,9 +5,10 @@ import BookCard from "./BookCard";
 
 function BigCard({ title, elements }: IBigCardProps) {
   const isXXS = useMediaQuery("(max-width:600px)");
+  const isSM = useMediaQuery("(max-width:900px)");
 
   const elementCards = elements.map((event: IEvent, i: number) => (
-    <Grid item key={i}>
+    <Grid item key={i} sx={{ padding: "0.5rem" }}>
       <BookCard
         eventDate={new Date(event.date).getDate()}
         eventTitle={event.title}
@@ -50,8 +51,7 @@ function BigCard({ title, elements }: IBigCardProps) {
       <Box sx={{ padding: "0.5rem" }}>
         <Grid
           container
-          spacing={1}
-          justifyContent="space-around"
+          justifyContent={isSM ? "center" : "flex-start"}
           direction={{ xs: "column", sm: "row" }}
         >
           {elementCards}
