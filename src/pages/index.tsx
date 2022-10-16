@@ -100,7 +100,7 @@ const Home: NextPage = () => {
               UPCOMING EVENTS
             </Typography>
             <Grid item style={{ marginTop: "5%" }}>
-              {!!upcomingEvent ? (
+              {!!upcomingEvent && Object.keys(upcomingEvent).length !== 0 ? (
                 <BookCard
                   eventDate={new Date(upcomingEvent.date).getDate()}
                   eventTitle={upcomingEvent.title}
@@ -109,7 +109,7 @@ const Home: NextPage = () => {
                   imgAlt={upcomingEvent.title}
                 />
               ) : (
-                <Typography fontFamily="Mohave">
+                <Typography fontFamily="Mohave" textAlign={"center"}>
                   NO UPCOMING EVENTS
                 </Typography>
               )}
