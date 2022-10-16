@@ -12,6 +12,7 @@ import Dates from "../components/Date"
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
+import "@fontsource/montserrat";
 import BookCard from "../components/BookCard";
 import IEvent from "../interfaces/models/event";
 import useSWR from "swr";
@@ -22,10 +23,7 @@ const date = `${current.getDate()}/${current.getMonth() + 1
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["Open Sans", "Mohave", "sans-serif"].join(","),
-    body1: {
-      fontWeight: 700,
-    },
+    fontFamily: ["Open Sans", "Mohave", "sans-serif", "Montserrat"].join(","),
   },
   palette: {
     primary: {
@@ -47,10 +45,10 @@ const Home: NextPage = () => {
       : {};
 
   return (
-    <Container>
+    <>
       <ThemeProvider theme={theme}>
-        <Grid container justifyContent="flex-end">
-          <Grid item style={{ marginTop: "2%" }}>
+        <Grid container justifyContent="flex-end" sx={{ padding: "1rem" }}>
+          <Grid item>
             <Dates />
             <Clock />
           </Grid>
@@ -61,13 +59,12 @@ const Home: NextPage = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          spacing={2}
         >
-          <Grid item style={{ marginTop: "2%", marginBottom: "5%" }}>
+          <Grid item style={{ marginTop: "2%", marginBottom: "5%" }} sx={{ padding: "1rem" }}>
             <Image src="/logo.png" width={"680%"} height={"145%"} />
           </Grid>
 
-          <Grid item>
+          <Grid item sx={{ padding: "0.5rem" }}>
             <Link href={`/create`}>
               <Button
                 variant="contained"
@@ -78,7 +75,7 @@ const Home: NextPage = () => {
               </Button>
             </Link>
           </Grid>
-          <Grid item>
+          <Grid item sx={{ padding: "0.5rem" }}>
             <Link href={`/event`}>
               <Button variant="contained" href="#contained-buttons">
                 See Events
@@ -117,7 +114,7 @@ const Home: NextPage = () => {
           </Grid>
         </Grid>
       </ThemeProvider>
-    </Container>
+    </>
   );
 };
 
