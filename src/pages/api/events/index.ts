@@ -8,6 +8,9 @@ import ICreateEventRequest from "../../../interfaces/requests/createEventRequest
 import IRecipe from "../../../interfaces/models/recipe";
 import IEventResponse from "../../../interfaces/responses/eventResponse";
 
+// Function to handle request for events
+// Get method to get the upcoming event sorted by date
+// Post method to handle creating events
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IEventsResponse | IErrorResponse | IEventResponse>
