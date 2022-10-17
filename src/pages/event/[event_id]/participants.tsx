@@ -93,7 +93,7 @@ const Participants: NextPage = () => {
   }
 
   useEffect(() => {
-    let currentData = { ...participantData };
+    let currentData : IParticipantData = {};
     if (!!data && data.participants.length !== 0) {
       data.participants.forEach((participant: IParticipant, i: number) => {
         const task = participant.task;
