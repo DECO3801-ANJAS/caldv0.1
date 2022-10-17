@@ -1,6 +1,12 @@
 import { Typography, Card, Box, useMediaQuery } from '@mui/material';
 import IParticipantCardProps from '../interfaces/props/participantCardProps';
 
+
+// Function to return card for participants used in TaskCard
+// Input : 
+//        name, string
+//        experience, string
+// return JSX element
 export default function ParticipantCard({ name, experience }: IParticipantCardProps) {
     const isXXS = useMediaQuery("(max-width:600px)");
 

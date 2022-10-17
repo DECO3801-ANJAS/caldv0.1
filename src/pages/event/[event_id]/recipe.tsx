@@ -16,32 +16,37 @@ import useSWR from "swr";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 
 const current = new Date();
-const date = `${current.getDate()}/${
-  current.getMonth() + 1
-}/${current.getFullYear()}`;
+const date = `${current.getDate()}/${current.getMonth() + 1
+    }/${current.getFullYear()}`;
 
 const theme = createTheme({
-  typography: {
-    fontFamily: ["Open Sans", "Mohave", "sans-serif", "montserrat"].join(","),
-  },
-  palette: {
-    primary: {
-      main: "#784CF4",
+    typography: {
+        fontFamily: ["Open Sans", "Mohave", "sans-serif", "montserrat"].join(","),
     },
-  },
+    palette: {
+        primary: {
+            main: "#784CF4",
+        },
+    },
 });
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const EventDetailRecipe: NextPage = () => {
-  const isXXS = useMediaQuery("(max-width:600px)");
-  const router = useRouter();
-  const { event_id } = router.query;
-  const { data, error } = useSWR(
-    router.isReady ? `/api/events/${event_id}` : null,
-    fetcher,
-    { refreshInterval: 10000 }
-  );
+
+    // Constraint to check if the screen is small
+    const isXXS = useMediaQuery("(max-width:600px)");
+    const router = useRouter();
+
+    // Get event id from url
+    const { event_id } = router.query;
+
+    // Get event detail data from /api/events/${event_id} route
+    const { data, error } = useSWR(
+        router.isReady ? `/api/events/${event_id}` : null,
+        fetcher,
+        { refreshInterval: 10000 }
+    );
 
     return (
         <>
@@ -58,21 +63,23 @@ const EventDetailRecipe: NextPage = () => {
 
                 <Grid container style={isXXS ? { marginBottom: "9rem" } : { marginBottom: "3rem" }}>
                     {!!data ? (
+                        // Show recipe if data is available
                         <>
                             <Grid item xs={12} style={{ padding: "1rem" }}>
-                                <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Ingridients: </Typography>
+                                <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Ingredients: </Typography>
                                 <Typography fontFamily="Open Sans">
-                                    {data.event.recipe.recipeIngredients.split('\n').map((str:string, i:number) => <p key={i}>{str}</p>)}
+                                    {data.event.recipe.recipeIngredients.split('\n').map((str: string, i: number) => <p key={i}>{str}</p>)}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} style={{ padding: "1rem" }}>
                                 <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Recipe: </Typography>
                                 <Typography fontFamily="Open Sans">
-                                    {data.event.recipe.recipeSteps.split('\n').map((str:string, i:number) => <p key={i}>{str}</p>)}
+                                    {data.event.recipe.recipeSteps.split('\n').map((str: string, i: number) => <p key={i}>{str}</p>)}
                                 </Typography>
                             </Grid>
                         </>
                     ) : (
+                        // Else show loading bar
                         <Grid item xs={12}>
                             <Grid container justifyContent={"center"}>
                                 <CircularProgress />

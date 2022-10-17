@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
 import { createTheme, useMediaQuery } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -30,15 +29,18 @@ const theme = createTheme({
   },
 });
 
+// Fetcher function for useSWR
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const AllEvents: NextPage = () => {
-
+  // Get events data from api/events route
   const { data, error } = useSWR("api/events", fetcher, {
     refreshInterval: 30000,
   });
+
   const [eventData, setEventData] = React.useState<IEventData>();
 
+  // Sort the data based on month
   useEffect(() => {
     let currentData : IEventData = {};
     if (!!data && data.events.length !== 0) {
@@ -62,6 +64,7 @@ const AllEvents: NextPage = () => {
     }
   }, [data]);
 
+  // Function to create cards for displaying
   const bigCards = () => {
     return (
       eventData &&
@@ -125,8 +128,10 @@ const AllEvents: NextPage = () => {
           sx={{ padding: "1rem" }}
         >
           {!!data && data.events.length !== 0 ? (
+            // Show cards if data is not null and length > 0
             bigCards()
           ) : (
+            // Else show loading bar
             <Grid item xs={12}>
               <Grid container justifyContent={"center"}>
                 <CircularProgress />

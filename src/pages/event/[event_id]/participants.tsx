@@ -28,18 +28,26 @@ const theme = createTheme({
   },
 });
 
+// Function to fetch data for useSWR
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Participants: NextPage = () => {
+
+  // Constraint to check if the screen is small
   const isXXS = useMediaQuery("(max-width:600px)");
   const router = useRouter();
+
+  // Get event id from url
   const { event_id } = router.query;
+
+  // Get participants data from /api/events/${event_id}/participants route
   const { data, error } = useSWR(
     router.isReady ? `/api/events/${event_id}/participants` : null,
     fetcher,
     { refreshInterval: 10000 }
   );
 
+  // Get event detail data from /api/events/${event_id} route
   const eventData = useSWR(
     router.isReady ? `/api/events/${event_id}` : null,
     fetcher,
@@ -48,6 +56,7 @@ const Participants: NextPage = () => {
 
   const [participantData, setParticipantData] = useState<IParticipantData>();
 
+  // Function to create cards
   const taskCards = () => {
     return (
       participantData &&
@@ -61,9 +70,11 @@ const Participants: NextPage = () => {
 
   const showCards = () => {
     if (!!data && data.participants.length !== 0) {
+      // Show cards if data if available
       return taskCards()
     } else if (!!data && data.participants.length == 0) {
       return (
+        // If api returns an empty object, show no one joined yet
         <Grid item xs={12}>
           <Grid container justifyContent={"center"}>
             <Grid item xs={12}>
@@ -83,6 +94,7 @@ const Participants: NextPage = () => {
       )
     } else {
       return (
+        // else show loading bar
         <Grid item xs={12}>
           <Grid container justifyContent={"center"}>
             <CircularProgress />
@@ -92,6 +104,7 @@ const Participants: NextPage = () => {
     }
   }
 
+  // Sort participants based on tasks
   useEffect(() => {
     let currentData : IParticipantData = {};
     if (!!data && data.participants.length !== 0) {

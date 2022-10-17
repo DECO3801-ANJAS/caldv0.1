@@ -4,6 +4,11 @@ import ITaskCardProps from '../interfaces/props/taskCardProps';
 import IParticipant from '../interfaces/models/participant';
 import ParticipantCard from './ParticipantCard';
 
+// Function to return card to show participants in participants page
+// Input : 
+//        title, string
+//        elements, list of objects
+// return JSX element
 export default function TaskCard({ title, elements }: ITaskCardProps) {
 
     const isXXS = useMediaQuery("(max-width:600px)");
