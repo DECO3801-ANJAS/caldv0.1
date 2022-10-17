@@ -19,6 +19,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { axiosFormData } from "../../components/axiosInstance";
 import { useRouter } from "next/router";
 import FormSnackbar from "../../components/FormSnackbar";
+import Image from "next/image";
 
 const theme = createTheme({
   palette: {
@@ -150,21 +151,45 @@ const Create: NextPage = () => {
   const [files, setFiles] = React.useState<IFile[]>([]);
 
   // Build form data
-  const buildFormData = () => {
+  const buildFormData = async () => {
     const dateString = date!.format().split("T")[0];
     const timeString = time!.format().split("T")[1];
     const dateTime = new Date(dateString.concat("T").concat(timeString));
+
+    const promises: Promise<void>[] = [];
+
+    let imageBase64: string[] = []
+    for (let i = 0; i < files.length; i++) {
+      const wrap = async () => {
+        const base64Url = await blobToBase64(files[i]);
+        imageBase64.push(base64Url)
+      }
+      promises.push(wrap())
+    }
+    await Promise.all(promises)
+
+
     const eventJson = {
       ...eventDetails,
       date: dateTime,
       tasks: [...arrayOfTasks],
-      images: files,
+      images: imageBase64
     };
 
     return eventJson;
   };
 
-  const handleSubmit = () => {
+  const blobToDataUrl = (blob: IFile) => new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+
+  const blobToBase64 = (blob: IFile) => blobToDataUrl(blob).then((text: string) => text);
+
+
+  const handleSubmit = async () => {
 
     // Check for empty fields(except for image field)
     if (eventDetails.title == "") {
@@ -232,7 +257,7 @@ const Create: NextPage = () => {
         date: true,
       }));
     } else {
-      const eventData = buildFormData();
+      const eventData = await buildFormData()
       axiosFormData.post("/api/events", eventData).then((res) => {
         console.log(res);
         setOpen(true);
@@ -245,6 +270,7 @@ const Create: NextPage = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
+
         <Grid
           container
           alignItems="center"

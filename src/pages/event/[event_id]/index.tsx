@@ -63,7 +63,7 @@ const EventDetail: NextPage = () => {
               <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
                 <Grid container>
                   <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Image src="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp" width={500} height={500} alt='' />
+                    <Image src={eventData.data.event.images[0]} width={500} height={500} alt='' />
                   </Grid>
                   <Grid item xs={12} sx={{ padding: "0.5rem" }}>
                     <Grid container justifyContent={"center"}>

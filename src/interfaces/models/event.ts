@@ -10,7 +10,7 @@ interface IEvent {
   recipe: IRecipe;
   date: Date;
   tasks: string[];
-  images?: IFile[];
+  images?: string[]
 }
 
 export default IEvent;
