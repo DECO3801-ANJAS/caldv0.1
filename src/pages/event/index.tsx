@@ -33,14 +33,14 @@ const theme = createTheme({
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const AllEvents: NextPage = () => {
-  const isXXS = useMediaQuery("(max-width:600px)");
+
   const { data, error } = useSWR("api/events", fetcher, {
     refreshInterval: 30000,
   });
   const [eventData, setEventData] = React.useState<IEventData>();
 
   useEffect(() => {
-    let currentData = { ...eventData };
+    let currentData : IEventData = {};
     if (!!data && data.events.length !== 0) {
       data.events.forEach((event: IEvent, i: number) => {
         const date = new Date(event.date);
