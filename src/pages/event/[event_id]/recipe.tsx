@@ -60,7 +60,7 @@ const EventDetailRecipe: NextPage = () => {
                     {!!data ? (
                         <>
                             <Grid item xs={12} style={{ padding: "1rem" }}>
-                                <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Ingridients: </Typography>
+                                <Typography fontFamily="Open Sans" component="h1" variant="h5" color={"#784CF4"}>Ingredients: </Typography>
                                 <Typography fontFamily="Open Sans">
                                     {data.event.recipe.recipeIngredients.split('\n').map((str:string, i:number) => <p key={i}>{str}</p>)}
                                 </Typography>
