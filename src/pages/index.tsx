@@ -1,10 +1,10 @@
+// @refresh reset
 import type { NextPage } from "next";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Image from "next/image";
 import { Typography } from "@mui/material";
-import { Container } from "@mui/system";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import Clock from "../components/Clock";
@@ -12,6 +12,7 @@ import Dates from "../components/Date"
 
 import "@fontsource/open-sans";
 import "@fontsource/mohave";
+import "@fontsource/montserrat";
 import BookCard from "../components/BookCard";
 import IEvent from "../interfaces/models/event";
 import useSWR from "swr";
@@ -22,10 +23,7 @@ const date = `${current.getDate()}/${current.getMonth() + 1
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["Open Sans", "Mohave", "sans-serif"].join(","),
-    body1: {
-      fontWeight: 700,
-    },
+    fontFamily: ["Open Sans", "Mohave", "sans-serif", "Montserrat"].join(","),
   },
   palette: {
     primary: {
@@ -50,11 +48,31 @@ const Home: NextPage = () => {
       ? data.events.reduce((a: IEvent, b: IEvent) => (a.date < b.date ? a : b))
       : {};
 
+  const showUpcomingEvent = () => {
+    if (!!upcomingEvent && Object.keys(upcomingEvent).length !== 0) {
+      return (
+        <BookCard
+          eventDate={new Date(upcomingEvent.date).getDate()}
+          eventTitle={upcomingEvent.title}
+          hrefUrl={`event/${upcomingEvent._id}`}
+          imageUrl={upcomingEvent.images.length !== 0 ? upcomingEvent.images[0] : "https://via.placeholder.com/150?text=No_Image"}
+          imgAlt={upcomingEvent.title}
+        />
+      )
+    } else {
+      return (
+        <Typography fontFamily="Mohave" textAlign={"center"}>
+          NO UPCOMING EVENTS
+        </Typography>
+      )
+    }
+  }
+
   return (
-    <Container>
+    <>
       <ThemeProvider theme={theme}>
-        <Grid container justifyContent="flex-end">
-          <Grid item style={{ marginTop: "2%" }}>
+        <Grid container justifyContent="flex-end" sx={{ padding: "1rem" }}>
+          <Grid item>
             <Dates />
             <Clock />
           </Grid>
@@ -65,10 +83,9 @@ const Home: NextPage = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          spacing={2}
         >
           {/* LOGO */}
-          <Grid item style={{ marginTop: "2%", marginBottom: "5%" }}>
+          <Grid item style={{ marginTop: "2%", marginBottom: "5%" }} sx={{padding: "1rem"}}>
             <Image src="/logo.png" width={"680%"} height={"145%"} />
           </Grid>
 
@@ -84,9 +101,12 @@ const Home: NextPage = () => {
               </Button>
             </Link>
           </Grid>
-          <Grid item>
+          <Grid item sx={{ padding: "0.5rem" }}>
             <Link href={`/event`}>
-              <Button variant="contained" href="#contained-buttons">
+              <Button
+                variant="contained"
+                href="#contained-buttons"
+                fullWidth={true}>
                 See Events
               </Button>
             </Link>
@@ -107,24 +127,12 @@ const Home: NextPage = () => {
               UPCOMING EVENTS
             </Typography>
             <Grid item style={{ marginTop: "5%" }}>
-              {!!upcomingEvent ? (
-                <BookCard
-                  eventDate={new Date(upcomingEvent.date).getDate()}
-                  eventTitle={upcomingEvent.title}
-                  hrefUrl={`event/${upcomingEvent._id}`}
-                  imageUrl="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
-                  imgAlt={upcomingEvent.title}
-                />
-              ) : (
-                <Typography fontFamily="Mohave">
-                  NO UPCOMING EVENTS
-                </Typography>
-              )}
+              {showUpcomingEvent()}
             </Grid>
           </Grid>
         </Grid>
       </ThemeProvider>
-    </Container>
+    </>
   );
 };
 

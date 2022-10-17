@@ -38,7 +38,7 @@ function BookCard(props: IBookCardProps) {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Card>
+        <Card sx={isXXS ? {} : { width: 252 }}>
           <Link href={hrefUrl} style={{ textDecoration: "none" }}>
             <CardActionArea sx={{ display: "flex", alignItems: "center" }}>
               <CardMedia
@@ -66,9 +66,8 @@ function BookCard(props: IBookCardProps) {
                     color="text.secondary"
                     component="div"
                     noWrap
-                    sx={isXXS ? { width: "13rem" } : { width: "10rem" }}
                   >
-                    {eventTitle}
+                    {!!eventTitle && eventTitle.length > 15 ? eventTitle.slice(0, 15) + "..." : eventTitle}
                   </Typography>
                 </Grid>
               </Grid>

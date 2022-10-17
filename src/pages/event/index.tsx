@@ -16,6 +16,7 @@ import ArrowBack from "../../components/ArrowBack";
 import IEvent from "../../interfaces/models/event";
 import IEventData from "../../interfaces/data/eventData";
 import BigCard from "../../components/BigCard";
+import dayjs from "dayjs";
 
 const theme = createTheme({
   typography: {
@@ -41,7 +42,7 @@ const AllEvents: NextPage = () => {
 
   // Sort the data based on month
   useEffect(() => {
-    let currentData = { ...eventData };
+    let currentData : IEventData = {};
     if (!!data && data.events.length !== 0) {
       data.events.forEach((event: IEvent, i: number) => {
         const date = new Date(event.date);
@@ -68,7 +69,7 @@ const AllEvents: NextPage = () => {
     return (
       eventData &&
       Object.keys(eventData).map((month: string) => (
-        <Grid item xs={12} md={6} key={month}>
+        <Grid item xs={12} key={month} sx={{ padding: "1rem" }}>
           <BigCard title={month} elements={eventData[month]} />
         </Grid>
       ))
@@ -123,7 +124,6 @@ const AllEvents: NextPage = () => {
 
         <Grid
           container
-          spacing={3}
           justifyContent="center"
           sx={{ padding: "1rem" }}
         >

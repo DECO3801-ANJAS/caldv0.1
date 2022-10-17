@@ -12,9 +12,10 @@ import ParticipantCard from './ParticipantCard';
 export default function TaskCard({ title, elements }: ITaskCardProps) {
 
     const isXXS = useMediaQuery("(max-width:600px)");
+    const isSM = useMediaQuery("(max-width:900px)");
 
     const elementCards = elements.map((participant: IParticipant, i: number) => (
-        <Grid item key={i}>
+        <Grid item key={i} sx={{ padding: "0.5rem" }}>
             <ParticipantCard
                 name={participant.name}
                 experience={participant.experience}
@@ -28,7 +29,8 @@ export default function TaskCard({ title, elements }: ITaskCardProps) {
                 <Typography sx={{ textTransform: "uppercase", color: "white" }}>{title}</Typography>
             </Box>
             <Box sx={{ padding: "0.5rem" }}>
-                <Grid container spacing={1} justifyContent="space-around" direction={{ xs: "column", sm: "row" }}>
+                <Grid container
+                    direction={{ xs: "column", sm: "row" }}>
 
                     {elementCards}
 

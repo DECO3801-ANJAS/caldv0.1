@@ -61,7 +61,7 @@ const Participants: NextPage = () => {
     return (
       participantData &&
       Object.keys(participantData).map((task: string) => (
-        <Grid item xs={12} md={6} key={task}>
+        <Grid item xs={12} key={task} sx={{ padding: "1rem" }}>
           <TaskCard title={task} elements={participantData[task]} />
         </Grid>
       ))
@@ -106,7 +106,7 @@ const Participants: NextPage = () => {
 
   // Sort participants based on tasks
   useEffect(() => {
-    let currentData = { ...participantData };
+    let currentData : IParticipantData = {};
     if (!!data && data.participants.length !== 0) {
       data.participants.forEach((participant: IParticipant, i: number) => {
         const task = participant.task;
@@ -200,7 +200,6 @@ const Participants: NextPage = () => {
 
         <Grid
           container
-          spacing={3}
           justifyContent="center"
           sx={{ padding: "1rem" }}
         >

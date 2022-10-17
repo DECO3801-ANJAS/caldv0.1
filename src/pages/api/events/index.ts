@@ -11,6 +11,15 @@ import IEventResponse from "../../../interfaces/responses/eventResponse";
 // Function to handle request for events
 // Get method to get the upcoming event sorted by date
 // Post method to handle creating events
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb",
+    },
+    responseLimit: false,
+  },
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IEventsResponse | IErrorResponse | IEventResponse>
@@ -43,7 +52,7 @@ export default async function handler(
           recipeSteps,
           date,
           tasks,
-          images
+          images,
         }: ICreateEventRequest = body;
         const recipeData: IRecipe = { recipeIngredients, recipeSteps };
         const eventData = {

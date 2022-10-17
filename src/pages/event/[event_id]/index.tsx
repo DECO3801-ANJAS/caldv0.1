@@ -8,6 +8,7 @@ import { useMediaQuery } from "@mui/material";
 import Image from "next/image";
 import Clock from "../../../components/Clock";
 import Dates from "../../../components/Date";
+import Carousel from "react-material-ui-carousel";
 
 import Link from "next/link";
 import useSWR from "swr";
@@ -67,12 +68,33 @@ const EventDetail: NextPage = () => {
         <Grid container style={isXXS ? { marginBottom: "9rem" } : { marginBottom: "3rem" }}>
           {!!eventData.data ? (
             <>
-              {/* Show event detail if the data is available */}
+            {/* Show event detail if the data is available */}
               <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
                 <Grid container>
-                  <Grid item xs={12}>
-                    <Image src="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp" layout='responsive'
-                      width={16} height={16} quality={65} sizes={"20(max-width: 768px) 100vw,(max-width: 1200px) 50vw, 33vw"} alt='' />
+                  <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    {/* <Image src={eventData.data.event.images[0]} width={500} height={500} alt='' /> */}
+                    <Carousel
+                      sx={{ width: 600 }}
+                      className="Example"
+                      autoPlay={true}
+                      animation={"slide"}
+                      indicators={true}
+                      cycleNavigation={true}
+                      navButtonsAlwaysVisible={false}
+                      navButtonsAlwaysInvisible={false}
+                    >
+                      {eventData.data.event.images.map((image: string, index: number) => {
+                        return (
+                          <Box key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Image
+                              src={image}
+                              height={600}
+                              width={650}
+                            />
+                          </Box>
+                        );
+                      })}
+                    </Carousel>
                   </Grid>
                   <Grid item xs={12} sx={{ padding: "0.5rem" }}>
                     <Grid container justifyContent={"center"}>
@@ -95,6 +117,29 @@ const EventDetail: NextPage = () => {
                     >
                       {eventData.data.event.title}
                     </Typography>
+                  </Grid>
+                  <Grid item xs={12} display={isXXS ? "none" : "block"}>
+                    <Grid container>
+                      <Grid item xs={12} textAlign={isXXS ? "center" : "left"}>
+                        <Typography fontFamily="Open Sans">{!!participantData.data ? participantData.data.participants.length : "0"} JOINING</Typography>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Box sx={{ width: 350 }}>
+                          <Grid container>
+                            <Grid xs={12} sm={6} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0.5rem 0rem" }}>
+                              <Link href={`/event/${router.query.event_id}/participants`}>
+                                <Button variant="outlined" fullWidth={isXXS} color="primary">View Participants</Button>
+                              </Link>
+                            </Grid>
+                            <Grid xs={12} sm={6} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0.5rem 0rem" }}>
+                              <Link href={`/event/${router.query.event_id}/join`}>
+                                <Button variant="contained" fullWidth={isXXS} color="primary">Join</Button>
+                              </Link>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </Grid>
+                    </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <Grid container direction={"column"}>
@@ -119,7 +164,15 @@ const EventDetail: NextPage = () => {
           )}
         </Grid>
 
-        <Box sx={{ backgroundColor: "white", position: 'fixed', bottom: 0, left: 0, right: 0, padding: "0.5rem", borderTop: "solid 1px #784CF4" }}>
+        <Box display={isXXS ? "block" : "none"} sx={{
+          backgroundColor: "white",
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: "0.5rem",
+          borderTop: "solid 1px #784CF4"
+        }}>
           <Grid container justifyContent={"space-between"} alignItems={"center"}>
             <Grid item xs={12} sm={6} style={{ textAlign: "center" }}>
               <Typography fontFamily="Open Sans">{!!participantData.data ? participantData.data.participants.length : "0"} JOINING</Typography>

@@ -26,7 +26,7 @@ export default function ParticipantCard({ name, experience }: IParticipantCardPr
         <Card sx={{ display: "flex", alignItems: "center" }}>
             <Box sx={isXXS ? { backgroundColor: "#E8E7EC", padding: "0.5rem", width: "100%" }
                 : { backgroundColor: "#E8E7EC", padding: "0.5rem" }}>
-                <Typography sx={{ textTransform: "uppercase", color: "#784CF4" }}>{name}</Typography>
+                <Typography sx={{ textTransform: "uppercase", color: "#784CF4" }}>{!!name && name.length > 6 ? name.slice(0, 6) + "..." : name}</Typography>
             </Box>
             <Box sx={isXXS ? { backgroundColor: expColor(experience), padding: "0.5rem", width: "100%" }
                 : { backgroundColor: expColor(experience), padding: "0.5rem" }}>
