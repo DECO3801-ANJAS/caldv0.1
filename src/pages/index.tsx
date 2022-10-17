@@ -1,10 +1,10 @@
+// @refresh reset
 import type { NextPage } from "next";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Image from "next/image";
 import { Typography } from "@mui/material";
-import { Container } from "@mui/system";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import Clock from "../components/Clock";
@@ -43,6 +43,26 @@ const Home: NextPage = () => {
     !!data && data.events.length !== 0
       ? data.events.reduce((a: IEvent, b: IEvent) => (a.date < b.date ? a : b))
       : {};
+
+  const showUpcomingEvent = () => {
+    if (!!upcomingEvent && Object.keys(upcomingEvent).length !== 0) {
+      return (
+        <BookCard
+          eventDate={new Date(upcomingEvent.date).getDate()}
+          eventTitle={upcomingEvent.title}
+          hrefUrl={`event/${upcomingEvent._id}`}
+          imageUrl={upcomingEvent.images.length !== 0 ? upcomingEvent.images[0] : "https://via.placeholder.com/150?text=No_Image"}
+          imgAlt={upcomingEvent.title}
+        />
+      )
+    } else {
+      return (
+        <Typography fontFamily="Mohave" textAlign={"center"}>
+          NO UPCOMING EVENTS
+        </Typography>
+      )
+    }
+  }
 
   return (
     <>
@@ -100,19 +120,7 @@ const Home: NextPage = () => {
               UPCOMING EVENTS
             </Typography>
             <Grid item style={{ marginTop: "5%" }}>
-              {!!upcomingEvent && Object.keys(upcomingEvent).length !== 0 ? (
-                <BookCard
-                  eventDate={new Date(upcomingEvent.date).getDate()}
-                  eventTitle={upcomingEvent.title}
-                  hrefUrl={`event/${upcomingEvent._id}`}
-                  imageUrl="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
-                  imgAlt={upcomingEvent.title}
-                />
-              ) : (
-                <Typography fontFamily="Mohave" textAlign={"center"}>
-                  NO UPCOMING EVENTS
-                </Typography>
-              )}
+              {showUpcomingEvent()}
             </Grid>
           </Grid>
         </Grid>
