@@ -8,7 +8,7 @@ interface ICreateEventRequest {
   recipeSteps: string;
   date: string;
   tasks: string[];
-  images?: IFile[];
+  images?: string[];
 }
 
 export default ICreateEventRequest;

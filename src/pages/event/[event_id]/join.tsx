@@ -19,6 +19,7 @@ import FormSnackbar from "../../../components/FormSnackbar";
 import { axiosFormData } from "../../../components/axiosInstance";
 import Link from "next/link";
 import useSWR from "swr";
+import { LoadingButton } from "@mui/lab";
 
 const theme = createTheme({
   palette: {
@@ -149,6 +150,7 @@ const Join: NextPage = () => {
     task: false,
     experience: false,
   });
+  const [loading, setLoading] = React.useState(false)
 
   const handleSubmit = () => {
     // Check for empty fields(except for image field)
@@ -174,6 +176,7 @@ const Join: NextPage = () => {
         experience: true,
       }));
     } else {
+      setLoading(true)
       const data = {
         ...joinDetails,
         task: taskInputValue,
@@ -185,6 +188,11 @@ const Join: NextPage = () => {
           setOpen(true);
           setError(false);
           router.push(`/event/${router.query.event_id}`);
+        }).catch(e => {
+          setLoading(false)
+          setOpen(true);
+          setError(true);
+          console.log(e.response)
         });
     }
   };
@@ -277,7 +285,7 @@ const Join: NextPage = () => {
             errorMessage={errorMessage.task}
             handleChangeTask={handleChangeTask}
             options={eventData.data ? eventData.data.event.tasks : []}
-            addNewTask={() => {}}
+            addNewTask={() => { }}
             forJoin={true}
           />
         </Grid>
@@ -337,9 +345,14 @@ const Join: NextPage = () => {
               <b>Cancel</b>
             </Button>
           </Link>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
+          <LoadingButton
+            loading={loading}
+            loadingIndicator="Loading…"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}>
             Submit
-          </Button>
+          </LoadingButton>
         </Grid>
       </Grid>
 

@@ -8,6 +8,7 @@ import { useMediaQuery } from "@mui/material";
 import Image from "next/image";
 import Clock from "../../../components/Clock";
 import Dates from "../../../components/Date";
+import Carousel from "react-material-ui-carousel";
 
 import Link from "next/link";
 import useSWR from "swr";
@@ -63,7 +64,29 @@ const EventDetail: NextPage = () => {
               <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
                 <Grid container>
                   <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Image src="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp" width={500} height={500} alt='' />
+                    {/* <Image src={eventData.data.event.images[0]} width={500} height={500} alt='' /> */}
+                    <Carousel
+                      sx={{ width: 600 }}
+                      className="Example"
+                      autoPlay={true}
+                      animation={"slide"}
+                      indicators={true}
+                      cycleNavigation={true}
+                      navButtonsAlwaysVisible={false}
+                      navButtonsAlwaysInvisible={false}
+                    >
+                      {eventData.data.event.images.map((image: string, index: number) => {
+                        return (
+                          <Box key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Image
+                              src={image}
+                              height={600}
+                              width={650}
+                            />
+                          </Box>
+                        );
+                      })}
+                    </Carousel>
                   </Grid>
                   <Grid item xs={12} sx={{ padding: "0.5rem" }}>
                     <Grid container justifyContent={"center"}>

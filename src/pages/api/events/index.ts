@@ -8,6 +8,15 @@ import ICreateEventRequest from "../../../interfaces/requests/createEventRequest
 import IRecipe from "../../../interfaces/models/recipe";
 import IEventResponse from "../../../interfaces/responses/eventResponse";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb"
+    },
+    responseLimit: false
+  }
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IEventsResponse | IErrorResponse | IEventResponse>
