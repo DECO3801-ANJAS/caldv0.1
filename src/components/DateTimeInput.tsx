@@ -30,6 +30,16 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
+
+// Function to return date and time input field
+// Input : 
+//        setTimeFunc, React.useState(dayjs | null) function
+//        setDateFunc, React.useState(dayjs | null) function
+//        date, React.useState(dayjs | null)
+//        time, React.useState(dayjs | null)
+//        errorMessageDate, boolean
+//        errorMessageTime, boolean
+// return JSX element
 export default function BasicDatePicker({
   setTimeFunc,
   setDateFunc,

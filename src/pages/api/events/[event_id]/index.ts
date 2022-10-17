@@ -5,6 +5,7 @@ import IErrorResponse from "../../../../interfaces/responses/error";
 import IEventResponse from "../../../../interfaces/responses/eventResponse";
 import clientPromise from "../../../../lib/mongodb";
 
+// Function to handle get request for event detail
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IErrorResponse | IEventResponse>

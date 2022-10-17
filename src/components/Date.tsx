@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import "@fontsource/open-sans";
 
+
+// Function to return Date
+// return JSX element
 function Clock() {
   const [clockState, setClockState] = useState<string>();
 
