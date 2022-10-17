@@ -77,7 +77,10 @@ const Home: NextPage = () => {
           </Grid>
           <Grid item sx={{ padding: "0.5rem" }}>
             <Link href={`/event`}>
-              <Button variant="contained" href="#contained-buttons">
+              <Button
+                variant="contained"
+                href="#contained-buttons"
+                fullWidth={true}>
                 See Events
               </Button>
             </Link>
