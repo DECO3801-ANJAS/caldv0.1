@@ -9,7 +9,6 @@ import FreeSolo from "../../components/AutoComplete";
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/material/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import dayjs, { Dayjs } from "dayjs";
 import IconButton from "@mui/material/IconButton";
@@ -19,6 +18,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { axiosFormData } from "../../components/axiosInstance";
 import { useRouter } from "next/router";
 import FormSnackbar from "../../components/FormSnackbar";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const theme = createTheme({
   palette: {
@@ -72,6 +72,7 @@ const Create: NextPage = () => {
     date: false,
     time: false,
   });
+  const [loading, setLoading] = React.useState(false)
 
   // Event Details
   const [eventDetails, setEventDetails] = React.useState({
@@ -150,21 +151,45 @@ const Create: NextPage = () => {
   const [files, setFiles] = React.useState<IFile[]>([]);
 
   // Build form data
-  const buildFormData = () => {
+  const buildFormData = async () => {
     const dateString = date!.format().split("T")[0];
     const timeString = time!.format().split("T")[1];
     const dateTime = new Date(dateString.concat("T").concat(timeString));
+
+    const promises: Promise<void>[] = [];
+
+    let imageBase64: string[] = []
+    for (let i = 0; i < files.length; i++) {
+      const wrap = async () => {
+        const base64Url = await blobToBase64(files[i]);
+        imageBase64.push(base64Url)
+      }
+      promises.push(wrap())
+    }
+    await Promise.all(promises)
+
+
     const eventJson = {
       ...eventDetails,
       date: dateTime,
       tasks: [...arrayOfTasks],
-      images: files,
+      images: imageBase64
     };
 
     return eventJson;
   };
 
-  const handleSubmit = () => {
+  const blobToDataUrl = (blob: IFile) => new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+
+  const blobToBase64 = (blob: IFile) => blobToDataUrl(blob).then((text: string) => text);
+
+
+  const handleSubmit = async () => {
 
     // Check for empty fields(except for image field)
     if (eventDetails.title == "") {
@@ -232,12 +257,18 @@ const Create: NextPage = () => {
         date: true,
       }));
     } else {
-      const eventData = buildFormData();
+      setLoading(true)
+      const eventData = await buildFormData()
       axiosFormData.post("/api/events", eventData).then((res) => {
         console.log(res);
         setOpen(true);
         setError(false);
         router.push(`event/`);
+      }).catch((e) => {
+        setLoading(false)
+        setOpen(true);
+        setError(true);
+        console.log(e.response)
       });
     }
   };
@@ -245,6 +276,7 @@ const Create: NextPage = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
+
         <Grid
           container
           alignItems="center"
@@ -500,9 +532,14 @@ const Create: NextPage = () => {
         </Grid>
         <Grid item xs={12} textAlign="center">
           <ThemeProvider theme={theme}>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
+            <LoadingButton
+              loading={loading}
+              loadingIndicator="Loading…"
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}>
               Submit
-            </Button>
+            </LoadingButton>
           </ThemeProvider>
         </Grid>
       </Grid>
