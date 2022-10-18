@@ -43,19 +43,27 @@ const EventDetail: NextPage = () => {
   const { event_id } = router.query;
 
   // Get event detail data from /api/events/${event_id} route
-  const eventData = useSWR(router.isReady ? `/api/events/${event_id}` : null,
-    fetcher, { refreshInterval: 10000 }
-  )
+  const eventData = useSWR(
+    router.isReady ? `/api/events/${event_id}` : null,
+    fetcher,
+    { refreshInterval: 10000 }
+  );
 
   // Get participant data from /api/events/${event_id}/participants route
-  const participantData = useSWR(router.isReady ? `/api/events/${event_id}/participants` : null,
-    fetcher, { refreshInterval: 10000 }
-  )
+  const participantData = useSWR(
+    router.isReady ? `/api/events/${event_id}/participants` : null,
+    fetcher,
+    { refreshInterval: 10000 }
+  );
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Grid container justifyContent='space-between' style={{ padding: "1rem" }}>
+        <Grid
+          container
+          justifyContent="space-between"
+          style={{ padding: "1rem" }}
+        >
           <Grid item xs={6}>
             <ArrowBack href={"/event/"} />
           </Grid>
@@ -65,22 +73,34 @@ const EventDetail: NextPage = () => {
           </Grid>
         </Grid>
 
-        <Grid container style={isXXS ? { marginBottom: "9rem" } : { marginBottom: "3rem" }}>
-
-          { !!eventData.data && 'error' in eventData.data ? (
+        <Grid
+          container
+          style={isXXS ? { marginBottom: "9rem" } : { marginBottom: "3rem" }}
+        >
+          {!!eventData.data && "error" in eventData.data ? (
             <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
               <Typography>No data found</Typography>
             </Grid>
-          ) : (
-            // Show data if available
-            !!eventData.data ? (
-              <>
+          ) : // Show data if available
+          !!eventData.data ? (
+            <>
               <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
                 <Grid container>
-                  <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
                     {/* <Image src={eventData.data.event.images[0]} width={500} height={500} alt='' /> */}
                     <Carousel
-                      sx={{ width: {xs:350, sm:700 , md:600}, height: {xs:350, sm:350, md:500} }}
+                      sx={{
+                        width: { xs: 350, sm: 700, md: 600 },
+                        height: { xs: 350, sm: 350, md: 500 },
+                      }}
                       className="Example"
                       autoPlay={true}
                       animation={"slide"}
@@ -89,33 +109,46 @@ const EventDetail: NextPage = () => {
                       navButtonsAlwaysVisible={false}
                       navButtonsAlwaysInvisible={false}
                     >
-                      {!!eventData.data.event && eventData.data.event.images.length !== 0 ? eventData.data.event.images.map((image: string, index: number) => {
-                        return (
-                          <Box key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Image
-                              src={image}
-                              height={600}
-                              width={650}
-                              alt="No_image"
-                            />
-                          </Box>
-                        );
-                      }) : (
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Image
-                              src={"https://via.placeholder.com/500.png?text=No_Image"}
-                              height={600}
-                              width={650}
-                              alt="No_image"
-                            />
-                          </Box>
+                      {!!eventData.data.event &&
+                      eventData.data.event.images.length !== 0 ? (
+                        eventData.data.event.images.map(
+                          (image: string, index: number) => {
+                            return (
+                              <Box
+                                key={index}
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <Image
+                                  src={image}
+                                  height={600}
+                                  width={850}
+                                  alt="No_image"
+                                />
+                              </Box>
+                            );
+                          }
+                        )
+                      ) : (
+                        <Box sx={{ display: "flex", justifyContent: "center" }}>
+                          <Image
+                            src={
+                              "https://via.placeholder.com/500.png?text=No_Image"
+                            }
+                            height={600}
+                            width={850}
+                            alt="No_image"
+                          />
+                        </Box>
                       )}
                     </Carousel>
                   </Grid>
                   <Grid item xs={12} sx={{ padding: "0.5rem" }}>
                     <Grid container justifyContent={"center"}>
                       <Link href={`/event/${router.query.event_id}/recipe`}>
-                        <Button variant='contained'>View Recipe</Button>
+                        <Button variant="contained">View Recipe</Button>
                       </Link>
                     </Grid>
                   </Grid>
@@ -129,7 +162,11 @@ const EventDetail: NextPage = () => {
                       variant="h4"
                       component="h1"
                       gutterBottom
-                      sx={{ textTransform: "capitalize", fontWeight: "600", overflowY: 'hidden' }}
+                      sx={{
+                        textTransform: "capitalize",
+                        fontWeight: "600",
+                        overflowY: "hidden",
+                      }}
                     >
                       {!!eventData.data.event ? eventData.data.event.title : ""}
                     </Typography>
@@ -137,21 +174,63 @@ const EventDetail: NextPage = () => {
                   <Grid item xs={12} display={isXXS ? "none" : "block"}>
                     <Grid container>
                       <Grid item xs={12} textAlign={isXXS ? "center" : "left"}>
-                        {!!participantData.data && 'error' in participantData.data ? <></> : (
-                          <Typography fontFamily="Open Sans">{!!participantData.data ? participantData.data.participants.length : "0"} JOINING</Typography>
+                        {!!participantData.data &&
+                        "error" in participantData.data ? (
+                          <></>
+                        ) : (
+                          <Typography fontFamily="Open Sans">
+                            {!!participantData.data
+                              ? participantData.data.participants.length
+                              : "0"}{" "}
+                            JOINING
+                          </Typography>
                         )}
                       </Grid>
                       <Grid item xs={12}>
                         <Box sx={{ width: 350 }}>
                           <Grid container>
-                            <Grid xs={12} sm={6} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0.5rem 0rem" }}>
-                              <Link href={`/event/${router.query.event_id}/participants`}>
-                                <Button variant="outlined" fullWidth={isXXS} color="primary">View Participants</Button>
+                            <Grid
+                              xs={12}
+                              sm={6}
+                              item
+                              style={
+                                isXXS
+                                  ? { padding: "0.5rem 0.5rem" }
+                                  : { padding: "0.5rem 0rem" }
+                              }
+                            >
+                              <Link
+                                href={`/event/${router.query.event_id}/participants`}
+                              >
+                                <Button
+                                  variant="outlined"
+                                  fullWidth={isXXS}
+                                  color="primary"
+                                >
+                                  View Participants
+                                </Button>
                               </Link>
                             </Grid>
-                            <Grid xs={12} sm={6} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0.5rem 0rem" }}>
-                              <Link href={`/event/${router.query.event_id}/join`}>
-                                <Button variant="contained" fullWidth={isXXS} color="primary">Join</Button>
+                            <Grid
+                              xs={12}
+                              sm={6}
+                              item
+                              style={
+                                isXXS
+                                  ? { padding: "0.5rem 0.5rem" }
+                                  : { padding: "0.5rem 0rem" }
+                              }
+                            >
+                              <Link
+                                href={`/event/${router.query.event_id}/join`}
+                              >
+                                <Button
+                                  variant="contained"
+                                  fullWidth={isXXS}
+                                  color="primary"
+                                >
+                                  Join
+                                </Button>
                               </Link>
                             </Grid>
                           </Grid>
@@ -161,53 +240,121 @@ const EventDetail: NextPage = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Grid container direction={"column"}>
-                      <Typography fontFamily="Open Sans">Location:</Typography><Typography color={"#784CF4"}> {!!eventData.data.event ? eventData.data.event.location : ""}</Typography>
-                      <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>{!!eventData.data.event ? new Date(eventData.data.event.date).toLocaleString() : ""}</Typography>
-                      <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>{!!eventData.data.event ? eventData.data.event.tasks.join(', ') : ""}</Typography>
-                      <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
-                        {!!eventData.data.event ? eventData.data.event.description.split('\n').map((str: string, i: number) => <p key={i}>{str}</p>) : ""}
+                      <Typography fontFamily="Open Sans">Location:</Typography>
+                      <Typography color={"#784CF4"}>
+                        {" "}
+                        {!!eventData.data.event
+                          ? eventData.data.event.location
+                          : ""}
+                      </Typography>
+                      <Typography fontFamily="Open Sans">Time: </Typography>
+                      <Typography color={"#784CF4"}>
+                        {!!eventData.data.event
+                          ? new Date(eventData.data.event.date).toLocaleString()
+                          : ""}
+                      </Typography>
+                      <Typography fontFamily="Open Sans">Tasks: </Typography>
+                      <Typography color={"#784CF4"}>
+                        {!!eventData.data.event
+                          ? eventData.data.event.tasks.join(", ")
+                          : ""}
+                      </Typography>
+                      <Typography fontFamily="Open Sans">
+                        Description:
+                      </Typography>
+                      <Typography color={"#784CF4"}>
+                        {!!eventData.data.event
+                          ? eventData.data.event.description
+                              .split("\n")
+                              .map((str: string, i: number) => (
+                                <p key={i}>{str}</p>
+                              ))
+                          : ""}
                       </Typography>
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </>
-            ) : (
-              // Else show loading
-              <Grid item xs={12}>
-                <Grid container justifyContent={"center"}>
-                  <CircularProgress />
-                </Grid>
+          ) : (
+            // Else show loading
+            <Grid item xs={12}>
+              <Grid container justifyContent={"center"}>
+                <CircularProgress />
               </Grid>
-            )
+            </Grid>
           )}
         </Grid>
 
-        <Box display={isXXS ? "block" : "none"} sx={{
-          backgroundColor: "white",
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "0.5rem",
-          borderTop: "solid 1px #784CF4"
-        }}>
-          <Grid container justifyContent={"space-between"} alignItems={"center"}>
+        <Box
+          display={isXXS ? "block" : "none"}
+          sx={{
+            backgroundColor: "white",
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "0.5rem",
+            borderTop: "solid 1px #784CF4",
+          }}
+        >
+          <Grid
+            container
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
             <Grid item xs={12} sm={6} style={{ textAlign: "center" }}>
-            {!!participantData.data && 'error' in participantData.data ? <></> : (
-              <Typography fontFamily="Open Sans">{!!participantData.data ? participantData.data.participants.length : "0"} JOINING</Typography>
-            )}
+              {!!participantData.data && "error" in participantData.data ? (
+                <></>
+              ) : (
+                <Typography fontFamily="Open Sans">
+                  {!!participantData.data
+                    ? participantData.data.participants.length
+                    : "0"}{" "}
+                  JOINING
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid container justifyContent="center">
-                <Grid xs={12} sm={"auto"} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0rem 0.5rem" }}>
+                <Grid
+                  xs={12}
+                  sm={"auto"}
+                  item
+                  style={
+                    isXXS
+                      ? { padding: "0.5rem 0.5rem" }
+                      : { padding: "0rem 0.5rem" }
+                  }
+                >
                   <Link href={`/event/${router.query.event_id}/participants`}>
-                    <Button variant="outlined" fullWidth={isXXS} color="primary">View Participants</Button>
+                    <Button
+                      variant="outlined"
+                      fullWidth={isXXS}
+                      color="primary"
+                    >
+                      View Participants
+                    </Button>
                   </Link>
                 </Grid>
-                <Grid xs={12} sm={"auto"} item style={isXXS ? { padding: "0.5rem 0.5rem" } : { padding: "0rem 0.5rem" }}>
+                <Grid
+                  xs={12}
+                  sm={"auto"}
+                  item
+                  style={
+                    isXXS
+                      ? { padding: "0.5rem 0.5rem" }
+                      : { padding: "0rem 0.5rem" }
+                  }
+                >
                   <Link href={`/event/${router.query.event_id}/join`}>
-                    <Button variant="contained" fullWidth={isXXS} color="primary">Join</Button>
+                    <Button
+                      variant="contained"
+                      fullWidth={isXXS}
+                      color="primary"
+                    >
+                      Join
+                    </Button>
                   </Link>
                 </Grid>
               </Grid>
