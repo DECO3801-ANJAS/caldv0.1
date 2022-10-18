@@ -66,15 +66,21 @@ const EventDetail: NextPage = () => {
         </Grid>
 
         <Grid container style={isXXS ? { marginBottom: "9rem" } : { marginBottom: "3rem" }}>
-          {!!eventData.data ? (
-            <>
-            {/* Show event detail if the data is available */}
+
+          { !!eventData.data && 'error' in eventData.data ? (
+            <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
+              <Typography>No data found</Typography>
+            </Grid>
+          ) : (
+            // Show data if available
+            !!eventData.data ? (
+              <>
               <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
                 <Grid container>
                   <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     {/* <Image src={eventData.data.event.images[0]} width={500} height={500} alt='' /> */}
                     <Carousel
-                      sx={{ width: 600 }}
+                      sx={{ width: {xs:350, sm:700 , md:600}, height: {xs:350, sm:350, md:500} }}
                       className="Example"
                       autoPlay={true}
                       animation={"slide"}
@@ -83,17 +89,27 @@ const EventDetail: NextPage = () => {
                       navButtonsAlwaysVisible={false}
                       navButtonsAlwaysInvisible={false}
                     >
-                      {eventData.data.event.images.map((image: string, index: number) => {
+                      {!!eventData.data.event && eventData.data.event.images.length !== 0 ? eventData.data.event.images.map((image: string, index: number) => {
                         return (
                           <Box key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
                             <Image
                               src={image}
                               height={600}
                               width={650}
+                              alt="No_image"
                             />
                           </Box>
                         );
-                      })}
+                      }) : (
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Image
+                              src={"https://via.placeholder.com/500.png?text=No_Image"}
+                              height={600}
+                              width={650}
+                              alt="No_image"
+                            />
+                          </Box>
+                      )}
                     </Carousel>
                   </Grid>
                   <Grid item xs={12} sx={{ padding: "0.5rem" }}>
@@ -115,13 +131,15 @@ const EventDetail: NextPage = () => {
                       gutterBottom
                       sx={{ textTransform: "capitalize", fontWeight: "600", overflowY: 'hidden' }}
                     >
-                      {eventData.data.event.title}
+                      {!!eventData.data.event ? eventData.data.event.title : ""}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} display={isXXS ? "none" : "block"}>
                     <Grid container>
                       <Grid item xs={12} textAlign={isXXS ? "center" : "left"}>
-                        <Typography fontFamily="Open Sans">{!!participantData.data ? participantData.data.participants.length : "0"} JOINING</Typography>
+                        {!!participantData.data && 'error' in participantData.data ? <></> : (
+                          <Typography fontFamily="Open Sans">{!!participantData.data ? participantData.data.participants.length : "0"} JOINING</Typography>
+                        )}
                       </Grid>
                       <Grid item xs={12}>
                         <Box sx={{ width: 350 }}>
@@ -143,24 +161,25 @@ const EventDetail: NextPage = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Grid container direction={"column"}>
-                      <Typography fontFamily="Open Sans">Location:</Typography><Typography color={"#784CF4"}> {eventData.data.event.location}</Typography>
-                      <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>{new Date(eventData.data.event.date).toLocaleString()}</Typography>
-                      <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>{eventData.data.event.tasks.join(', ')}</Typography>
+                      <Typography fontFamily="Open Sans">Location:</Typography><Typography color={"#784CF4"}> {!!eventData.data.event ? eventData.data.event.location : ""}</Typography>
+                      <Typography fontFamily="Open Sans">Time: </Typography><Typography color={"#784CF4"}>{!!eventData.data.event ? new Date(eventData.data.event.date).toLocaleString() : ""}</Typography>
+                      <Typography fontFamily="Open Sans">Tasks: </Typography><Typography color={"#784CF4"}>{!!eventData.data.event ? eventData.data.event.tasks.join(', ') : ""}</Typography>
                       <Typography fontFamily="Open Sans">Description:</Typography><Typography color={"#784CF4"}>
-                        {eventData.data.event.description.split('\n').map((str: string, i: number) => <p key={i}>{str}</p>)}
+                        {!!eventData.data.event ? eventData.data.event.description.split('\n').map((str: string, i: number) => <p key={i}>{str}</p>) : ""}
                       </Typography>
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </>
-          ) : (
-            // Else show loading bar
-            <Grid item xs={12}>
-              <Grid container justifyContent={"center"}>
-                <CircularProgress />
+            ) : (
+              // Else show loading
+              <Grid item xs={12}>
+                <Grid container justifyContent={"center"}>
+                  <CircularProgress />
+                </Grid>
               </Grid>
-            </Grid>
+            )
           )}
         </Grid>
 
@@ -175,7 +194,9 @@ const EventDetail: NextPage = () => {
         }}>
           <Grid container justifyContent={"space-between"} alignItems={"center"}>
             <Grid item xs={12} sm={6} style={{ textAlign: "center" }}>
+            {!!participantData.data && 'error' in participantData.data ? <></> : (
               <Typography fontFamily="Open Sans">{!!participantData.data ? participantData.data.participants.length : "0"} JOINING</Typography>
+            )}
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid container justifyContent="center">

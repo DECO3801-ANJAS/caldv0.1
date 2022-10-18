@@ -1,6 +1,5 @@
-import React, { useCallback, useMemo } from 'react'
-import { useDropzone } from 'react-dropzone'
-import FileWithPreview from 'react-dropzone'
+import React, {useCallback, useMemo} from 'react'
+import {useDropzone} from 'react-dropzone'
 import IFile from '../interfaces/models/file';
 import IDropzone from '../interfaces/props/myDropzoneProps';
 
@@ -72,24 +71,47 @@ const img: React.CSSProperties = {
 // return JSX element
 export default function MyDropzone({ files, setFiles }: IDropzone) {
 
-  const onDropFunc = useCallback(
-    (inputFiles: IFile[]) => {
-      setFiles((prev) => (prev.concat(inputFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file)
-        })
-      )[0])))
-    }, [])
+  const[errorMessage, setErrorMessage] = React.useState("")
+  const[error, setError] = React.useState(false)
+
+  const onDropAccFunc = useCallback(
+    (acceptedFiles: IFile[]) =>  {
+      console.log(acceptedFiles)
+        setError(false)
+        setErrorMessage("")
+        // setFiles((prev) => (prev.concat(acceptedFiles.map((file) =>
+        //   Object.assign(file, {
+        //     preview: URL.createObjectURL(file)
+        //   })
+        // )[0])))
+        setFiles(acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        ))
+  }, [])
 
   const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject } = useDropzone({
-      maxFiles: 5,
-      accept: { "image/*": ['.png', '.jpeg', '.jpg', '.img'] },
-      onDrop: onDropFunc
+    getRootProps, 
+    getInputProps, 
+    fileRejections,
+    isDragActive, 
+    isDragAccept, 
+    isDragReject} = useDropzone({
+      accept: {"image/*" : ['.png', '.jpeg', '.jpg', '.img']},
+      onDropAccepted: onDropAccFunc,
+      onDropRejected: (rejectedFiles) => {
+        if(rejectedFiles.length > 5) {
+          setError(true)
+          setErrorMessage(rejectedFiles[0].errors[0].message)
+        } else {
+          setError(true)
+          setErrorMessage("Files must be images")
+        }
+      },
+      noDrag:true,
+      multiple:true,
+      maxFiles:5
     })
 
   const removeFile = (file: IFile) => () => {
@@ -98,14 +120,14 @@ export default function MyDropzone({ files, setFiles }: IDropzone) {
     setFiles(newFiles);
   };
 
-  const thumbs = files.map((file) => (
+  const thumbs = files.length !== 0 ? files.map((file) => (
     <div style={thumb} key={file.name}>
       <div style={thumbInner}>
         <img src={file.preview} style={img} alt={file.name} />
       </div>
       <button onClick={removeFile(file)}>Remove File</button>
     </div>
-  ));
+  )) : (<></>);
 
   const style = useMemo(() => ({
     ...baseStyle,
@@ -133,7 +155,8 @@ export default function MyDropzone({ files, setFiles }: IDropzone) {
         data-cy='dropzone'
       >
         <input {...getInputProps()} />
-        <p>Drag n drop some files here, or click to select files</p>
+        <p>Click to select files (max : 5)</p>
+        {error && <p style={{color:"red"}}>{errorMessage}</p>}
       </div>
       <div style={thumbsContainer}>{thumbs}</div>
     </div>

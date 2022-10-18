@@ -19,7 +19,7 @@ export default function ParticipantCard({ name, experience }: IParticipantCardPr
             return "#3E8733"
         } else {
             console.log(experience)
-            return "#FFFF"
+            return "black"
         }
     }
     return (
