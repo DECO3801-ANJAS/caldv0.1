@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import "@fontsource/open-sans";
 
-
 // Function to return Date
 // return JSX element
 function Clock() {
@@ -15,6 +14,6 @@ function Clock() {
     }, 1000);
   }, []);
 
-  return <Typography fontFamily="Open Sans">Brisbane, {clockState}</Typography>;
+  return <Typography fontFamily="Open Sans">{clockState}</Typography>;
 }
 export default Clock;
