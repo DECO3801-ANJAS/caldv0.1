@@ -64,6 +64,7 @@ export default function FreeSolo({
           focused
           label="Tasks"
           error={!!errorMessage}
+          data-testid='tasks-input'
           helperText={!!errorMessage && "Tasks is required"}
         />
       )}

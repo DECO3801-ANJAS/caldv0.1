@@ -86,13 +86,14 @@ const AllEvents: NextPage = () => {
           style={{ padding: "1rem" }}
         >
           <Grid item>
-            <ArrowBack href={"/"} />
+            <ArrowBack href={"/"}/>
           </Grid>
           <Grid item>
             <Grid item>
               <Typography
                 fontFamily="Open Sans"
                 style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}
+                data-testid='upcoming-text-in-all-events-page'
               >
                 Upcoming
               </Typography>
@@ -101,6 +102,7 @@ const AllEvents: NextPage = () => {
               <Typography
                 fontFamily="Open Sans"
                 style={{ fontSize: 20, textAlign: "right", fontWeight: "bold" }}
+                data-testid='events-text-in-all-events-page'
               >
                 Events
               </Typography>

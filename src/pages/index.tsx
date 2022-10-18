@@ -86,13 +86,14 @@ const Home: NextPage = () => {
         >
           {/* LOGO */}
           <Grid item style={{ marginTop: "2%", marginBottom: "5%" }} sx={{padding: "1rem"}}>
-            <Image src="/logo.png" width={"680%"} height={"145%"} />
+            <Image data-testid='logo-at-landing-page' id="logo" src="/logo.png" width={"680%"} height={"145%"} />
           </Grid>
 
           {/* Buttons */}
           <Grid item>
             <Link href={`/create`}>
               <Button
+                data-testid='create-event-button-at-landing-page'
                 variant="contained"
                 href="#contained-buttons"
                 fullWidth={true}
@@ -104,6 +105,7 @@ const Home: NextPage = () => {
           <Grid item sx={{ padding: "0.5rem" }}>
             <Link href={`/event`}>
               <Button
+                data-testid='see-events-button-at-landing-page'
                 variant="contained"
                 href="#contained-buttons"
                 fullWidth={true}>
