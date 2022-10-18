@@ -64,6 +64,7 @@ export default function BasicDatePicker({
               focused
               error={!!errorMessageDate}
               helperText={!!errorMessageDate && "Date is required, in DD/MM/YYYY and must be after today"}
+              data-testid='date-input-in-create-event-page'
             />
           )}
         />
@@ -79,6 +80,7 @@ export default function BasicDatePicker({
               fullWidth
               focused
               error={Boolean("jenky")}
+              data-testid='time-input-in-create-event-page'
               helperText={!!errorMessageTime && "Time is required"}
             />
           )}
