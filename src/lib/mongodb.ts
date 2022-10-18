@@ -1,5 +1,6 @@
 import { MongoClient, MongoClientOptions, ServerApiVersion } from "mongodb";
 
+// Check for valid env variables
 if (!process.env.MONGODB_URI) {
   throw new Error('Invalid environment variable: "MONGODB_URI"');
 }
@@ -22,6 +23,8 @@ if (!process.env.MONGODB_DB) {
   throw new Error("Please add your Mongo Database to .env.local");
 }
 
+
+// Set up connection to mongodb
 if (process.env.NODE_ENV === "development") {
   if (!global._mongoClientPromise) {
     client = new MongoClient(uri, options);

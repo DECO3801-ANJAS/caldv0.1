@@ -3,10 +3,10 @@ import {useDropzone} from 'react-dropzone'
 import IFile from '../interfaces/models/file';
 import IDropzone from '../interfaces/props/myDropzoneProps';
 
-const baseStyle : React.CSSProperties = {
+const baseStyle: React.CSSProperties = {
   flex: 1,
   display: 'flex',
-  flexDirection: 'column', 
+  flexDirection: 'column',
   alignItems: 'center',
   padding: '20px',
   borderWidth: 2,
@@ -32,14 +32,14 @@ const rejectStyle = {
 };
 
 
-const thumbsContainer : React.CSSProperties = {
+const thumbsContainer: React.CSSProperties = {
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
   marginTop: 16
 };
 
-const thumb : React.CSSProperties = {
+const thumb: React.CSSProperties = {
   display: "inline-flex",
   borderRadius: 2,
   border: "1px solid #eaeaea",
@@ -51,19 +51,25 @@ const thumb : React.CSSProperties = {
   boxSizing: "border-box"
 };
 
-const thumbInner : React.CSSProperties = {
+const thumbInner: React.CSSProperties = {
   display: "flex",
   minWidth: 0,
   overflow: "hidden"
 };
 
-const img : React.CSSProperties = {
+const img: React.CSSProperties = {
   display: "block",
   width: "auto",
   height: "100%"
 };
 
-export default function MyDropzone({files, setFiles} : IDropzone) {
+
+// Function to return image input field
+// Input : 
+//        files, React.useState() 
+//        setFiles, React.useState() function
+// return JSX element
+export default function MyDropzone({ files, setFiles }: IDropzone) {
 
   const[errorMessage, setErrorMessage] = React.useState("")
   const[error, setError] = React.useState(false)
@@ -108,7 +114,7 @@ export default function MyDropzone({files, setFiles} : IDropzone) {
       maxFiles:5
     })
 
-  const removeFile = (file : IFile) => () => {
+  const removeFile = (file: IFile) => () => {
     const newFiles = [...files];
     newFiles.splice(newFiles.indexOf(file), 1);
     setFiles(newFiles);
@@ -132,7 +138,7 @@ export default function MyDropzone({files, setFiles} : IDropzone) {
     isDragActive,
     isDragReject,
     isDragAccept
-  ]); 
+  ]);
 
   React.useEffect(
     () => () => {

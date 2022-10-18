@@ -7,6 +7,9 @@ import ICreateParticipantRequest from "../../../../../interfaces/requests/create
 import IParticipant from "../../../../../interfaces/models/participant";
 import IParticipantResponse from "../../../../../interfaces/responses/participantResponse";
 
+// Function to handle request for participants
+// Post method to handle joining events
+// Get method to get event participants
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
@@ -25,16 +28,16 @@ export default async function handler(
       case "GET":
         const getParticipants = queryTask
           ? await db
-              .collection<IParticipant>("participants")
-              .find({
-                eventId: new ObjectId(event_id as string),
-                task: queryTask,
-              })
-              .toArray()
+            .collection<IParticipant>("participants")
+            .find({
+              eventId: new ObjectId(event_id as string),
+              task: queryTask,
+            })
+            .toArray()
           : await db
-              .collection<IParticipant>("participants")
-              .find({ eventId: new ObjectId(event_id as string) })
-              .toArray();
+            .collection<IParticipant>("participants")
+            .find({ eventId: new ObjectId(event_id as string) })
+            .toArray();
         res.status(200).json({ participants: getParticipants });
         break;
 

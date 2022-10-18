@@ -31,16 +31,23 @@ const theme = createTheme({
   },
 });
 
+// Fetcher function for useSWR
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const EventDetail: NextPage = () => {
+  // constraint to check if the screen is small
   const isXXS = useMediaQuery("(max-width:600px)");
   const router = useRouter();
+
+  // Get event id from url
   const { event_id } = router.query;
+
+  // Get event detail data from /api/events/${event_id} route
   const eventData = useSWR(router.isReady ? `/api/events/${event_id}` : null,
     fetcher, { refreshInterval: 10000 }
   )
 
+  // Get participant data from /api/events/${event_id}/participants route
   const participantData = useSWR(router.isReady ? `/api/events/${event_id}/participants` : null,
     fetcher, { refreshInterval: 10000 }
   )
@@ -65,6 +72,7 @@ const EventDetail: NextPage = () => {
               <Typography>No data found</Typography>
             </Grid>
           ) : (
+            // Show data if available
             !!eventData.data ? (
               <>
               <Grid item xs={12} sm={6} style={{ padding: "1rem" }}>
@@ -165,6 +173,7 @@ const EventDetail: NextPage = () => {
               </Grid>
             </>
             ) : (
+              // Else show loading
               <Grid item xs={12}>
                 <Grid container justifyContent={"center"}>
                   <CircularProgress />
