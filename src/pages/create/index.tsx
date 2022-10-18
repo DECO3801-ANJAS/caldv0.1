@@ -293,6 +293,7 @@ const Create: NextPage = () => {
               <Typography
                 fontFamily="Open Sans"
                 style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}
+                data-testid='create-a-text-in-create-event-page'
               >
                 Create a
               </Typography>
@@ -301,6 +302,7 @@ const Create: NextPage = () => {
               <Typography
                 fontFamily="Open Sans"
                 style={{ fontSize: 20, textAlign: "right", fontWeight: "bold" }}
+                data-testid='new-event-text-in-create-event-page'
               >
                 New Event
               </Typography>
@@ -337,6 +339,7 @@ const Create: NextPage = () => {
             fullWidth
             error={!!errorMessage.title}
             helperText={!!errorMessage.title && "Title is required"}
+            data-testid='title-input-in-create-event-page'
           />
         </Grid>
         <Grid
@@ -363,6 +366,7 @@ const Create: NextPage = () => {
             fullWidth
             error={!!errorMessage.description}
             helperText={!!errorMessage.description && "Description is required"}
+            data-testid='description-input-in-create-event-page'
           />
         </Grid>
         <Grid
@@ -387,6 +391,7 @@ const Create: NextPage = () => {
             fullWidth
             error={!!errorMessage.location}
             helperText={!!errorMessage.location && "Location is required"}
+            data-testid='location-input-in-create-event-page'
           />
         </Grid>
 
@@ -486,6 +491,7 @@ const Create: NextPage = () => {
               !!errorMessage.recipeIngredients &&
               "Recipe Ingredients is required"
             }
+            data-testid='recipe-ingredients-input-in-create-event-page'
           />
         </Grid>
         <Grid
@@ -514,6 +520,7 @@ const Create: NextPage = () => {
             helperText={
               !!errorMessage.recipeSteps && "Recipe Steps is required"
             }
+            data-testid='recipe-steps-input-in-create-event-page'
           />
         </Grid>
         <Grid
@@ -539,7 +546,9 @@ const Create: NextPage = () => {
               loadingIndicator="Loading…"
               variant="contained"
               color="primary"
-              onClick={handleSubmit}>
+              onClick={handleSubmit}
+              data-testid='submit-button-in-create-event-page'
+              >
               Submit
             </LoadingButton>
           </ThemeProvider>
