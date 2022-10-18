@@ -19,13 +19,22 @@ For building and running the application you need:
 - NPM (comes with Node)
 - [Yarn](https://yarnpkg.com/getting-started/install)
 - .env.local file
+- MongoDB Atlas account
 <hr>
 
-1. For the .env.local file, these environment variables are required for the connection to mongodb:
+1. For the .env.local file, these environment variables are required for the connection to [mongodb](https://www.mongodb.com/atlas/database):
 
-- DB_NAME
-- MONGODB_DB
-- MONGODB_URI
+- DB_NAME=<inner-database-name\>
+- MONGODB_DB=<database-name\>
+- MONGODB_URI=mongodb+srv://<database-username\>:<database-password\>@<database-url\>/<database-name\>?retryWrites=true&w=majority
+
+Replace <database-name\> with the database name
+<br>Replace <database-username\> with the database username.
+<br>Replace <database-password\> with the database password.
+<br>Replace <database-url\> with the database url.
+<br>Replace <inner-database-name\> with the name of inner database.
+
+Learn more about how to set up MongoDB for Next.js [here.](https://www.mongodb.com/developer/languages/javascript/nextjs-with-mongodb/)
 
 2. Install Dependencies, run this while in the project directory
 
@@ -45,7 +54,7 @@ $ yarn build
 $ yarn start
 ```
 
-5. Run test with Cypress (on localhost:3000)<br>
+5. [Optional\] Run test with Cypress (on localhost:3000)<br>
    Open two terminals, in the first one run this command
 
 ```
@@ -57,3 +66,20 @@ In the second one, run
 ```
 $ yarn cypress:run
 ```
+
+List of dependencies :
+
+- Material UI<br>
+  https://mui.com/material-ui/getting-started/installation/
+- Cypress<br>
+  https://docs.cypress.io/guides/getting-started/installing-cypress
+- Axios<br>
+  https://yarnpkg.com/package/axios
+- Dayjs<br>
+  https://yarnpkg.com/package/dayjs
+- mongodb<br>
+  https://yarnpkg.com/package/mongodb
+- react-dropzone<br>
+  https://react-dropzone.js.org/
+- react-material-ui-carousel<br>
+  https://www.npmjs.com/package/react-material-ui-carousel
