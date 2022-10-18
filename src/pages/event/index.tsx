@@ -35,14 +35,14 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const AllEvents: NextPage = () => {
   // Get events data from api/events route
   const { data, error } = useSWR("api/events", fetcher, {
-    refreshInterval: 30000,
+    refreshInterval: 10000,
   });
 
   const [eventData, setEventData] = React.useState<IEventData>();
 
   // Sort the data based on month
   useEffect(() => {
-    let currentData : IEventData = {};
+    let currentData: IEventData = {};
     if (!!data && data.events.length !== 0) {
       data.events.forEach((event: IEvent, i: number) => {
         const date = new Date(event.date);
@@ -86,14 +86,14 @@ const AllEvents: NextPage = () => {
           style={{ padding: "1rem" }}
         >
           <Grid item>
-            <ArrowBack href={"/"}/>
+            <ArrowBack href={"/"} />
           </Grid>
           <Grid item>
             <Grid item>
               <Typography
                 fontFamily="Open Sans"
                 style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}
-                data-testid='upcoming-text-in-all-events-page'
+                data-testid="upcoming-text-in-all-events-page"
               >
                 Upcoming
               </Typography>
@@ -102,7 +102,7 @@ const AllEvents: NextPage = () => {
               <Typography
                 fontFamily="Open Sans"
                 style={{ fontSize: 20, textAlign: "right", fontWeight: "bold" }}
-                data-testid='events-text-in-all-events-page'
+                data-testid="events-text-in-all-events-page"
               >
                 Events
               </Typography>
@@ -124,11 +124,7 @@ const AllEvents: NextPage = () => {
           </Grid>
         </Grid>
 
-        <Grid
-          container
-          justifyContent="center"
-          sx={{ padding: "1rem" }}
-        >
+        <Grid container justifyContent="center" sx={{ padding: "1rem" }}>
           {!!data && data.events.length !== 0 ? (
             // Show cards if data is not null and length > 0
             bigCards()
