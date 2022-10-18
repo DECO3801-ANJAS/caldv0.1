@@ -18,7 +18,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { axiosFormData } from "../../components/axiosInstance";
 import { useRouter } from "next/router";
 import FormSnackbar from "../../components/FormSnackbar";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const theme = createTheme({
   palette: {
@@ -56,7 +56,6 @@ const CssTextField = styled(TextField)({
 });
 
 const Create: NextPage = () => {
-
   // Constrain to check if the screen is small
   const isXXS = useMediaQuery("(max-width:900px)");
   const router = useRouter();
@@ -74,7 +73,7 @@ const Create: NextPage = () => {
     date: false,
     time: false,
   });
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false);
 
   // Event Details
   const [eventDetails, setEventDetails] = React.useState({
@@ -160,39 +159,38 @@ const Create: NextPage = () => {
 
     const promises: Promise<void>[] = [];
 
-    let imageBase64: string[] = []
+    let imageBase64: string[] = [];
     for (let i = 0; i < files.length; i++) {
       const wrap = async () => {
         const base64Url = await blobToBase64(files[i]);
-        imageBase64.push(base64Url)
-      }
-      promises.push(wrap())
+        imageBase64.push(base64Url);
+      };
+      promises.push(wrap());
     }
-    await Promise.all(promises)
-
+    await Promise.all(promises);
 
     const eventJson = {
       ...eventDetails,
       date: dateTime,
       tasks: [...arrayOfTasks],
-      images: imageBase64
+      images: imageBase64,
     };
 
     return eventJson;
   };
 
-  const blobToDataUrl = (blob: IFile) => new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
+  const blobToDataUrl = (blob: IFile) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
 
-  const blobToBase64 = (blob: IFile) => blobToDataUrl(blob).then((text: string) => text);
-
+  const blobToBase64 = (blob: IFile) =>
+    blobToDataUrl(blob).then((text: string) => text);
 
   const handleSubmit = async () => {
-
     // Check for empty fields(except for image field)
     if (eventDetails.title == "") {
       setOpen(true);
@@ -259,26 +257,28 @@ const Create: NextPage = () => {
         date: true,
       }));
     } else {
-      setLoading(true)
-      const eventData = await buildFormData()
-      axiosFormData.post("/api/events", eventData).then((res) => {
-        console.log(res);
-        setOpen(true);
-        setError(false);
-        router.push(`event/`);
-      }).catch((e) => {
-        setLoading(false)
-        setOpen(true);
-        setError(true);
-        console.log(e.response)
-      });
+      setLoading(true);
+      const eventData = await buildFormData();
+      axiosFormData
+        .post("/api/events", eventData)
+        .then((res) => {
+          console.log(res);
+          setOpen(true);
+          setError(false);
+          router.push(`event/`);
+        })
+        .catch((e) => {
+          setLoading(false);
+          setOpen(true);
+          setError(true);
+          console.log(e.response);
+        });
     }
   };
 
   return (
     <>
       <ThemeProvider theme={theme}>
-
         <Grid
           container
           alignItems="center"
@@ -293,7 +293,7 @@ const Create: NextPage = () => {
               <Typography
                 fontFamily="Open Sans"
                 style={{ fontSize: 16, textAlign: "right", fontWeight: "600" }}
-                data-testid='create-a-text-in-create-event-page'
+                data-testid="create-a-text-in-create-event-page"
               >
                 Create a
               </Typography>
@@ -302,7 +302,7 @@ const Create: NextPage = () => {
               <Typography
                 fontFamily="Open Sans"
                 style={{ fontSize: 20, textAlign: "right", fontWeight: "bold" }}
-                data-testid='new-event-text-in-create-event-page'
+                data-testid="new-event-text-in-create-event-page"
               >
                 New Event
               </Typography>
@@ -317,228 +317,206 @@ const Create: NextPage = () => {
         justifyContent="center"
         style={{ padding: "1rem" }}
       >
-        <Grid
-          item
-          xs={3}
-          style={
-            isXXS
-              ? { marginTop: "2%", marginBottom: "5%", display: "none" }
-              : { marginTop: "2%", marginBottom: "5%" }
-          }
-        >
-          <ThemeProvider theme={theme}>
-            <Typography fontFamily="sans-serif">TITLE</Typography>
-          </ThemeProvider>
-        </Grid>
-        <Grid item xs={12} md={7}>
-          <CssTextField
-            label="Title"
-            name="title"
-            onChange={handleChangeEvent}
-            focused
-            fullWidth
-            error={!!errorMessage.title}
-            helperText={!!errorMessage.title && "Title is required"}
-            data-testid='title-input-in-create-event-page'
-          />
-        </Grid>
-        <Grid
-          item
-          xs={3}
-          style={
-            isXXS
-              ? { marginTop: "2%", marginBottom: "5%", display: "none" }
-              : { marginTop: "2%", marginBottom: "5%" }
-          }
-        >
-          <ThemeProvider theme={theme}>
-            <Typography fontFamily="sans-serif">DESCRIPTION</Typography>
-          </ThemeProvider>
-        </Grid>
-        <Grid item xs={12} md={7}>
-          <CssTextField
-            label="Description"
-            name="description"
-            onChange={handleChangeEvent}
-            focused
-            rows={5}
-            multiline
-            fullWidth
-            error={!!errorMessage.description}
-            helperText={!!errorMessage.description && "Description is required"}
-            data-testid='description-input-in-create-event-page'
-          />
-        </Grid>
-        <Grid
-          item
-          xs={3}
-          style={
-            isXXS
-              ? { marginTop: "2%", marginBottom: "5%", display: "none" }
-              : { marginTop: "2%", marginBottom: "5%" }
-          }
-        >
-          <ThemeProvider theme={theme}>
-            <Typography fontFamily="sans-serif">LOCATION</Typography>
-          </ThemeProvider>
-        </Grid>
-        <Grid item xs={12} md={7}>
-          <CssTextField
-            label="Location"
-            name="location"
-            onChange={handleChangeEvent}
-            focused
-            fullWidth
-            error={!!errorMessage.location}
-            helperText={!!errorMessage.location && "Location is required"}
-            data-testid='location-input-in-create-event-page'
-          />
-        </Grid>
-
-        <Grid
-          item
-          xs={3}
-          style={
-            isXXS
-              ? { marginTop: "2%", marginBottom: "5%", display: "none" }
-              : { marginTop: "2%", marginBottom: "5%" }
-          }
-        >
-          <ThemeProvider theme={theme}>
-            <Typography fontFamily="sans-serif">TIME</Typography>
-          </ThemeProvider>
-        </Grid>
-        <Grid item xs={12} md={7}>
-          <Grid container spacing={1}>
-            <BasicDatePicker
-              setDateFunc={handleChangeDate}
-              setTimeFunc={handleChangeTime}
-              time={time}
-              date={date}
-              errorMessageDate={errorMessage.date}
-              errorMessageTime={errorMessage.time}
-            />
-          </Grid>
-        </Grid>
-
-        <Grid
-          item
-          xs={3}
-          style={
-            isXXS
-              ? { marginTop: "2%", marginBottom: "5%", display: "none" }
-              : { marginTop: "2%", marginBottom: "5%" }
-          }
-        >
-          <ThemeProvider theme={theme}>
-            <Typography fontFamily="sans-serif">TASKS</Typography>
-          </ThemeProvider>
-        </Grid>
-        <Grid item xs={12} md={7}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Grid container spacing={1}>
-                {arrayOfTasks.length > 0 ? Tasks : ""}
-              </Grid>
-            </Grid>
-            <Grid item xs={10}>
-              <FreeSolo
-                inputValue={taskInputValue}
-                handleChangeTask={handleChangeTask}
-                errorMessage={errorMessage.tasks}
-                options={[]}
-                addNewTask={newTask}
-                forJoin={false}
-              />
-            </Grid>
-            <Grid item xs={2}>
+        <Grid item xs={12} sx={{ padding: "0.5rem" }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={3} style={isXXS ? { display: "none" } : {}}>
               <ThemeProvider theme={theme}>
-                <IconButton
-                  color="primary"
-                  component="label"
-                  onClick={taskInputValue.length !== 0 ? newTask : () => { }}
-                >
-                  <AddCircleOutlineIcon fontSize="large" />
-                </IconButton>
+                <Typography fontFamily="sans-serif">TITLE</Typography>
               </ThemeProvider>
             </Grid>
+            <Grid item xs={12} md={7}>
+              <CssTextField
+                label="Title"
+                name="title"
+                onChange={handleChangeEvent}
+                focused
+                fullWidth
+                error={!!errorMessage.title}
+                helperText={!!errorMessage.title && "Title is required"}
+                data-testid="title-input-in-create-event-page"
+              />
+            </Grid>
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={3}
-          style={
-            isXXS
-              ? { marginTop: "2%", marginBottom: "5%", display: "none" }
-              : { marginTop: "2%", marginBottom: "5%" }
-          }
-        >
-          <ThemeProvider theme={theme}>
-            <Typography fontFamily="sans-serif">RECIPE INGREDIENTS</Typography>
-          </ThemeProvider>
+
+        <Grid item xs={12} sx={{ padding: "0.5rem" }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={3} style={isXXS ? { display: "none" } : {}}>
+              <ThemeProvider theme={theme}>
+                <Typography fontFamily="sans-serif">DESCRIPTION</Typography>
+              </ThemeProvider>
+            </Grid>
+            <Grid item xs={12} md={7}>
+              <CssTextField
+                label="Description"
+                name="description"
+                onChange={handleChangeEvent}
+                focused
+                rows={5}
+                multiline
+                fullWidth
+                error={!!errorMessage.description}
+                helperText={
+                  !!errorMessage.description && "Description is required"
+                }
+                data-testid="description-input-in-create-event-page"
+              />
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={7}>
-          <CssTextField
-            label="Recipe Ingredients"
-            name="recipeIngredients"
-            onChange={handleChangeEvent}
-            focused
-            fullWidth
-            multiline
-            rows={5}
-            error={!!errorMessage.recipeIngredients}
-            helperText={
-              !!errorMessage.recipeIngredients &&
-              "Recipe Ingredients is required"
-            }
-            data-testid='recipe-ingredients-input-in-create-event-page'
-          />
+
+        <Grid item xs={12} sx={{ padding: "0.5rem" }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={3} style={isXXS ? { display: "none" } : {}}>
+              <ThemeProvider theme={theme}>
+                <Typography fontFamily="sans-serif">LOCATION</Typography>
+              </ThemeProvider>
+            </Grid>
+            <Grid item xs={12} md={7}>
+              <CssTextField
+                label="Location"
+                name="location"
+                onChange={handleChangeEvent}
+                focused
+                fullWidth
+                error={!!errorMessage.location}
+                helperText={!!errorMessage.location && "Location is required"}
+                data-testid="location-input-in-create-event-page"
+              />
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid
-          item
-          xs={3}
-          style={
-            isXXS
-              ? { marginTop: "2%", marginBottom: "5%", display: "none" }
-              : { marginTop: "2%", marginBottom: "5%" }
-          }
-        >
-          <ThemeProvider theme={theme}>
-            <Typography fontFamily="sans-serif">RECIPE STEPS</Typography>
-          </ThemeProvider>
+
+        <Grid item xs={12} sx={{ padding: "0.5rem" }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={3} style={isXXS ? { display: "none" } : {}}>
+              <ThemeProvider theme={theme}>
+                <Typography fontFamily="sans-serif">TIME</Typography>
+              </ThemeProvider>
+            </Grid>
+            <Grid item xs={12} md={7}>
+              <Grid container spacing={1}>
+                <BasicDatePicker
+                  setDateFunc={handleChangeDate}
+                  setTimeFunc={handleChangeTime}
+                  time={time}
+                  date={date}
+                  errorMessageDate={errorMessage.date}
+                  errorMessageTime={errorMessage.time}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={7}>
-          <CssTextField
-            label="Recipe Steps"
-            name="recipeSteps"
-            onChange={handleChangeEvent}
-            focused
-            fullWidth
-            multiline
-            rows={5}
-            error={!!errorMessage.recipeSteps}
-            helperText={
-              !!errorMessage.recipeSteps && "Recipe Steps is required"
-            }
-            data-testid='recipe-steps-input-in-create-event-page'
-          />
+
+        <Grid item xs={12} sx={{ padding: "0.5rem" }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={3} style={isXXS ? { display: "none" } : {}}>
+              <ThemeProvider theme={theme}>
+                <Typography fontFamily="sans-serif">TASKS</Typography>
+              </ThemeProvider>
+            </Grid>
+            <Grid item xs={12} md={7}>
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <Grid container spacing={1}>
+                    {arrayOfTasks.length > 0 ? Tasks : ""}
+                  </Grid>
+                </Grid>
+                <Grid item xs={10}>
+                  <FreeSolo
+                    inputValue={taskInputValue}
+                    handleChangeTask={handleChangeTask}
+                    errorMessage={errorMessage.tasks}
+                    options={[]}
+                    addNewTask={newTask}
+                    forJoin={false}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <ThemeProvider theme={theme}>
+                    <IconButton
+                      color="primary"
+                      component="label"
+                      onClick={taskInputValue.length !== 0 ? newTask : () => {}}
+                    >
+                      <AddCircleOutlineIcon fontSize="large" />
+                    </IconButton>
+                  </ThemeProvider>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid
-          item
-          xs={3}
-          style={
-            isXXS
-              ? { marginTop: "2%", marginBottom: "5%", display: "none" }
-              : { marginTop: "2%", marginBottom: "5%" }
-          }
-        >
-          <ThemeProvider theme={theme}>
-            <Typography fontFamily="sans-serif">IMAGES</Typography>
-          </ThemeProvider>
+
+        <Grid item xs={12} sx={{ padding: "0.5rem" }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={3} style={isXXS ? { display: "none" } : {}}>
+              <ThemeProvider theme={theme}>
+                <Typography fontFamily="sans-serif">
+                  RECIPE INGREDIENTS
+                </Typography>
+              </ThemeProvider>
+            </Grid>
+            <Grid item xs={12} md={7}>
+              <CssTextField
+                label="Recipe Ingredients"
+                name="recipeIngredients"
+                onChange={handleChangeEvent}
+                focused
+                fullWidth
+                multiline
+                rows={5}
+                error={!!errorMessage.recipeIngredients}
+                helperText={
+                  !!errorMessage.recipeIngredients &&
+                  "Recipe Ingredients is required"
+                }
+                data-testid="recipe-ingredients-input-in-create-event-page"
+              />
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={7}>
-          <Dropzone files={files} setFiles={setFiles} />
+
+        <Grid item xs={12} sx={{ padding: "0.5rem" }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={3} style={isXXS ? { display: "none" } : {}}>
+              <ThemeProvider theme={theme}>
+                <Typography fontFamily="sans-serif">RECIPE STEPS</Typography>
+              </ThemeProvider>
+            </Grid>
+            <Grid item xs={12} md={7}>
+              <CssTextField
+                label="Recipe Steps"
+                name="recipeSteps"
+                onChange={handleChangeEvent}
+                focused
+                fullWidth
+                multiline
+                rows={5}
+                error={!!errorMessage.recipeSteps}
+                helperText={
+                  !!errorMessage.recipeSteps && "Recipe Steps is required"
+                }
+                data-testid="recipe-steps-input-in-create-event-page"
+              />
+            </Grid>
+          </Grid>
         </Grid>
+
+        <Grid item xs={12} sx={{ padding: "0.5rem" }}>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={3} style={isXXS ? { display: "none" } : {}}>
+              <ThemeProvider theme={theme}>
+                <Typography fontFamily="sans-serif">IMAGES</Typography>
+              </ThemeProvider>
+            </Grid>
+            <Grid item xs={12} md={7}>
+              <Dropzone files={files} setFiles={setFiles} />
+            </Grid>
+          </Grid>
+        </Grid>
+
         <Grid item xs={12} textAlign="center">
           <ThemeProvider theme={theme}>
             <LoadingButton
@@ -547,8 +525,8 @@ const Create: NextPage = () => {
               variant="contained"
               color="primary"
               onClick={handleSubmit}
-              data-testid='submit-button-in-create-event-page'
-              >
+              data-testid="submit-button-in-create-event-page"
+            >
               Submit
             </LoadingButton>
           </ThemeProvider>
